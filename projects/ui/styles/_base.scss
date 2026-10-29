@@ -1,7 +1,7 @@
 @use 'tokens';
 @use 'breakpoints' as bp;
 
-// Mulish, self-hosted (public/fonts, SIL Open Font License): no request to Google at runtime.
+// Mulish, self-hosted (shipped in the library assets/fonts, served under /speedernet-ui/fonts, SIL Open Font License): no request to Google at runtime.
 @font-face {
   font-family: 'Mulish';
   font-style: normal;

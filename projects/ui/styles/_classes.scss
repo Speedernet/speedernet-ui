@@ -38,7 +38,7 @@ input[type='radio'] {
   accent-color: var(--color-text);
 }
 
-// Data table, from the desktop breakpoint; wrap it in .sn-table-wrapper to scroll horizontally.
+// Data table; wrap it in .sn-table-wrapper so it scrolls horizontally when it is wider than the screen.
 .sn-table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--color-border);
