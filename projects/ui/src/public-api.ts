@@ -14,3 +14,6 @@ export * from './lib/filter-tabs/filter-tabs';
 export * from './lib/filter-tabs/next-tab-index';
 export * from './lib/field/field';
 export * from './lib/field/control';
+export * from './lib/message/message-appearance';
+export * from './lib/message/message';
+export * from './lib/message/info-banner';
