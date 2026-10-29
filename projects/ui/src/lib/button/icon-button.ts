@@ -11,6 +11,7 @@ import { LucideDynamicIcon, type LucideIconData } from '@lucide/angular';
   // Same stylesheet as SnButton: Angular adds identical styles to the page only once.
   styleUrl: './button.scss',
   host: {
+    type: 'button',
     class: 'sn-button sn-button-icon',
     '[class.sn-button-primary]': "variant() === 'dark'",
     '[attr.aria-label]': 'label()',

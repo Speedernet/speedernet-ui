@@ -60,6 +60,10 @@ describe('SnIconButton', () => {
     expect(button.textContent!.trim()).toBe('');
   });
 
+  it('does not submit forms by default', () => {
+    expect(render().querySelector('#icon')!.getAttribute('type')).toBe('button');
+  });
+
   it('uses the primary look in its dark variant', () => {
     expect(render().querySelector('#dark')!.classList).toContain('sn-button-primary');
   });
