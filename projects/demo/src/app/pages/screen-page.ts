@@ -83,6 +83,8 @@ const BOOKINGS: Booking[] = [
 
     <sn-filter-tabs label="Période des réservations" [options]="filters" [(value)]="filter" />
 
+    <h2 class="visually-hidden">Liste des réservations</h2>
+
     <ul class="card-list">
       @for (b of visible(); track b.id) {
         <li>
@@ -97,6 +99,9 @@ const BOOKINGS: Booking[] = [
 
     <div class="table-view sn-table-wrapper">
       <table class="sn-table">
+        <caption class="visually-hidden">
+          Mes réservations
+        </caption>
         <thead>
           <tr>
             <th scope="col">Salle</th>

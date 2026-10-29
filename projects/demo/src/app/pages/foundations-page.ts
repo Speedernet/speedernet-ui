@@ -46,6 +46,9 @@ interface ContrastPair {
     <h2>Associations de couleurs autorisées</h2>
     <div class="sn-table-wrapper">
       <table class="sn-table">
+        <caption class="visually-hidden">
+          Associations de couleurs autorisées
+        </caption>
         <thead>
           <tr>
             <th scope="col">Association</th>
@@ -113,15 +116,23 @@ export class FoundationsPage {
   protected readonly spaces = [1, 2, 3, 4, 5, 6];
   protected readonly radii = ['--radius', '--radius-lg', '--radius-pill'];
   protected readonly pairs: ContrastPair[] = [
-    { pair: 'Texte #313131 sur blanc', ratio: '13,0:1', usage: 'Texte courant' },
-    { pair: 'Texte secondaire sur blanc', ratio: '6,5:1', usage: 'Aides, mentions' },
-    { pair: 'Blanc sur danger', ratio: '6,2:1', usage: 'Bouton de suppression' },
+    { pair: 'Texte --color-text (#313131) sur blanc', ratio: '13,0:1', usage: 'Texte courant' },
+    {
+      pair: 'Texte secondaire --color-text-muted (#5e5e5e) sur blanc',
+      ratio: '6,5:1',
+      usage: 'Aides, mentions',
+    },
+    { pair: 'Blanc sur --color-danger', ratio: '6,2:1', usage: 'Bouton de suppression' },
     {
       pair: 'Texte sur teintes cyan et jaune',
       ratio: '≥ 9,8:1',
       usage: 'Messages, badges, bandeaux',
     },
     { pair: 'Bordure de champ (gray-600)', ratio: '3,8:1', usage: 'Contour des champs' },
-    { pair: 'Texte sur accent jaune', ratio: '10,2:1', usage: 'Surlignage, boutons principaux' },
+    {
+      pair: 'Texte --color-text sur --color-accent (#ffe44b)',
+      ratio: '10,2:1',
+      usage: 'Surlignage des titres, badges jaunes',
+    },
   ];
 }
