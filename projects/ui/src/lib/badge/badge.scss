@@ -1,0 +1,42 @@
+// Badges: a short word, never colour alone; optional decorative icon.
+.sn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 30px;
+  padding: 0 0.875rem;
+  border: 1px solid var(--tint-neutral-border);
+  border-radius: var(--radius-pill);
+  background: var(--tint-neutral);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sn-badge-primary {
+  border-color: var(--tint-primary-border);
+  background: var(--tint-primary);
+}
+
+.sn-badge-accent {
+  border-color: var(--tint-accent-border);
+  background: var(--tint-accent);
+}
+
+.sn-badge-brand {
+  border-color: var(--tint-brand-border);
+  background: var(--tint-brand);
+}
+
+.sn-badge-solid {
+  border-color: var(--color-text);
+  background: var(--color-text);
+  color: var(--color-on-dark);
+}
+
+.sn-badge-outline {
+  border-color: var(--color-text);
+  background: var(--color-surface);
+  font-weight: 700;
+}
