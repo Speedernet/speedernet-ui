@@ -2,20 +2,16 @@
 // Components must only use these variables; see the design-system-speedernet skill.
 // Color scales are computed in OKLCH: a given step has the same perceived lightness in every
 // scale (50 = L 97.5 % ... 900 = L 32 %), so contrasts stay comparable from one color to another.
+// Exception: the anchored brand steps (cyan-400 76.1 %, yellow-200 91.5 %, red-600 63.6 %,
+// gray-900 31.3 %) hold the exact brand color. The night scale has an extra 950 step for the
+// night brand color.
 :root {
-  // Brand (unchanged)
-  --color-text: oklch(31.3% 0 0); // #313131
-  --color-night: oklch(22.7% 0.012 270.8); // #1a1c22
-  --color-primary: oklch(76.1% 0.129 205.7); // #0dc8d9
-  --color-accent: oklch(91.5% 0.166 99); // #ffe44b
-  --color-brand: oklch(63.6% 0.229 25.4); // #f7343a
-
   // Cyan scale
   --cyan-50: oklch(97.5% 0.025 205.7);
   --cyan-100: oklch(95% 0.05 205.7);
   --cyan-200: oklch(90.5% 0.088 205.7);
   --cyan-300: oklch(85% 0.116 205.7);
-  --cyan-400: oklch(78% 0.129 205.7);
+  --cyan-400: oklch(76.1% 0.129 205.7); // brand cyan #0dc8d9
   --cyan-500: oklch(70% 0.12 205.7);
   --cyan-600: oklch(61% 0.104 205.7);
   --cyan-700: oklch(52% 0.089 205.7);
@@ -25,7 +21,7 @@
   // Yellow scale (hue drifts from 99 to 76 on dark steps to avoid khaki)
   --yellow-50: oklch(97.5% 0.037 99);
   --yellow-100: oklch(95% 0.07 99);
-  --yellow-200: oklch(90.5% 0.113 99);
+  --yellow-200: oklch(91.5% 0.166 99); // brand yellow #ffe44b
   --yellow-300: oklch(85% 0.15 99);
   --yellow-400: oklch(78% 0.162 99);
   --yellow-500: oklch(70% 0.144 95);
@@ -41,7 +37,7 @@
   --red-300: oklch(85% 0.082 25.4);
   --red-400: oklch(78% 0.128 25.4);
   --red-500: oklch(70% 0.191 25.4);
-  --red-600: oklch(61% 0.229 25.4);
+  --red-600: oklch(63.6% 0.229 25.4); // brand red #f7343a
   --red-700: oklch(52% 0.211 25.4);
   --red-800: oklch(42% 0.171 25.4);
   --red-900: oklch(32% 0.13 25.4);
@@ -57,6 +53,7 @@
   --night-700: oklch(52% 0.011 270.8);
   --night-800: oklch(42% 0.01 270.8);
   --night-900: oklch(32% 0.007 270.8);
+  --night-950: oklch(22.7% 0.012 270.8); // night brand color #1a1c22
 
   // Gray scale
   --gray-50: oklch(97.5% 0 0);
@@ -68,7 +65,14 @@
   --gray-600: oklch(61% 0 0);
   --gray-700: oklch(52% 0 0);
   --gray-800: oklch(42% 0 0);
-  --gray-900: oklch(32% 0 0);
+  --gray-900: oklch(31.3% 0 0); // main text gray #313131
+
+  // Brand colors: each one references its anchored scale step
+  --color-text: var(--gray-900); // #313131
+  --color-night: var(--night-950); // #1a1c22
+  --color-primary: var(--cyan-400); // #0dc8d9
+  --color-accent: var(--yellow-200); // #ffe44b
+  --color-brand: var(--red-600); // #f7343a
 
   // Interface
   --color-background: oklch(98.2% 0 0); // #f9f9f9

@@ -31,13 +31,16 @@ interface ContrastPair {
     @for (scale of scales; track scale) {
       <h3>{{ scale }}</h3>
       <div class="swatches swatches--scale">
-        @for (step of steps; track step) {
+        @for (step of stepsOf(scale); track step) {
           <div class="swatch">
             <span
               class="swatch__color"
               [style.background]="'var(--' + scale + '-' + step + ')'"
             ></span>
             <code>{{ scale }}-{{ step }}</code>
+            @if (isAnchor(scale, step)) {
+              <span class="sn-text-muted">couleur de marque</span>
+            }
           </div>
         }
       </div>
@@ -113,6 +116,13 @@ export class FoundationsPage {
   ];
   protected readonly scales = ['cyan', 'yellow', 'red', 'night', 'gray'];
   protected readonly steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+  protected readonly anchors = ['cyan-400', 'yellow-200', 'red-600', 'gray-900', 'night-950'];
+  protected stepsOf(scale: string): number[] {
+    return scale === 'night' ? [...this.steps, 950] : this.steps;
+  }
+  protected isAnchor(scale: string, step: number): boolean {
+    return this.anchors.includes(`${scale}-${step}`);
+  }
   protected readonly spaces = [1, 2, 3, 4, 5, 6];
   protected readonly radii = ['--radius', '--radius-lg', '--radius-pill'];
   protected readonly pairs: ContrastPair[] = [
