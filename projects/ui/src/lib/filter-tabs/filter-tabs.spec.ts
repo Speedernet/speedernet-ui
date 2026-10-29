@@ -52,4 +52,43 @@ describe('SnFilterTabs', () => {
     expect(fixture.componentInstance.value()).toBe('month');
     expect(document.activeElement).toBe(tabs()[1]);
   });
+
+  function press(tab: HTMLElement, key: string, init: KeyboardEventInit = {}) {
+    tab.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, ...init }));
+  }
+
+  it('wraps to the last tab with ArrowLeft', () => {
+    const { fixture, tabs } = render();
+    press(tabs()[0], 'ArrowLeft');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('past');
+    expect(document.activeElement).toBe(tabs()[2]);
+  });
+
+  it('jumps to the last and first tabs with End and Home', () => {
+    const { fixture, tabs } = render();
+    press(tabs()[0], 'End');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('past');
+    press(tabs()[2], 'Home');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('week');
+    expect(document.activeElement).toBe(tabs()[0]);
+  });
+
+  it('ignores arrows combined with Alt, Ctrl or Meta', () => {
+    const { fixture, tabs } = render();
+    press(tabs()[0], 'ArrowRight', { altKey: true });
+    press(tabs()[0], 'ArrowRight', { ctrlKey: true });
+    press(tabs()[0], 'ArrowRight', { metaKey: true });
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value()).toBe('week');
+  });
+
+  it('keeps the first tab reachable when the value matches no option', () => {
+    const { fixture, tabs } = render();
+    fixture.componentInstance.value.set('unknown');
+    fixture.detectChanges();
+    expect(tabs().map((t) => t.getAttribute('tabindex'))).toEqual(['0', '-1', '-1']);
+  });
 });

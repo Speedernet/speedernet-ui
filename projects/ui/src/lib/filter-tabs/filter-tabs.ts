@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   ViewEncapsulation,
+  computed,
   inject,
   input,
   model,
@@ -27,9 +28,9 @@ export interface SnFilterOption {
           role="tab"
           class="sn-filter-tab"
           [attr.aria-selected]="option.value === value()"
-          [attr.tabindex]="option.value === value() ? 0 : -1"
+          [attr.tabindex]="$index === tabStopIndex() ? 0 : -1"
           (click)="value.set(option.value)"
-          (keydown)="onKeydown($event, $index)"
+          (keydown)="onKeydown($event)"
         >
           {{ option.label }}
         </button>
@@ -45,10 +46,20 @@ export class SnFilterTabs {
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  protected onKeydown(event: KeyboardEvent, index: number): void {
+  /** Selected tab, or the first one when the value matches no option, so the control stays reachable. */
+  protected readonly tabStopIndex = computed(() =>
+    Math.max(
+      0,
+      this.options().findIndex((option) => option.value === this.value()),
+    ),
+  );
+
+  protected onKeydown(event: KeyboardEvent): void {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
     const options = this.options();
-    const next = nextTabIndex(index, event.key, options.length);
-    if (next === index && !['Home', 'End', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    const current = this.tabStopIndex();
+    const next = nextTabIndex(current, event.key, options.length);
+    if (next === current) return;
     event.preventDefault();
     this.value.set(options[next].value);
     this.host.nativeElement.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus();
