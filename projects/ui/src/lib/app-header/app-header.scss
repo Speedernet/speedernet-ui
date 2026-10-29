@@ -1,0 +1,225 @@
+@use '@speedernet/ui/styles/breakpoints' as bp;
+
+// Application header. Mobile first: below desktop, navigation and user menu move into the
+// mobile menu so the header never scrolls horizontally, whatever the name or number of links.
+sn-app-header {
+  display: block;
+}
+
+.sn-app-header {
+  position: relative;
+  z-index: 10;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.sn-app-header-content {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--header-height);
+  padding-block: var(--space-2);
+}
+
+.sn-app-header-home {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: 44px;
+  color: var(--color-text);
+  text-decoration: none;
+
+  &:hover {
+    background: none;
+  }
+
+  @include bp.from(desktop) {
+    flex: 0 1 auto;
+  }
+}
+
+.sn-app-header-logo {
+  flex: none;
+  height: 40px;
+}
+
+.sn-app-header-name {
+  min-width: 0;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+
+  @include bp.from(tablet) {
+    font-size: 1.125rem;
+  }
+}
+
+.sn-app-header-nav {
+  display: none;
+}
+
+.sn-app-header-user {
+  display: none;
+}
+
+.sn-app-header-menu {
+  flex: none;
+}
+
+@include bp.from(desktop) {
+  .sn-app-header-nav {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-inline-start: var(--space-4);
+  }
+
+  .sn-app-header-user {
+    display: block;
+    position: relative;
+    flex: none;
+    margin-inline-start: auto;
+  }
+
+  .sn-app-header-menu {
+    display: none;
+  }
+
+  // A mobile menu left open while the window widens must not stay on screen.
+  .sn-app-header-mobile-panel {
+    display: none;
+  }
+}
+
+.sn-app-header-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sn-app-header-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    background: none;
+    color: var(--color-text);
+  }
+
+  &.sn-nav-active {
+    color: var(--color-text);
+    font-weight: 800;
+
+    > span {
+      padding: 0 4px;
+      background: linear-gradient(transparent 58%, var(--cyan-200) 58%);
+    }
+  }
+}
+
+.sn-app-header-user-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 4px 4px 4px var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sn-app-header-initials {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  font-weight: 800;
+}
+
+// Open menus: white panel under their button.
+.sn-app-header-panel {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 20;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-message);
+}
+
+.sn-app-header-user-panel {
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 220px;
+}
+
+// Full width minus side margins, right under the header.
+.sn-app-header-mobile-panel {
+  top: calc(100% + var(--space-2));
+  right: var(--space-3);
+  left: var(--space-3);
+
+  .sn-app-header-links {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sn-app-header-link {
+    display: flex;
+    padding: 0 var(--space-3);
+  }
+}
+
+.sn-app-header-panel-user {
+  margin: var(--space-2) 0 0;
+  padding: var(--space-2) var(--space-3) 0;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.sn-app-header-panel-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: none;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--tint-highlight);
+  }
+}
