@@ -14,6 +14,9 @@ describe('toInitials', () => {
     ['Élodie Tour', 'ÉT'],
     ['Élodie Tour', 'ÉT'],
     ['- 42', '?'],
+    ['Camille Martin (DSI)', 'CM'],
+    ['Camille Martin [Externe]', 'CM'],
+    ['(DSI)', '?'],
   ])('%j gives %j', (displayName, expected) => {
     expect(toInitials(displayName)).toBe(expected);
   });

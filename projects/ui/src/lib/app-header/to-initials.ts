@@ -2,11 +2,13 @@
  * Initials shown in the user avatar: first letter of the first and last words
  * ("Élodie de la Tour" gives "ÉT"), a single letter for a single word, "?" when no word has a
  * letter. Each word contributes its first Unicode letter, so punctuation is skipped
- * ("« Camille »" gives "C") and words without letters ("42", "-") are ignored.
+ * ("« Camille »" gives "C") and words without letters ("42", "-") are ignored. Text in
+ * parentheses or square brackets ("(DSI)", "[Externe]") is not part of the name.
  */
 export function toInitials(displayName: string): string {
   const letters = displayName
     .normalize('NFC')
+    .replace(/\([^)]*\)|\[[^\]]*\]/g, ' ')
     .split(/\s+/)
     .map(firstLetter)
     .filter((letter) => letter !== null);
