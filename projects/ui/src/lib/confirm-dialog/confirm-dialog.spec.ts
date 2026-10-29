@@ -29,6 +29,7 @@ describe('SnConfirmDialog', () => {
   beforeEach(() => {
     // jsdom may not implement the modal API: minimal stand-ins.
     proto.showModal = function (this: HTMLDialogElement) {
+      if (this.hasAttribute('open')) return;
       this.setAttribute('open', '');
     };
     proto.close = function (this: HTMLDialogElement) {
@@ -121,6 +122,36 @@ describe('SnConfirmDialog', () => {
     expect(fixture.componentInstance.cancelled).toBe(1);
     expect(dialog.open).toBe(false);
     expect(document.activeElement).toBe(opener);
+  });
+
+  it('ignores open() while already open and still restores focus to the opener', () => {
+    const { fixture, dialog, open, buttons, opener } = setup();
+    open();
+    open();
+    buttons()[0].click();
+    expect(fixture.componentInstance.cancelled).toBe(1);
+    expect(dialog.open).toBe(false);
+    expect(document.activeElement).toBe(opener);
+  });
+
+  it('does not throw when the opener was removed before closing', () => {
+    const { fixture, open, buttons, opener } = setup();
+    open();
+    opener.remove();
+    expect(() => buttons()[0].click()).not.toThrow();
+    expect(fixture.componentInstance.cancelled).toBe(1);
+  });
+
+  it('emits cancelled once on a native close, and only confirmed on confirm', () => {
+    const { fixture, dialog, open, buttons, opener } = setup();
+    open();
+    dialog.close();
+    expect(fixture.componentInstance.cancelled).toBe(1);
+    expect(document.activeElement).toBe(opener);
+    open();
+    buttons()[1].click();
+    expect(fixture.componentInstance.confirmed).toBe(1);
+    expect(fixture.componentInstance.cancelled).toBe(1);
   });
 
   it('honors a custom cancel label', () => {

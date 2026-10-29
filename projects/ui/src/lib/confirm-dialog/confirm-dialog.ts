@@ -27,6 +27,7 @@ let nextId = 0;
       class="sn-confirm-dialog"
       [attr.aria-labelledby]="titleId"
       (cancel)="onCancel($event)"
+      (close)="onNativeClose()"
     >
       <h2 class="sn-confirm-dialog-title" [id]="titleId">{{ title() }}</h2>
       <div class="sn-confirm-dialog-message"><ng-content /></div>
@@ -57,9 +58,12 @@ export class SnConfirmDialog {
     read: ElementRef<HTMLButtonElement>,
   });
   private previouslyFocused: HTMLElement | null = null;
+  // True while a close we initiated is waiting for its `close` event.
+  private closingByUs = false;
 
   /** Opens the dialog and moves focus to the cancel button. */
   open(): void {
+    if (this.dialog().nativeElement.open) return;
     const active = document.activeElement;
     this.previouslyFocused = active instanceof HTMLElement ? active : null;
     this.dialog().nativeElement.showModal();
@@ -82,9 +86,28 @@ export class SnConfirmDialog {
     this.cancel();
   }
 
+  /** Safety net: the dialog was closed natively (form method="dialog", repeated Escape...). */
+  protected onNativeClose(): void {
+    if (this.closingByUs) {
+      this.closingByUs = false;
+      return;
+    }
+    this.restoreFocus();
+    this.cancelled.emit();
+  }
+
   private close(): void {
-    this.dialog().nativeElement.close();
-    this.previouslyFocused?.focus();
+    const dialog = this.dialog().nativeElement;
+    if (dialog.open) {
+      this.closingByUs = true;
+      dialog.close();
+    }
+    this.restoreFocus();
+  }
+
+  private restoreFocus(): void {
+    const element = this.previouslyFocused;
     this.previouslyFocused = null;
+    if (element?.isConnected) element.focus();
   }
 }
