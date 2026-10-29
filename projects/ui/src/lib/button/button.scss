@@ -16,7 +16,11 @@
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s,
+    border-color 0.2s;
 
   &:disabled {
     border-color: var(--color-border-strong);
@@ -29,7 +33,7 @@
 
   &:hover:not(:disabled) {
     transform: translateY(-3px);
-    box-shadow: rgba(49, 49, 49, 0.22) 0px 1rem 2.5rem;
+    box-shadow: var(--shadow-button-hover);
   }
 }
 
@@ -61,12 +65,7 @@
     transform: translateX(-100%) skewX(-10deg);
     pointer-events: none;
     inset: 0px;
-    background: linear-gradient(
-      115deg,
-      transparent 25%,
-      rgba(255, 255, 255, 0.2) 50%,
-      transparent 75%
-    );
+    background: var(--sheen-button);
     transition:
       transform 0.6s cubic-bezier(0.694, 0.048, 0.335, 1),
       -webkit-transform 0.6s cubic-bezier(0.694, 0.048, 0.335, 1);
@@ -74,5 +73,19 @@
 
   &:hover:not(:disabled)::before {
     transform: translateX(200%) skewX(-10deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sn-button {
+    transition: none;
+
+    &:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+
+  .sn-button-primary::before {
+    display: none;
   }
 }

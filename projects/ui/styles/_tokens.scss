@@ -77,9 +77,7 @@
   --color-text-muted: oklch(48.2% 0 0); // #5e5e5e
   --color-border: oklch(92.2% 0 0); // #e5e5e5
   --color-border-strong: var(--gray-600);
-  --color-neutral-hover: var(--gray-200);
   --color-danger: var(--red-700);
-  --color-danger-hover: var(--red-800);
   --color-disabled: var(--color-border);
   // Modal backdrop: the night color (#1a1c22) at 60% opacity
   --color-backdrop: rgb(26 28 34 / 60%);
@@ -102,7 +100,15 @@
   --radius-lg: 30px;
   --radius-pill: 999px;
   --shadow-button: 10px 10px 20px #c0cfe3;
-  --shadow-button-hover: 4px 4px 8px #c0cfe3;
+  // Button hover: soft drop shadow under the lifted button (night-gray at 22%)
+  --shadow-button-hover: 0 1rem 2.5rem rgb(49 49 49 / 22%);
+  // Button hover: diagonal light sweep over the primary button
+  --sheen-button: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgb(255 255 255 / 20%) 50%,
+    transparent 75%
+  );
   --shadow-message: 10px 10px 20px #e3eaf3;
   --header-height: 4.75rem;
 
