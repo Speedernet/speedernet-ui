@@ -10,9 +10,11 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@a
       <span class="sn-loading-spinner" aria-hidden="true"></span>
       <span>{{ label() }}</span>
     </span>
-    <span class="sn-loading-line" aria-hidden="true"></span>
-    <span class="sn-loading-line" aria-hidden="true"></span>
-    <span class="sn-loading-line" aria-hidden="true"></span>
+    <span class="sn-loading-lines" aria-hidden="true">
+      <span class="sn-loading-line sn-loading-line-1"></span>
+      <span class="sn-loading-line sn-loading-line-2"></span>
+      <span class="sn-loading-line sn-loading-line-3"></span>
+    </span>
   `,
   styleUrl: './screen-state.scss',
   host: { class: 'sn-loading', role: 'status' },

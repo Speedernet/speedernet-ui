@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { LucideCircleAlert } from '@lucide/angular';
 import { SnButton } from '../button/button';
 import { SnEmptyState } from './empty-state';
 import { SnErrorState } from './error-state';
@@ -12,7 +13,10 @@ import { SnLoading } from './loading';
     <sn-empty-state title="Aucune réservation" text="Vous n'avez rien réservé pour le moment.">
       <button snButton variant="primary" type="button">Réserver</button>
     </sn-empty-state>
+    <sn-empty-state id="custom" title="T" text="X" [icon]="customIcon" />
+    <sn-error-state id="label" title="T" text="X" retryLabel="Recommencer" />
     <sn-error-state
+      id="main"
       title="Chargement impossible"
       text="Une erreur est survenue."
       (retry)="count = count + 1"
@@ -21,6 +25,7 @@ import { SnLoading } from './loading';
 })
 class Host {
   count = 0;
+  customIcon = LucideCircleAlert.icon;
 }
 
 function setup() {
@@ -34,7 +39,12 @@ describe('SnLoading', () => {
     const loading = setup().el.querySelector('sn-loading')!;
     expect(loading.getAttribute('role')).toBe('status');
     expect(loading.textContent).toContain('Chargement des réservations…');
-    expect(loading.querySelectorAll('[aria-hidden="true"]').length).toBeGreaterThan(0);
+    expect(loading.querySelector('.sn-loading-spinner')!.getAttribute('aria-hidden')).toBe('true');
+    const lines = loading.querySelector('.sn-loading-lines')!;
+    expect(lines.getAttribute('aria-hidden')).toBe('true');
+    const items = Array.from(lines.children);
+    expect(items.length).toBe(3);
+    items.forEach((line, i) => expect(line.classList).toContain(`sn-loading-line-${i + 1}`));
   });
 });
 
@@ -46,19 +56,33 @@ describe('SnEmptyState', () => {
     expect(empty.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
     expect(empty.querySelector('button')!.textContent).toContain('Réserver');
   });
+
+  it('renders the default icon, or the custom one when given', () => {
+    const { el } = setup();
+    const byDefault = el.querySelector('sn-empty-state svg')!.innerHTML;
+    const custom = el.querySelector('#custom svg')!.innerHTML;
+    expect(byDefault).not.toBe('');
+    expect(custom).not.toBe('');
+    expect(custom).not.toBe(byDefault);
+  });
 });
 
 describe('SnErrorState', () => {
   it('is an alert with title and text', () => {
-    const error = setup().el.querySelector('sn-error-state')!;
+    const error = setup().el.querySelector('#main')!;
     expect(error.getAttribute('role')).toBe('alert');
     expect(error.querySelector('strong')!.textContent).toBe('Chargement impossible');
     expect(error.textContent).toContain('Une erreur est survenue.');
   });
 
+  it('uses a custom retry label', () => {
+    const button = setup().el.querySelector('#label button')!;
+    expect(button.textContent!.trim()).toBe('Recommencer');
+  });
+
   it('emits retry once per click on the retry button', () => {
     const { fixture, el } = setup();
-    const button = el.querySelector('sn-error-state button') as HTMLButtonElement;
+    const button = el.querySelector('#main button') as HTMLButtonElement;
     expect(button.textContent!.trim()).toBe('Réessayer');
     button.click();
     expect(fixture.componentInstance.count).toBe(1);
