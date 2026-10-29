@@ -156,9 +156,6 @@ import {
     <h2>Tableau</h2>
     <div class="sn-table-wrapper">
       <table class="sn-table">
-        <caption class="sn-text-muted">
-          Réservations de la semaine
-        </caption>
         <thead>
           <tr>
             <th scope="col">Salle</th>
