@@ -1,0 +1,144 @@
+@use '@speedernet/ui/styles/breakpoints' as bp;
+
+:host {
+  display: block;
+  padding-block: var(--space-4);
+}
+
+h2 {
+  margin-block: var(--space-5) var(--space-3);
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.swatches--scale {
+  gap: var(--space-2);
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 5rem;
+  font-size: 0.875rem;
+}
+
+.swatch__color,
+.radius-box {
+  display: block;
+  height: 3rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.radius-box {
+  width: 5rem;
+  background: var(--tint-primary);
+  border-color: var(--tint-primary-border);
+}
+
+.type-scale p {
+  margin: 0 0 var(--space-3);
+}
+
+.type-h1-desktop {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.type-h1-phone {
+  font-size: 1.625rem;
+  font-weight: 800;
+}
+
+.type-h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.type-h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.spacing__item {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.spacing__bar {
+  display: block;
+  height: 1rem;
+  background: var(--color-primary);
+}
+
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: center;
+
+  sn-logo {
+    display: block;
+    height: 3rem;
+  }
+
+  ::ng-deep img {
+    height: 100%;
+    width: auto;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.dark-bar {
+  display: inline-flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--color-night);
+  border-radius: var(--radius);
+}
+
+.card-list {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+
+  @include bp.from(desktop) {
+    display: none;
+  }
+}
+
+.table-view {
+  display: none;
+  margin-top: var(--space-4);
+
+  @include bp.from(desktop) {
+    display: block;
+  }
+}
+
+.card-line {
+  margin: 0 0 var(--space-2);
+}
