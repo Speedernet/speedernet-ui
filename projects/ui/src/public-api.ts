@@ -12,3 +12,5 @@ export * from './lib/badge/status-appearance';
 export * from './lib/badge/status-badge';
 export * from './lib/filter-tabs/filter-tabs';
 export * from './lib/filter-tabs/next-tab-index';
+export * from './lib/field/field';
+export * from './lib/field/control';
