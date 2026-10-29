@@ -19,6 +19,16 @@ class Host {
   readonly error = signal<string | null>(null);
 }
 
+@Component({
+  imports: [SnField, SnControl],
+  template: `<sn-field label="Statut"
+    ><select snControl>
+      <option>A</option>
+    </select></sn-field
+  >`,
+})
+class SelectHost {}
+
 @Component({ imports: [SnControl], template: `<input snControl />` })
 class Orphan {}
 
@@ -71,25 +81,39 @@ describe('SnField', () => {
   });
 
   it('lists hint and error together', () => {
-    const { fixture, input } = setup();
+    const { fixture, root, input } = setup();
     fixture.componentInstance.hint.set('Aide');
     fixture.componentInstance.error.set(ERROR);
     fixture.detectChanges();
-    expect(referencedIds(input())).toHaveLength(2);
+    const hintId = root.querySelector('#first .sn-field-hint')!.id;
+    const errorId = root.querySelector('#first .sn-field-error')!.id;
+    expect(referencedIds(input())).toEqual([hintId, errorId]);
   });
 
   it('removes aria-invalid and the reference when the error goes away', () => {
     const { fixture, root, input } = setup();
+    fixture.componentInstance.hint.set('Aide');
     fixture.componentInstance.error.set(ERROR);
     fixture.detectChanges();
+    const hintId = root.querySelector('#first .sn-field-hint')!.id;
     fixture.componentInstance.error.set(null);
     fixture.detectChanges();
     expect(input().hasAttribute('aria-invalid')).toBe(false);
-    expect(input().hasAttribute('aria-describedby')).toBe(false);
+    expect(referencedIds(input())).toEqual([hintId]);
     expect(root.querySelector('#first .sn-field-error')).toBeNull();
     for (const id of referencedIds(input())) {
       expect(root.querySelector(`[id="${id}"]`)).not.toBeNull();
     }
+  });
+
+  it('links the label to a select control', () => {
+    const fixture = TestBed.createComponent(SelectHost);
+    fixture.detectChanges();
+    const root: HTMLElement = fixture.nativeElement;
+    const select = root.querySelector<HTMLSelectElement>('select')!;
+    const label = root.querySelector<HTMLLabelElement>('label')!;
+    expect(select.id).toBeTruthy();
+    expect(label.htmlFor).toBe(select.id);
   });
 
   it('gives each field its own ids', () => {
