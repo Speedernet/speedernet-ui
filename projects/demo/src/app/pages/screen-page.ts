@@ -73,8 +73,8 @@ const BOOKINGS: Booking[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
-    <h1>Mes <span class="sn-highlight">réservations</span></h1>
-    <div class="row">
+    <div class="page-head">
+      <h1>Mes <span class="sn-highlight">réservations</span></h1>
       <button snButton variant="primary" type="button">Réserver une salle</button>
     </div>
     <sn-message type="info">
@@ -87,7 +87,7 @@ const BOOKINGS: Booking[] = [
       @for (b of visible(); track b.id) {
         <li>
           <sn-card>
-            <h2 snCardHeader>{{ b.room }}</h2>
+            <h3 snCardHeader>{{ b.room }}</h3>
             <p class="card-line">{{ b.date }}, {{ b.slot }}</p>
             <sn-status-badge [status]="b.status" [label]="b.statusLabel" />
           </sn-card>

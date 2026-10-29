@@ -55,9 +55,7 @@ import {
     <h3>Boutons-icônes</h3>
     <div class="row">
       <button snIconButton label="Modifier" [icon]="pencil" variant="light" type="button"></button>
-      <span class="dark-bar">
-        <button snIconButton label="Retour" [icon]="back" variant="dark" type="button"></button>
-      </span>
+      <button snIconButton label="Retour" [icon]="back" variant="dark" type="button"></button>
     </div>
     @if (deleted()) {
       <sn-message type="success">Réservation du 12/03 supprimée.</sn-message>
