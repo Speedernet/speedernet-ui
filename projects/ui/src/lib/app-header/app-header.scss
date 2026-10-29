@@ -145,6 +145,14 @@ sn-app-header {
   cursor: pointer;
 }
 
+// A long name is cut with an ellipsis; the full name stays in the DOM and in the title.
+.sn-app-header-user-name {
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .sn-app-header-initials {
   display: inline-flex;
   flex: none;

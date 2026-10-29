@@ -9,6 +9,11 @@ describe('toInitials', () => {
     ['', '?'],
     ['Jean-Pierre Martin', 'JM'],
     ['  anne   marie  ', 'AM'],
+    ['Camille Dupont (DSI)', 'CD'],
+    ['« Camille » Dupont', 'CD'],
+    ['Élodie Tour', 'ÉT'],
+    ['Élodie Tour', 'ÉT'],
+    ['- 42', '?'],
   ])('%j gives %j', (displayName, expected) => {
     expect(toInitials(displayName)).toBe(expected);
   });

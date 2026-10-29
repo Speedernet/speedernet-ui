@@ -68,3 +68,11 @@ test('lets a long application name wrap instead of overflowing', () => {
   assert.match(name, /overflow-wrap:\s*anywhere/);
   assert.match(name, /min-width:\s*0/);
 });
+
+test('truncates a long user name on one line', () => {
+  const name = rule(css, '.sn-app-header-user-name');
+  assert.match(name, /max-width:\s*16ch/);
+  assert.match(name, /overflow:\s*hidden/);
+  assert.match(name, /text-overflow:\s*ellipsis/);
+  assert.match(name, /white-space:\s*nowrap/);
+});

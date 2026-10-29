@@ -73,7 +73,9 @@ let nextId = 0;
               [attr.aria-controls]="userPanelId"
               (click)="toggle('user')"
             >
-              <span class="sn-app-header-user-name">{{ currentUser.displayName }}</span>
+              <span class="sn-app-header-user-name" [title]="currentUser.displayName">{{
+                currentUser.displayName
+              }}</span>
               <span class="sn-app-header-initials" aria-hidden="true">{{ initials() }}</span>
             </button>
             @if (openMenu() === 'user') {
@@ -128,7 +130,7 @@ let nextId = 0;
               [routerLink]="item.link"
               routerLinkActive="sn-nav-active"
               ariaCurrentWhenActive="page"
-              [routerLinkActiveOptions]="{ exact: item.link === homeLink() }"
+              [routerLinkActiveOptions]="{ exact: item.link === '/' || item.link === homeLink() }"
               (click)="closeMenu()"
               ><span>{{ item.label }}</span></a
             >
@@ -146,7 +148,9 @@ let nextId = 0;
   `,
   styleUrl: './app-header.scss',
   host: {
-    '(keydown)': 'onKeydown($event)',
+    // On the document: Safari and Firefox on macOS do not focus clicked buttons, so focus may
+    // be outside the header while a menu is open.
+    '(document:keydown)': 'onKeydown($event)',
     '(document:click)': 'onDocumentClick($event)',
   },
 })
@@ -194,16 +198,22 @@ export class SnAppHeader {
   }
 
   protected onLogout(): void {
-    this.closeMenu();
+    this.closeMenuAndFocusTrigger();
     this.logout.emit();
   }
 
   protected onKeydown(event: KeyboardEvent): void {
-    const open = this.openMenu();
-    if (event.key !== 'Escape' || open === null) return;
+    if (event.key !== 'Escape' || this.openMenu() === null) return;
     event.preventDefault();
+    this.closeMenuAndFocusTrigger();
+  }
+
+  /** Closes the open menu and gives focus back to the button that opened it. */
+  private closeMenuAndFocusTrigger(): void {
+    const open = this.openMenu();
     this.closeMenu();
-    const trigger = open === 'user' ? this.userButton() : this.menuButton();
+    const trigger =
+      open === 'user' ? this.userButton() : open === 'mobile' ? this.menuButton() : undefined;
     trigger?.nativeElement.focus();
   }
 

@@ -8,6 +8,7 @@ import { SnIconButton } from '../button/icon-button';
 import { SnAppHeader, SnHeaderUser, SnNavItem } from './app-header';
 
 let hostUser: SnHeaderUser | null = null;
+let hostHomeLink = '/';
 
 @Component({ template: `<p>Page</p>` })
 class Page {}
@@ -18,9 +19,10 @@ class Page {}
   template: `
     <sn-app-header
       appName="Réservation de salles"
+      [homeLink]="homeLink"
       [navItems]="navItems"
       [user]="user"
-      (logout)="logouts = logouts + 1"
+      (logout)="onLogout()"
     />
     <button id="outside" type="button">Ailleurs</button>
     <router-outlet />
@@ -32,14 +34,23 @@ class Host {
     { label: 'Réservations', link: '/reservations' },
   ];
   readonly user = hostUser;
+  readonly homeLink = hostHomeLink;
   logouts = 0;
+  focusedOnLogout: Element | null = null;
+
+  onLogout(): void {
+    this.logouts++;
+    this.focusedOnLogout = document.activeElement;
+  }
 }
 
 async function setup(
   url = '/reservations',
   user: SnHeaderUser | null = { displayName: 'Camille Dupont' },
+  homeLink = '/',
 ) {
   hostUser = user;
+  hostHomeLink = homeLink;
   TestBed.configureTestingModule({
     providers: [
       provideRouter([
@@ -49,6 +60,7 @@ async function setup(
           children: [
             { path: '', component: Page },
             { path: 'reservations', component: Page },
+            { path: 'accueil', component: Page },
           ],
         },
       ]),
@@ -111,6 +123,14 @@ describe('SnAppHeader', () => {
     expect(bookings.hasAttribute('aria-current')).toBe(false);
   });
 
+  it('never marks a "/" item active on other pages, even with another home link', async () => {
+    const { header } = await setup('/reservations', undefined, '/accueil');
+    const [home, bookings] = Array.from(header().querySelectorAll('nav.sn-app-header-nav a'));
+    expect(home.hasAttribute('aria-current')).toBe(false);
+    expect(home.classList).not.toContain('sn-nav-active');
+    expect(bookings.getAttribute('aria-current')).toBe('page');
+  });
+
   describe('user menu', () => {
     // jsdom ignores media queries, so the mobile `display: none` would make the button unfocusable.
     beforeEach(() => {
@@ -159,6 +179,39 @@ describe('SnAppHeader', () => {
       expect(button.getAttribute('aria-expanded')).toBe('false');
       expect(panel(button)).toBeNull();
       expect(document.activeElement).toBe(button);
+    });
+
+    it('closes on Escape even when focus is outside the header', async () => {
+      const { userButton, panel, detect } = await setup();
+      const button = userButton()!;
+      button.click();
+      await detect();
+      (document.activeElement as HTMLElement | null)?.blur();
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await detect();
+      expect(button.getAttribute('aria-expanded')).toBe('false');
+      expect(panel(button)).toBeNull();
+      expect(document.activeElement).toBe(button);
+    });
+
+    it('returns focus to its button before emitting logout', async () => {
+      const { userButton, panel, detect, host } = await setup();
+      const button = userButton()!;
+      button.click();
+      await detect();
+      const logout = panel(button)!.querySelector('button')!;
+      logout.focus();
+      logout.click();
+      await detect();
+      expect(host.focusedOnLogout).toBe(button);
+      expect(document.activeElement).toBe(button);
+    });
+
+    it('shows the full name as a title, the visible name being truncated if needed', async () => {
+      const { userButton } = await setup();
+      const name = userButton()!.querySelector('.sn-app-header-user-name')!;
+      expect(name.getAttribute('title')).toBe('Camille Dupont');
+      expect(name.textContent!.trim()).toBe('Camille Dupont');
     });
 
     it('closes when clicking outside', async () => {
@@ -231,6 +284,22 @@ describe('SnAppHeader', () => {
       await harness.navigateByUrl('/');
       await detect();
       expect(button.getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('returns focus to the menu button before emitting logout', async () => {
+      const { menuButton, panel, detect, host } = await setup();
+      const button = menuButton();
+      button.click();
+      await detect();
+      const logout = Array.from(panel(button)!.querySelectorAll('button')).find((b) =>
+        b.textContent!.includes('Se déconnecter'),
+      )!;
+      logout.focus();
+      logout.click();
+      await detect();
+      expect(host.logouts).toBe(1);
+      expect(host.focusedOnLogout).toBe(button);
+      expect(document.activeElement).toBe(button);
     });
 
     it('keeps only one menu open at a time', async () => {
