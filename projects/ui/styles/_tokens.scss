@@ -81,6 +81,8 @@
   --color-danger: var(--red-700);
   --color-danger-hover: var(--red-800);
   --color-disabled: var(--color-border);
+  // Modal backdrop: the night color (#1a1c22) at 60% opacity
+  --color-backdrop: rgb(26 28 34 / 60%);
 
   // Tints: solid scale steps for badge and message backgrounds and borders
   --tint-primary: var(--cyan-100);
