@@ -11,6 +11,8 @@
   background: var(--color-surface);
   box-shadow: var(--shadow-message);
   color: var(--color-text);
+  min-width: 0;
+  overflow-wrap: anywhere;
 
   > .sn-badge {
     flex: none;
@@ -21,6 +23,7 @@
 
 .sn-info-banner {
   display: block;
+  min-width: 0;
 }
 
 a.sn-info-banner-body {
@@ -29,6 +32,8 @@ a.sn-info-banner-body {
 
 .sn-info-banner-text {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .sn-info-banner-body > svg {

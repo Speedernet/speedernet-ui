@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import {
-  LucideArrowRight,
-  LucideCheck,
-  LucideCircleAlert,
-  LucideTriangleAlert,
-} from '@lucide/angular';
+import { LucideCheck, LucideCircleAlert, LucideTriangleAlert } from '@lucide/angular';
 import { SnInfoBanner } from './info-banner';
 import { SnMessage } from './message';
 import { messageAppearance } from './message-appearance';
@@ -73,13 +68,14 @@ describe('SnInfoBanner', () => {
     expect(link.textContent).toContain('Nouveautés');
     const arrow = link.querySelector('svg')!;
     expect(arrow.getAttribute('aria-hidden')).toBe('true');
-    expect(LucideArrowRight.icon).toBeTruthy();
+    expect(arrow.getAttribute('width')).toBe('14');
   });
 
   it('renders a div instead of a link without href', () => {
     const banner = setup().querySelector('#plain')!;
     expect(banner.querySelector('a')).toBeNull();
     expect(banner.querySelector('div.sn-info-banner-body')).not.toBeNull();
+    expect(banner.querySelector('svg')!.getAttribute('width')).toBe('14');
     expect(banner.textContent).toContain('Maintenance ce soir');
   });
 });
