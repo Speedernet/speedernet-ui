@@ -1,0 +1,98 @@
+// Screen states: a centred column in a card-like block.
+.sn-loading,
+.sn-empty-state,
+.sn-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-align: center;
+  overflow-wrap: anywhere;
+
+  strong {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+}
+
+.sn-state-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--tint-neutral);
+}
+
+.sn-error-state .sn-state-icon {
+  background: var(--tint-brand);
+}
+
+.sn-loading {
+  align-items: stretch;
+  text-align: left;
+}
+
+.sn-loading-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.sn-loading-spinner {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--tint-neutral-border);
+  border-top-color: var(--color-text-muted);
+  border-radius: 50%;
+  animation: sn-spin 0.9s linear infinite;
+}
+
+.sn-loading-line {
+  height: 16px;
+  border-radius: var(--radius);
+  background: var(--tint-neutral);
+  animation: sn-pulse 1.4s ease-in-out infinite;
+
+  &:nth-of-type(1) {
+    width: 100%;
+  }
+  &:nth-of-type(2) {
+    width: 80%;
+  }
+  &:nth-of-type(3) {
+    width: 55%;
+  }
+}
+
+@keyframes sn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sn-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sn-loading-spinner,
+  .sn-loading-line {
+    animation: none;
+  }
+}
