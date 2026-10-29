@@ -14,5 +14,13 @@
     "@lucide/angular": "^1.64.0",
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "exports": {
+    "./styles": {
+      "sass": "./styles/index.scss"
+    },
+    "./styles/breakpoints": {
+      "sass": "./styles/_breakpoints.scss"
+    }
+  }
 }

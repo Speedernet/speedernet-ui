@@ -1,0 +1,73 @@
+// Yellow marker highlight behind one or two words of every page title (h1).
+.sn-highlight {
+  padding-inline: var(--space-1);
+  background: linear-gradient(transparent 60%, var(--color-accent) 60%);
+}
+
+input:not([type='checkbox'], [type='radio']),
+select,
+textarea {
+  min-height: 48px;
+  padding: 0 0.875rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+
+  &:focus-visible {
+    border-color: var(--color-text);
+    outline: none;
+    box-shadow: 0 0 0 4px var(--tint-primary-border);
+  }
+
+  &[aria-invalid='true'] {
+    border: 2px solid var(--color-danger);
+  }
+}
+
+textarea {
+  padding-block: var(--space-2);
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  width: 22px;
+  height: 22px;
+  // Checked: dark gray fill; browsers draw the tick in white for contrast.
+  accent-color: var(--color-text);
+}
+
+// Data table, from the desktop breakpoint; wrap it in .sn-table-wrapper to scroll horizontally.
+.sn-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.sn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+
+  th {
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-text);
+    color: var(--color-on-dark);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 0.75rem var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  tbody tr:hover {
+    background: var(--tint-primary-subtle);
+  }
+}

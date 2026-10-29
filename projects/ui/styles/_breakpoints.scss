@@ -1,0 +1,15 @@
+@use 'sass:map';
+
+// Shared breakpoints (see docs/conventions.md). Mobile-first: styles target small screens,
+// then widen with `@include bp.from(tablet) { ... }`.
+$breakpoints: (
+  tablet: 600px,
+  desktop: 960px,
+  wide: 1280px,
+);
+
+@mixin from($name) {
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}

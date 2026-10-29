@@ -4,5 +4,6 @@
   "allowedNonPeerDependencies": ["@lucide/angular"],
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "assets": ["styles/**/*.scss", "assets/**/*"]
 }

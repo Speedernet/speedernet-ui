@@ -53,6 +53,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/demo/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/ui/assets",
+                "output": "speedernet-ui"
               }
             ],
             "styles": ["projects/demo/src/styles.scss"]

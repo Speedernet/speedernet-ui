@@ -7,8 +7,9 @@
     "build:ui": "ng build ui",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test ui --watch=false && ng test demo --watch=false",
-    "format": "prettier --write ."
+    "test": "npm run test:styles && ng test ui --watch=false && ng test demo --watch=false",
+    "format": "prettier --write .",
+    "test:styles": "node --test \"projects/ui/styles/*.test.mjs\""
   },
   "private": true,
   "packageManager": "npm@11.12.1",
@@ -29,6 +30,7 @@
     "jsdom": "^30.0.0",
     "ng-packagr": "^22.2.0",
     "prettier": "^3.8.1",
+    "sass": "^1.107.0",
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"
   },

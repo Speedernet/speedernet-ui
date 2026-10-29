@@ -1,0 +1,113 @@
+// Design tokens of the Speedernet design system (brand colors taken from speedernet.com).
+// Components must only use these variables; see the design-system-speedernet skill.
+// Color scales are computed in OKLCH: a given step has the same perceived lightness in every
+// scale (50 = L 97.5 % ... 900 = L 32 %), so contrasts stay comparable from one color to another.
+:root {
+  // Brand (unchanged)
+  --color-text: oklch(31.3% 0 0); // #313131
+  --color-night: oklch(22.7% 0.012 270.8); // #1a1c22
+  --color-primary: oklch(76.1% 0.129 205.7); // #0dc8d9
+  --color-accent: oklch(91.5% 0.166 99); // #ffe44b
+  --color-brand: oklch(63.6% 0.229 25.4); // #f7343a
+
+  // Cyan scale
+  --cyan-50: oklch(97.5% 0.025 205.7);
+  --cyan-100: oklch(95% 0.05 205.7);
+  --cyan-200: oklch(90.5% 0.088 205.7);
+  --cyan-300: oklch(85% 0.116 205.7);
+  --cyan-400: oklch(78% 0.129 205.7);
+  --cyan-500: oklch(70% 0.12 205.7);
+  --cyan-600: oklch(61% 0.104 205.7);
+  --cyan-700: oklch(52% 0.089 205.7);
+  --cyan-800: oklch(42% 0.072 205.7);
+  --cyan-900: oklch(32% 0.055 205.7);
+
+  // Yellow scale (hue drifts from 99 to 76 on dark steps to avoid khaki)
+  --yellow-50: oklch(97.5% 0.037 99);
+  --yellow-100: oklch(95% 0.07 99);
+  --yellow-200: oklch(90.5% 0.113 99);
+  --yellow-300: oklch(85% 0.15 99);
+  --yellow-400: oklch(78% 0.162 99);
+  --yellow-500: oklch(70% 0.144 95);
+  --yellow-600: oklch(61% 0.125 90);
+  --yellow-700: oklch(52% 0.107 85);
+  --yellow-800: oklch(42% 0.087 80);
+  --yellow-900: oklch(32% 0.068 76);
+
+  // Red scale
+  --red-50: oklch(97.5% 0.012 25.4);
+  --red-100: oklch(95% 0.025 25.4);
+  --red-200: oklch(90.5% 0.049 25.4);
+  --red-300: oklch(85% 0.082 25.4);
+  --red-400: oklch(78% 0.128 25.4);
+  --red-500: oklch(70% 0.191 25.4);
+  --red-600: oklch(61% 0.229 25.4);
+  --red-700: oklch(52% 0.211 25.4);
+  --red-800: oklch(42% 0.171 25.4);
+  --red-900: oklch(32% 0.13 25.4);
+
+  // Night scale (blue-tinted gray)
+  --night-50: oklch(97.5% 0.003 270.8);
+  --night-100: oklch(95% 0.005 270.8);
+  --night-200: oklch(90.5% 0.008 270.8);
+  --night-300: oklch(85% 0.011 270.8);
+  --night-400: oklch(78% 0.012 270.8);
+  --night-500: oklch(70% 0.012 270.8);
+  --night-600: oklch(61% 0.012 270.8);
+  --night-700: oklch(52% 0.011 270.8);
+  --night-800: oklch(42% 0.01 270.8);
+  --night-900: oklch(32% 0.007 270.8);
+
+  // Gray scale
+  --gray-50: oklch(97.5% 0 0);
+  --gray-100: oklch(95% 0 0);
+  --gray-200: oklch(90.5% 0 0);
+  --gray-300: oklch(85% 0 0);
+  --gray-400: oklch(78% 0 0);
+  --gray-500: oklch(70% 0 0);
+  --gray-600: oklch(61% 0 0);
+  --gray-700: oklch(52% 0 0);
+  --gray-800: oklch(42% 0 0);
+  --gray-900: oklch(32% 0 0);
+
+  // Interface
+  --color-background: oklch(98.2% 0 0); // #f9f9f9
+  --color-surface: oklch(100% 0 0);
+  --color-on-dark: oklch(100% 0 0);
+  --color-text-muted: oklch(48.2% 0 0); // #5e5e5e
+  --color-border: oklch(92.2% 0 0); // #e5e5e5
+  --color-border-strong: var(--gray-600);
+  --color-neutral-hover: var(--gray-200);
+  --color-danger: var(--red-700);
+  --color-danger-hover: var(--red-800);
+  --color-disabled: var(--color-border);
+
+  // Tints: solid scale steps for badge and message backgrounds and borders
+  --tint-primary: var(--cyan-100);
+  --tint-primary-border: var(--cyan-300);
+  --tint-primary-subtle: var(--cyan-50);
+  --tint-accent: var(--yellow-50);
+  --tint-accent-border: var(--yellow-200);
+  --tint-brand: var(--red-100);
+  --tint-brand-border: var(--red-300);
+  --tint-neutral: var(--gray-100);
+  --tint-neutral-border: var(--gray-300);
+  --tint-highlight: var(--yellow-200);
+
+  --font-family-base: 'Mulish', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius: 10px;
+  --radius-lg: 30px;
+  --radius-pill: 999px;
+  --shadow-button: 10px 10px 20px #c0cfe3;
+  --shadow-button-hover: 4px 4px 8px #c0cfe3;
+  --shadow-message: 10px 10px 20px #e3eaf3;
+  --header-height: 4.75rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+}
