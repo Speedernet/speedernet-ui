@@ -1,0 +1,78 @@
+// Menu: white panel next to its button, one row per action.
+.sn-menu {
+  // Popover in the top layer: fixed to the viewport, placed by the component next to its button.
+  position: fixed;
+  inset: auto;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  margin: 0;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-message);
+  color: var(--color-text);
+  animation: sn-menu-in 0.15s ease-out;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.sn-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: none;
+  border-radius: var(--radius-lg);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 600;
+  text-align: start;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    background: var(--tint-highlight);
+  }
+
+  // Inside the panel, the ring hugs the item instead of overflowing its neighbours.
+  &:focus-visible {
+    outline-offset: -3px;
+  }
+
+  &:disabled {
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+  }
+}
+
+// Red text; its highlight is gray, as red on the yellow highlight is too faint.
+.sn-menu-item-danger:not(:disabled) {
+  color: var(--color-danger);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--tint-neutral);
+  }
+}
+
+@keyframes sn-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -0.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sn-menu {
+    animation: none;
+  }
+}

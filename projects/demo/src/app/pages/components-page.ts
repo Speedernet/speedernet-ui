@@ -23,7 +23,9 @@ import {
   SnIconButton,
   SnInfoBanner,
   SnLoading,
+  SnMenu,
   SnMenuItem,
+  SnMenuTrigger,
   SnMessage,
   SnRadio,
   SnRadioGroup,
@@ -53,7 +55,9 @@ import {
     SnIconButton,
     SnInfoBanner,
     SnLoading,
+    SnMenu,
     SnMenuItem,
+    SnMenuTrigger,
     SnMessage,
     SnRadio,
     SnRadioGroup,
@@ -167,9 +171,21 @@ import {
         <button snMenuItem tone="danger" disabled>Annuler la réservation</button>
       </sn-action-menu>
     </div>
+    <h3>Menu sur un autre bouton</h3>
     <p class="sn-text-muted">
-      Avec icônes et action dangereuse, puis sans icônes avec actions désactivées. Dernier choix :
-      {{ menuChoice() }}
+      <code>snMenuTrigger</code> ouvre un <code>sn-menu</code> depuis n'importe quel bouton, comme
+      le menu utilisateur de l'en-tête.
+    </p>
+    <div class="row">
+      <button snButton type="button" [snMenuTrigger]="exportMenu">Exporter</button>
+      <sn-menu #exportMenu>
+        <button snMenuItem (click)="menuChoice.set('Exporter en PDF')">En PDF</button>
+        <button snMenuItem (click)="menuChoice.set('Exporter en tableur')">En tableur</button>
+      </sn-menu>
+    </div>
+    <p class="sn-text-muted">
+      Avec icônes et action dangereuse, sans icônes avec actions désactivées, puis sur un bouton
+      classique. Dernier choix : {{ menuChoice() }}
     </p>
 
     <h2>Badges</h2>

@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SnActionMenu, SnMenuItem } from './action-menu';
+import { SnMenuItem } from '../menu/menu';
+import { SnActionMenu } from './action-menu';
 
 @Component({
   imports: [SnActionMenu, SnMenuItem],
