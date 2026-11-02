@@ -1,0 +1,124 @@
+@use '@speedernet/ui/styles/breakpoints' as bp;
+
+// Toasts: dark pills stacked at the bottom of the screen, full width on phone, centred from
+// tablet. The stack lets clicks through between toasts.
+.sn-toaster {
+  position: fixed;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  left: var(--space-3);
+  z-index: 30;
+  pointer-events: none;
+}
+
+// Visually hidden: only screen readers read the announced message.
+.sn-toast-announcer {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.sn-toast-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+
+  @include bp.from(tablet) {
+    align-items: center;
+  }
+}
+
+// Same space around the badge on every side. Badge, first line of text and buttons share one
+// centre line at the top, so a message on several lines keeps them aligned up there. On a narrow
+// screen the buttons wrap to a second line, aligned right, instead of squeezing the text.
+.sn-toast {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-button-hover);
+  color: var(--color-text);
+  pointer-events: auto;
+  animation: sn-toast-in 0.2s ease-out;
+
+  @include bp.from(tablet) {
+    max-width: 560px;
+  }
+
+  > .sn-badge {
+    flex: none;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+}
+
+.sn-toast-message {
+  flex: 1 1 10rem;
+  min-width: 0;
+  margin: 0;
+  // Centres the first line (1.625rem high) on the 30px badge.
+  padding-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.sn-toast-buttons {
+  display: flex;
+  align-items: center;
+  // 40px buttons centred on the 30px badge, without making the toast taller.
+  margin-block: -5px;
+  margin-left: auto;
+}
+
+.sn-toast-action,
+.sn-toast-close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--tint-highlight);
+  }
+}
+
+// Action: underlined bold text, like the links.
+.sn-toast-action {
+  padding: 0 var(--space-3);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sn-toast-close {
+  width: 40px;
+}
+
+@keyframes sn-toast-in {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sn-toast {
+    animation: none;
+  }
+}
