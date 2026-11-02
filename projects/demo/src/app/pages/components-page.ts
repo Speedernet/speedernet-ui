@@ -11,6 +11,7 @@ import {
   SnBadge,
   SnButton,
   SnCard,
+  SnCheckbox,
   SnConfirmDialog,
   SnControl,
   SnDialog,
@@ -24,8 +25,11 @@ import {
   SnLoading,
   SnMenuItem,
   SnMessage,
+  SnRadio,
+  SnRadioGroup,
   SnSelect,
   SnStatusBadge,
+  SnSwitch,
   SnToastRef,
   SnToastService,
   SnTooltip,
@@ -38,6 +42,7 @@ import {
     SnBadge,
     SnButton,
     SnCard,
+    SnCheckbox,
     SnConfirmDialog,
     SnControl,
     SnDialog,
@@ -50,8 +55,11 @@ import {
     SnLoading,
     SnMenuItem,
     SnMessage,
+    SnRadio,
+    SnRadioGroup,
     SnSelect,
     SnStatusBadge,
+    SnSwitch,
     SnTooltip,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -213,9 +221,6 @@ import {
       <sn-field label="Champ désactivé">
         <input snControl type="text" value="Non modifiable" disabled />
       </sn-field>
-      <sn-field label="Recevoir une confirmation par courriel">
-        <input snControl type="checkbox" checked />
-      </sn-field>
     </div>
 
     <h3>Liste déroulante</h3>
@@ -256,6 +261,80 @@ import {
           </select>
         </sn-select>
       </sn-field>
+    </div>
+
+    <h3>Cases à cocher</h3>
+    <div class="stack">
+      <sn-checkbox label="Ajouter un vidéoprojecteur">
+        <input type="checkbox" snControl />
+      </sn-checkbox>
+      <sn-checkbox label="Réservation récurrente" hint="Chaque semaine, le même jour.">
+        <input type="checkbox" snControl checked />
+      </sn-checkbox>
+      <sn-checkbox
+        label="J'accepte le règlement des salles"
+        error="Acceptez le règlement pour réserver."
+      >
+        <input type="checkbox" snControl />
+      </sn-checkbox>
+      <sn-checkbox label="Accès handicapé (toutes les salles)">
+        <input type="checkbox" snControl checked disabled />
+      </sn-checkbox>
+      <sn-checkbox label="Traiteur (indisponible)">
+        <input type="checkbox" snControl disabled />
+      </sn-checkbox>
+    </div>
+
+    <h3>Boutons radio</h3>
+    <div class="stack">
+      <sn-radio-group legend="Durée" hint="Une réservation dure au plus deux heures.">
+        <sn-radio label="30 minutes">
+          <input type="radio" name="duration" value="30" snControl />
+        </sn-radio>
+        <sn-radio label="1 heure" hint="Le plus fréquent pour une réunion.">
+          <input type="radio" name="duration" value="60" snControl checked />
+        </sn-radio>
+        <sn-radio label="2 heures">
+          <input type="radio" name="duration" value="120" snControl />
+        </sn-radio>
+        <sn-radio label="Journée entière (sur demande)">
+          <input type="radio" name="duration" value="day" snControl disabled />
+        </sn-radio>
+      </sn-radio-group>
+      <sn-radio-group
+        legend="Disposition de la salle"
+        orientation="horizontal"
+        error="Choisissez une disposition."
+      >
+        <sn-radio label="Réunion">
+          <input type="radio" name="layout" value="meeting" snControl />
+        </sn-radio>
+        <sn-radio label="Conférence">
+          <input type="radio" name="layout" value="conference" snControl />
+        </sn-radio>
+        <sn-radio label="Atelier">
+          <input type="radio" name="layout" value="workshop" snControl />
+        </sn-radio>
+      </sn-radio-group>
+    </div>
+
+    <h3>Interrupteurs</h3>
+    <div class="stack">
+      <sn-switch label="Recevoir une confirmation par courriel">
+        <input type="checkbox" role="switch" snControl checked />
+      </sn-switch>
+      <sn-switch label="Rappel la veille" hint="Envoyé à 18:00.">
+        <input type="checkbox" role="switch" snControl />
+      </sn-switch>
+      <sn-switch label="Partager avec mon équipe" error="Vous n'avez pas encore d'équipe.">
+        <input type="checkbox" role="switch" snControl />
+      </sn-switch>
+      <sn-switch label="Synchroniser l'agenda (géré par l'administrateur)">
+        <input type="checkbox" role="switch" snControl checked disabled />
+      </sn-switch>
+      <sn-switch label="Mode hors ligne (bientôt)">
+        <input type="checkbox" role="switch" snControl disabled />
+      </sn-switch>
     </div>
 
     <h2>Messages</h2>
