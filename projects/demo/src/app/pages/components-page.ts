@@ -156,6 +156,7 @@ import {
       <button snButton type="button" (click)="toastSimple()">Simple</button>
       <button snButton type="button" (click)="toastWithAction()">Avec action « Annuler »</button>
       <button snButton type="button" (click)="toastLong()">Texte long</button>
+      <button snButton type="button" (click)="toastError()">Erreur</button>
     </div>
     <p class="sn-text-muted">Résultat du dernier toast : {{ toastResult() }}</p>
 
@@ -245,6 +246,15 @@ export class ComponentsPage {
       this.toast.show(
         'Réservation enregistrée : salle Croix-Rousse, le 12/03/2026 de 14:00 à 15:00. Un courriel de confirmation vous a été envoyé.',
       ),
+    );
+  }
+
+  protected toastError(): void {
+    this.track(
+      this.toast.show("La réservation n'a pas pu être supprimée.", {
+        type: 'error',
+        action: 'Réessayer',
+      }),
     );
   }
 

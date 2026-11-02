@@ -17,8 +17,9 @@ test('toast uses tokens only, no raw colors', () => {
   assert.doesNotMatch(css, /#[\da-f]{3,8}\b|rgba?\(|oklch\(/i);
 });
 
-test('toast shows a white focus ring on its dark background', () => {
-  assert.match(css, /\.sn-toast :focus-visible\s*\{\s*outline-color: var\(--color-on-dark\)/);
+test('toast keeps badge and buttons at the top when the message wraps', () => {
+  assert.match(css, /\.sn-toast\s*\{[^}]*align-items: flex-start/);
+  assert.match(css, /\.sn-toast\s*\{[^}]*flex-wrap: wrap/);
 });
 
 test('toast announcer is visually hidden, not hidden from screen readers', () => {

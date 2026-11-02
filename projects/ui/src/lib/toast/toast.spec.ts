@@ -39,9 +39,20 @@ describe('SnToastService', () => {
       'Réservation supprimée',
     );
     expect(toaster.querySelector('[role="status"]')!.textContent!.trim()).toBe(
-      'Réservation supprimée',
+      "C'est fait : Réservation supprimée",
     );
     expect(document.activeElement).toBe(opener);
+  });
+
+  it('shows its type with a badge word, success by default', () => {
+    const { service, toasts } = setup();
+    service.show('Réservation supprimée');
+    service.show("La réservation n'a pas pu être supprimée.", { type: 'error' });
+    const badges = toasts().map((t) => t.querySelector('sn-badge')!);
+    expect(badges[0].textContent!.trim()).toBe("C'est fait");
+    expect(badges[0].classList).toContain('sn-badge-solid');
+    expect(badges[1].textContent!.trim()).toBe('Erreur');
+    expect(badges[1].classList).toContain('sn-badge-brand');
   });
 
   it('labels the close button and hides its icon', () => {
@@ -137,10 +148,7 @@ describe('SnToastService', () => {
   it('keeps at most three toasts, removing the oldest', () => {
     const { service, toasts } = setup();
     for (const n of [1, 2, 3, 4]) service.show(`Message ${n}`);
-    expect(toasts().map((t) => t.textContent!.trim().split(' ').slice(0, 2).join(' '))).toEqual([
-      'Message 2',
-      'Message 3',
-      'Message 4',
-    ]);
+    const messages = toasts().map((t) => t.querySelector('.sn-toast-message')!.textContent);
+    expect(messages).toEqual(['Message 2', 'Message 3', 'Message 4']);
   });
 });

@@ -14,11 +14,15 @@ import {
   signal,
 } from '@angular/core';
 import { LucideDynamicIcon, LucideX } from '@lucide/angular';
+import { SnBadge } from '../badge/badge';
+import { messageAppearance, type SnMessageType } from '../message/message-appearance';
 
 /** How a toast ended: its action was used, or it was closed or timed out. */
 export type SnToastResult = 'action' | 'dismissed';
 
 export interface SnToastOptions {
+  /** Type shown by the badge word, as in `sn-message`; defaults to "success". */
+  type?: SnMessageType;
   /** Label of an optional action button, for example "Annuler". */
   action?: string;
   /** Display time in milliseconds; defaults to 5 s, or 10 s with an action. */
@@ -35,6 +39,7 @@ export interface SnToastRef {
 interface Toast {
   id: number;
   message: string;
+  appearance: ReturnType<typeof messageAppearance>;
   action: string | null;
   remaining: number;
   startedAt: number;
@@ -56,13 +61,13 @@ let nextId = 0;
  */
 @Component({
   selector: 'sn-toaster',
-  imports: [LucideDynamicIcon],
+  imports: [LucideDynamicIcon, SnBadge],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="sn-toast-announcer" role="status">
       @for (toast of announced(); track toast.id) {
-        <span>{{ toast.message }}</span>
+        <span>{{ toast.appearance.label }} : {{ toast.message }}</span>
       }
     </div>
     <div
@@ -74,20 +79,25 @@ let nextId = 0;
     >
       @for (toast of toasts(); track toast.id) {
         <div class="sn-toast" [attr.data-toast]="toast.id" (keydown.escape)="close(toast)">
+          <sn-badge [tone]="toast.appearance.tone" [icon]="toast.appearance.icon">{{
+            toast.appearance.label
+          }}</sn-badge>
           <p class="sn-toast-message">{{ toast.message }}</p>
-          @if (toast.action) {
-            <button type="button" class="sn-toast-action" (click)="end(toast, 'action')">
-              {{ toast.action }}
+          <div class="sn-toast-buttons">
+            @if (toast.action) {
+              <button type="button" class="sn-toast-action" (click)="end(toast, 'action')">
+                {{ toast.action }}
+              </button>
+            }
+            <button
+              type="button"
+              class="sn-toast-close"
+              [attr.aria-label]="closeLabel"
+              (click)="close(toast)"
+            >
+              <svg [lucideIcon]="closeIcon" [size]="18" aria-hidden="true"></svg>
             </button>
-          }
-          <button
-            type="button"
-            class="sn-toast-close"
-            [attr.aria-label]="closeLabel"
-            (click)="close(toast)"
-          >
-            <svg [lucideIcon]="closeIcon" [size]="18" aria-hidden="true"></svg>
-          </button>
+          </div>
         </div>
       }
     </div>
@@ -113,6 +123,7 @@ export class SnToaster {
     const toast: Toast = {
       id: nextId++,
       message,
+      appearance: messageAppearance(options.type ?? 'success'),
       action: options.action ?? null,
       remaining: options.duration ?? (options.action ? ACTION_DURATION : DEFAULT_DURATION),
       startedAt: 0,
