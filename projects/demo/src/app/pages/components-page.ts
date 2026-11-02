@@ -6,6 +6,7 @@ import {
   SnCard,
   SnConfirmDialog,
   SnControl,
+  SnDialog,
   SnEmptyState,
   SnErrorState,
   SnField,
@@ -27,6 +28,7 @@ import {
     SnCard,
     SnConfirmDialog,
     SnControl,
+    SnDialog,
     SnEmptyState,
     SnErrorState,
     SnField,
@@ -69,6 +71,65 @@ import {
     >
       Salle Croix-Rousse, de 14:00 à 15:00. Cette action est définitive.
     </sn-confirm-dialog>
+
+    <h2>Fenêtre modale</h2>
+    <div class="row">
+      <button snButton variant="secondary" type="button" (click)="formDialog.open()">
+        Avec formulaire
+      </button>
+      <button snButton variant="secondary" type="button" (click)="longDialog.open()">
+        Contenu long
+      </button>
+      <button snButton variant="secondary" type="button" (click)="infoDialog.open()">
+        Sans actions
+      </button>
+      <button snButton variant="danger" type="button" (click)="dialog().open()">
+        Confirmation
+      </button>
+    </div>
+    <p class="sn-text-muted">Dernière fermeture : {{ lastClose() }}</p>
+    <sn-dialog #formDialog title="Modifier la réservation" (dismissed)="lastClose.set('Échap')">
+      <div class="stack">
+        <sn-field label="Date" hint="Format attendu : jj/mm/aaaa.">
+          <input snControl type="text" value="12/03/2026" />
+        </sn-field>
+        <sn-field label="Commentaire">
+          <textarea snControl rows="3"></textarea>
+        </sn-field>
+      </div>
+      <button snDialogActions snButton type="button" (click)="closeWith(formDialog, 'Annuler')">
+        Annuler
+      </button>
+      <button
+        snDialogActions
+        snButton
+        variant="primary"
+        type="button"
+        (click)="closeWith(formDialog, 'Enregistrer')"
+      >
+        Enregistrer
+      </button>
+    </sn-dialog>
+    <sn-dialog #longDialog title="Règlement des salles" (dismissed)="lastClose.set('Échap')">
+      @for (n of rules; track n) {
+        <p>
+          Article {{ n }}. Les salles se réservent au plus 30 jours à l'avance, pour un créneau de
+          quatre heures au maximum. Libérez la salle à l'heure et laissez-la rangée.
+        </p>
+      }
+      <button
+        snDialogActions
+        snButton
+        variant="primary"
+        type="button"
+        (click)="closeWith(longDialog, 'J’ai compris')"
+      >
+        J’ai compris
+      </button>
+    </sn-dialog>
+    <sn-dialog #infoDialog title="Salle Confluence" (dismissed)="lastClose.set('Échap')">
+      <p>Projecteur, tableau blanc, 12 places. Fermez avec Échap.</p>
+    </sn-dialog>
 
     <h2>Badges</h2>
     <div class="row">
@@ -206,6 +267,8 @@ import {
 })
 export class ComponentsPage {
   protected readonly dialog = viewChild.required(SnConfirmDialog);
+  protected readonly lastClose = signal('aucune');
+  protected readonly rules = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly deleted = signal(false);
   protected readonly retries = signal(0);
   protected readonly filter = signal('week');
@@ -219,4 +282,9 @@ export class ComponentsPage {
   protected readonly pencil = LucidePencil.icon;
   protected readonly back = LucideArrowLeft.icon;
   protected readonly calendar = LucideCalendarPlus.icon;
+
+  protected closeWith(dialog: SnDialog, action: string): void {
+    dialog.close();
+    this.lastClose.set(action);
+  }
 }
