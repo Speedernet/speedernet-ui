@@ -42,8 +42,75 @@ sn-card :is(h2, h3) {
   align-items: flex-start;
 }
 
-.swatches--scale {
+// Color scales: one tile per step with a text sample, then its OKLCH value, hex value and
+// the contrast of the sample text.
+.scale {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
   gap: var(--space-2);
+}
+
+.scale__step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  font-size: 0.6875rem;
+
+  code {
+    overflow-wrap: anywhere;
+  }
+}
+
+.scale__color {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 4rem;
+  margin-bottom: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  color: var(--color-text);
+}
+
+.scale__color--light {
+  color: var(--color-on-dark);
+}
+
+.scale__color--anchor {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.scale__name {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.scale__sample {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.scale__ratio {
+  font-weight: 700;
+}
+
+// Color tiles are buttons: a click copies the hex value, which their tooltip announces.
+.copy-color-tooltip {
+  display: block;
+}
+
+.copy-color {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.scale__color {
+  border: 0;
 }
 
 .swatch {
@@ -58,12 +125,16 @@ sn-card :is(h2, h3) {
 .radius-box {
   display: block;
   height: 3rem;
+  padding: 0;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
 }
 
+// Tall enough (5rem = 80px) for --radius-lg (30px) not to reach half the height, otherwise it
+// rounds the box as fully as --radius-pill and the two look the same.
 .radius-box {
-  width: 5rem;
+  width: 8rem;
+  height: 5rem;
   background: var(--tint-primary);
   border-color: var(--tint-primary-border);
 }

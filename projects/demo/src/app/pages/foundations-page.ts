@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SnLogo } from '@speedernet/ui';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from '@angular/core';
+import { SnLogo, SnTooltip } from '@speedernet/ui';
+import { SwatchInfo, swatchInfo } from './color';
 
 interface ContrastPair {
   pair: string;
@@ -9,7 +16,7 @@ interface ContrastPair {
 
 @Component({
   selector: 'demo-foundations-page',
-  imports: [SnLogo],
+  imports: [SnLogo, SnTooltip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
@@ -17,10 +24,20 @@ interface ContrastPair {
     <p class="sn-text-muted">Couleurs, typographie, espacements et logos de l'écosystème.</p>
 
     <h2>Couleurs de la marque</h2>
+    <p class="sn-text-muted">Cliquez sur une couleur pour copier sa valeur hexa.</p>
+    <p class="visually-hidden" aria-live="polite">{{ copiedMessage() }}</p>
     <div class="swatches">
       @for (c of brand; track c.token) {
         <div class="swatch">
-          <span class="swatch__color" [style.background]="'var(' + c.token + ')'"></span>
+          <sn-tooltip class="copy-color-tooltip" [text]="tooltipText(c.token.slice(2))">
+            <button
+              type="button"
+              class="swatch__color copy-color"
+              [style.background]="'var(' + c.token + ')'"
+              [attr.aria-label]="c.token"
+              (click)="copy(c.token.slice(2))"
+            ></button>
+          </sn-tooltip>
           <span>{{ c.label }}</span>
           <code>{{ c.token }}</code>
         </div>
@@ -30,17 +47,32 @@ interface ContrastPair {
     <h2>Échelles</h2>
     @for (scale of scales; track scale) {
       <h3>{{ scale }}</h3>
-      <div class="swatches swatches--scale">
-        @for (step of stepsOf(scale); track step) {
-          <div class="swatch">
-            <span
-              class="swatch__color"
-              [style.background]="'var(--' + scale + '-' + step + ')'"
-            ></span>
-            <code>{{ scale }}-{{ step }}</code>
-            @if (isAnchor(scale, step)) {
-              <span class="sn-text-muted">couleur de marque</span>
+      <div class="scale">
+        @for (step of steps; track step) {
+          @let token = scale + '-' + step;
+          @let info = infos()[token];
+          <div class="scale__step">
+            <sn-tooltip class="copy-color-tooltip" [text]="tooltipText(token)">
+              <button
+                type="button"
+                class="scale__color copy-color"
+                [class.scale__color--anchor]="isAnchor(scale, step)"
+                [class.scale__color--light]="info?.text === 'light'"
+                [style.background]="'var(--' + token + ')'"
+                [attr.aria-label]="'--' + token"
+                (click)="copy(token)"
+              >
+                <span class="scale__name">{{ step }}</span>
+                <span class="scale__sample" aria-hidden="true">Aa</span>
+              </button>
+            </sn-tooltip>
+            <code>--{{ token }}</code>
+            @if (info) {
+              <span class="scale__ratio">{{ ratioLabel(info.ratio) }} · {{ info.level }}</span>
             }
+            <!-- @if (isAnchor(scale, step)) {
+              <span class="sn-text-muted">couleur de marque</span>
+            } -->
           </div>
         }
       </div>
@@ -115,13 +147,65 @@ export class FoundationsPage {
     { label: 'Danger', token: '--color-danger' },
   ];
   protected readonly scales = ['cyan', 'yellow', 'red', 'night', 'gray'];
-  protected readonly steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
-  protected readonly anchors = ['cyan-400', 'yellow-200', 'red-600', 'gray-900', 'night-950'];
-  protected stepsOf(scale: string): number[] {
-    return scale === 'night' ? [...this.steps, 950] : this.steps;
-  }
+  protected readonly steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  protected readonly anchors = ['cyan-500', 'yellow-500', 'red-500', 'gray-900', 'night-950'];
   protected isAnchor(scale: string, step: number): boolean {
     return this.anchors.includes(`${scale}-${step}`);
+  }
+  /** Token values read from the page styles, e.g. { 'cyan-400': 'oklch(76.1% 0.129 205.7)' }
+   * (scale steps and brand colors, without the leading "--"). */
+  protected readonly values = signal<Record<string, string>>({});
+  protected readonly infos = computed(() => {
+    const infos: Record<string, SwatchInfo | null> = {};
+    for (const [token, value] of Object.entries(this.values())) infos[token] = swatchInfo(value);
+    return infos;
+  });
+  /** Rounded down so that a ratio just under a WCAG threshold never reads as reaching it. */
+  protected ratioLabel(ratio: number): string {
+    return `${(Math.floor(ratio * 10) / 10).toFixed(1).replace('.', ',')}:1`;
+  }
+
+  /** Token whose hex value was just copied; its tooltip says "Copié" for a moment. */
+  protected readonly copied = signal<string | null>(null);
+  protected readonly copiedMessage = computed(() => {
+    const token = this.copied();
+    return token ? `${this.infos()[token]?.hex} copié dans le presse-papiers` : '';
+  });
+  private copiedTimer?: ReturnType<typeof setTimeout>;
+
+  protected tooltipText(token: string): string {
+    const hex = this.infos()[token]?.hex ?? '';
+    return this.copied() === token ? `${hex} copié` : `Copier ${hex}`;
+  }
+
+  protected async copy(token: string): Promise<void> {
+    const hex = this.infos()[token]?.hex;
+    if (!hex) return;
+    try {
+      await navigator.clipboard.writeText(hex);
+    } catch {
+      return; // Clipboard refused (insecure page or permission denied): nothing to confirm.
+    }
+    this.copied.set(token);
+    clearTimeout(this.copiedTimer);
+    this.copiedTimer = setTimeout(() => this.copied.set(null), 1500);
+  }
+
+  constructor() {
+    afterNextRender(() => {
+      const style = getComputedStyle(document.documentElement);
+      const values: Record<string, string> = {};
+      // Brand tokens point to a scale step; the browser resolves the var() to its OKLCH value.
+      for (const { token } of this.brand) {
+        values[token.slice(2)] = style.getPropertyValue(token).trim();
+      }
+      for (const scale of this.scales) {
+        for (const step of this.steps) {
+          values[`${scale}-${step}`] = style.getPropertyValue(`--${scale}-${step}`).trim();
+        }
+      }
+      this.values.set(values);
+    });
   }
   protected readonly spaces = [1, 2, 3, 4, 5, 6];
   protected readonly radii = ['--radius', '--radius-lg', '--radius-pill'];
@@ -132,13 +216,13 @@ export class FoundationsPage {
       ratio: '6,5:1',
       usage: 'Aides, mentions',
     },
-    { pair: 'Blanc sur --color-danger', ratio: '6,2:1', usage: 'Bouton de suppression' },
+    { pair: 'Blanc sur --color-danger', ratio: '5,2:1', usage: 'Bouton de suppression' },
     {
       pair: 'Texte sur teintes cyan et jaune',
       ratio: '≥ 9,8:1',
       usage: 'Messages, badges, bandeaux',
     },
-    { pair: 'Bordure de champ (gray-600)', ratio: '3,8:1', usage: 'Contour des champs' },
+    { pair: 'Bordure de champ (gray-600)', ratio: '3,4:1', usage: 'Contour des champs' },
     {
       pair: 'Texte --color-text sur --color-accent (#ffe44b)',
       ratio: '10,2:1',

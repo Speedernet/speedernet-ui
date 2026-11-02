@@ -16,6 +16,7 @@ import {
   SnLoading,
   SnMessage,
   SnStatusBadge,
+  SnTooltip,
 } from '@speedernet/ui';
 
 @Component({
@@ -35,6 +36,7 @@ import {
     SnLoading,
     SnMessage,
     SnStatusBadge,
+    SnTooltip,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
@@ -43,14 +45,14 @@ import {
     <p class="sn-text-muted">Chaque composant dans toutes ses variantes et ses états.</p>
 
     <h2>Boutons</h2>
-    <div class="row">
+    <div id="buttons" class="row">
       <button snButton variant="primary" type="button">Réserver une salle</button>
       <button snButton variant="secondary" type="button">Annuler</button>
       <button snButton variant="danger" type="button" (click)="dialog().open()">
         Supprimer la réservation
       </button>
       <button snButton variant="primary" type="button" disabled>Désactivé</button>
-      <a snButton variant="secondary" href="#">Lien en bouton</a>
+      <a snButton variant="secondary" href="/composants#buttons">Lien en bouton</a>
     </div>
     <h3>Boutons-icônes</h3>
     <div class="row">
@@ -81,6 +83,22 @@ import {
       <sn-status-badge status="pending" label="En attente" />
       <sn-status-badge status="cancelled" label="Annulée" />
       <sn-status-badge status="archived" label="Archivée" />
+    </div>
+
+    <h2>Infobulle</h2>
+    <div class="row">
+      <sn-tooltip text="Modifier la réservation">
+        <button
+          snIconButton
+          label="Modifier"
+          [icon]="pencil"
+          variant="light"
+          type="button"
+        ></button>
+      </sn-tooltip>
+      <sn-tooltip text="Revenir à la liste">
+        <button snButton variant="secondary" type="button">Retour</button>
+      </sn-tooltip>
     </div>
 
     <h2>Filtres</h2>
