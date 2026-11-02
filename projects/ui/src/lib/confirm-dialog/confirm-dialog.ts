@@ -1,47 +1,43 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   ViewEncapsulation,
   input,
   output,
   viewChild,
 } from '@angular/core';
 import { SnButton } from '../button/button';
-
-let nextId = 0;
+import { SnDialog } from '../dialog/dialog';
 
 /**
- * Modal confirmation dialog built on the native `<dialog>`. The message is projected.
+ * Modal confirmation dialog built on `sn-dialog`. The message is projected.
  * Focus starts on the cancel button (the safe action) and returns to the previously focused
  * element on any close, including Escape.
  */
 @Component({
   selector: 'sn-confirm-dialog',
-  imports: [SnButton],
+  imports: [SnButton, SnDialog],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <dialog
-      #dialog
-      class="sn-confirm-dialog"
-      [attr.aria-labelledby]="titleId"
-      (cancel)="onCancel($event)"
-      (close)="onNativeClose()"
-    >
-      <h2 class="sn-confirm-dialog-title" [id]="titleId">{{ title() }}</h2>
-      <div class="sn-confirm-dialog-message"><ng-content /></div>
-      <div class="sn-confirm-dialog-actions">
-        <button #cancelButton snButton variant="secondary" type="button" (click)="cancel()">
-          {{ cancelLabel() }}
-        </button>
-        <button snButton variant="danger" type="button" (click)="confirm()">
-          {{ confirmLabel() }}
-        </button>
-      </div>
-    </dialog>
+    <sn-dialog [title]="title()" (dismissed)="cancelled.emit()">
+      <p class="sn-confirm-dialog-message"><ng-content /></p>
+      <button
+        snDialogActions
+        snButton
+        variant="secondary"
+        type="button"
+        autofocus
+        (click)="cancel()"
+      >
+        {{ cancelLabel() }}
+      </button>
+      <button snDialogActions snButton variant="danger" type="button" (click)="confirm()">
+        {{ confirmLabel() }}
+      </button>
+    </sn-dialog>
   `,
-  styleUrl: './confirm-dialog.scss',
+  styles: '.sn-confirm-dialog-message { margin: 0; }',
 })
 export class SnConfirmDialog {
   readonly title = input.required<string>();
@@ -51,63 +47,20 @@ export class SnConfirmDialog {
   readonly confirmed = output<void>();
   readonly cancelled = output<void>();
 
-  protected readonly titleId = `sn-confirm-dialog-title-${nextId++}`;
-
-  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
-  private readonly cancelButton = viewChild.required('cancelButton', {
-    read: ElementRef<HTMLButtonElement>,
-  });
-  private previouslyFocused: HTMLElement | null = null;
-  // True while a close we initiated is waiting for its `close` event.
-  private closingByUs = false;
+  private readonly dialog = viewChild.required(SnDialog);
 
   /** Opens the dialog and moves focus to the cancel button. */
   open(): void {
-    if (this.dialog().nativeElement.open) return;
-    const active = document.activeElement;
-    this.previouslyFocused = active instanceof HTMLElement ? active : null;
-    this.dialog().nativeElement.showModal();
-    this.cancelButton().nativeElement.focus();
+    this.dialog().open();
   }
 
   protected confirm(): void {
-    this.close();
+    this.dialog().close();
     this.confirmed.emit();
   }
 
   protected cancel(): void {
-    this.close();
+    this.dialog().close();
     this.cancelled.emit();
-  }
-
-  /** Escape: handle it ourselves instead of letting the browser close silently. */
-  protected onCancel(event: Event): void {
-    event.preventDefault();
-    this.cancel();
-  }
-
-  /** Safety net: the dialog was closed natively (form method="dialog", repeated Escape...). */
-  protected onNativeClose(): void {
-    if (this.closingByUs) {
-      this.closingByUs = false;
-      return;
-    }
-    this.restoreFocus();
-    this.cancelled.emit();
-  }
-
-  private close(): void {
-    const dialog = this.dialog().nativeElement;
-    if (dialog.open) {
-      this.closingByUs = true;
-      dialog.close();
-    }
-    this.restoreFocus();
-  }
-
-  private restoreFocus(): void {
-    const element = this.previouslyFocused;
-    this.previouslyFocused = null;
-    if (element?.isConnected) element.focus();
   }
 }

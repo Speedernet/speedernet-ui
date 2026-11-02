@@ -14,7 +14,7 @@ const NON_TEXT = 3; // borders, focus outlines and icons that carry meaning
 
 const associations = [
   // Text on surfaces
-  ['--color-text', '--color-surface', TEXT, 'text on cards, header, dialogs, fields'],
+  ['--color-text', '--color-surface', TEXT, 'text on cards, header, dialogs, fields, toasts'],
   ['--color-text', '--color-background', TEXT, 'page text'],
   ['--color-text-muted', '--color-surface', TEXT, 'help text, header subtitle'],
   ['--color-text-muted', '--color-background', TEXT, 'muted text on the page'],
@@ -25,8 +25,13 @@ const associations = [
   ['--color-text', '--tint-primary-subtle', TEXT, 'hovered table row'],
   ['--color-text', '--tint-accent', TEXT, 'accent badge'],
   ['--color-text', '--tint-brand', TEXT, 'brand badge'],
-  ['--color-text', '--tint-highlight', TEXT, 'hovered link, focused menu item'],
   ['--color-danger', '--tint-neutral', TEXT, 'focused danger menu item'],
+  [
+    '--color-text',
+    '--tint-highlight',
+    TEXT,
+    'hovered link, focused menu item, hovered toast button',
+  ],
   ['--color-text', '--color-accent', TEXT, 'title highlight, header'],
   ['--color-text', '--cyan-100', TEXT, 'header link highlight'],
   // White text on dark fills
@@ -37,8 +42,13 @@ const associations = [
   ['--color-border-strong', '--color-surface', NON_TEXT, 'field border'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
-  ['--color-text', '--tint-highlight', NON_TEXT, 'focus outline on a menu item'],
   ['--color-text', '--tint-neutral', NON_TEXT, 'focus outline on a danger menu item'],
+  [
+    '--color-text',
+    '--tint-highlight',
+    NON_TEXT,
+    'focus outline on a menu item or a hovered toast button',
+  ],
 ];
 
 const declarations = new Map(
