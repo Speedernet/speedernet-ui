@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   ViewEncapsulation,
   afterRenderEffect,
@@ -70,6 +71,7 @@ export class SnMenuItem {
       #menu
       class="sn-action-menu-list"
       role="menu"
+      [attr.popover]="popover ? 'manual' : null"
       [id]="menuId"
       [attr.aria-labelledby]="triggerId"
       [hidden]="!isOpen()"
@@ -96,6 +98,11 @@ export class SnActionMenu {
   protected readonly triggerId = `sn-action-menu-trigger-${this.id}`;
   protected readonly menuId = `sn-action-menu-list-${this.id}`;
 
+  // Without the Popover API (old browsers), the list is only fixed to the viewport: a scrolling
+  // parent no longer clips it, a transformed one still would.
+  protected readonly popover =
+    typeof HTMLElement !== 'undefined' && typeof HTMLElement.prototype.showPopover === 'function';
+
   protected readonly isOpen = signal(false);
   // Item to focus once the menu is rendered open.
   private readonly pendingFocus = signal<'first' | 'last' | null>(null);
@@ -106,13 +113,21 @@ export class SnActionMenu {
   private readonly items = contentChildren(SnMenuItem, { descendants: true });
 
   constructor() {
+    // The list opens in the top layer (Popover API), so a parent that clips its overflow, such
+    // as a scrolling table, cannot cut it; it is then placed next to the button.
     afterRenderEffect(() => {
-      if (!this.isOpen()) return;
-      // Right-aligned under the button, unless that pushes it past the left edge of the screen.
       const list = this.list().nativeElement;
-      list.classList.remove('sn-action-menu-list-start');
-      if (list.getBoundingClientRect().left < 0) list.classList.add('sn-action-menu-list-start');
+      if (this.isOpen()) {
+        if (this.popover && !list.matches(':popover-open')) list.showPopover();
+        this.place();
+        window.addEventListener('scroll', this.place, true);
+        window.addEventListener('resize', this.place);
+      } else {
+        if (this.popover && list.matches(':popover-open')) list.hidePopover();
+        this.stopFollowing();
+      }
     });
+    inject(DestroyRef).onDestroy(() => this.stopFollowing());
     afterRenderEffect(() => {
       const target = this.pendingFocus();
       if (!target || !this.isOpen()) return;
@@ -120,6 +135,30 @@ export class SnActionMenu {
       const items = this.enabledItems();
       (target === 'first' ? items[0] : items[items.length - 1])?.focus();
     });
+  }
+
+  /**
+   * Right-aligned under the button; left-aligned when that would cross the left edge of the
+   * screen, and above the button when there is no room below.
+   */
+  private readonly place = (): void => {
+    const list = this.list().nativeElement;
+    const button = this.trigger().nativeElement.getBoundingClientRect();
+    const { width, height } = list.getBoundingClientRect();
+    const gap = 8;
+    let left = button.right - width;
+    if (left < gap) left = button.left;
+    let top = button.bottom + gap;
+    if (top + height > window.innerHeight - gap && button.top - gap - height >= gap) {
+      top = button.top - gap - height;
+    }
+    list.style.left = `${Math.round(left)}px`;
+    list.style.top = `${Math.round(top)}px`;
+  };
+
+  private stopFollowing(): void {
+    window.removeEventListener('scroll', this.place, true);
+    window.removeEventListener('resize', this.place);
   }
 
   /** Opens the menu and focuses its first item (or its last one). */
