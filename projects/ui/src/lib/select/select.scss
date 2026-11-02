@@ -33,8 +33,8 @@
   pointer-events: none;
 }
 
-// Browsers that support customisable selects draw the list of options like `sn-action-menu`:
-// white rounded panel, one highlighted row per option. Others keep their system list.
+// Browsers that support customisable selects draw the list of options close to `sn-action-menu`:
+// white panel with the field radius, one highlighted row per option. Others keep their system list.
 @supports (appearance: base-select) {
   .sn-select > select,
   .sn-select > select::picker(select) {

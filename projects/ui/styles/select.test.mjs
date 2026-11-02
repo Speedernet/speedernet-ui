@@ -23,11 +23,11 @@ test('disabled select looks disabled', () => {
   assert.match(css, /\.sn-select > select:disabled\s*\{[^}]*background: var\(--color-disabled\)/);
 });
 
-test('select draws its option list like the action menu where browsers allow it', () => {
+test('select draws its option list in a white rounded panel where browsers allow it', () => {
   assert.match(css, /@supports \(appearance: base-select\)/);
   assert.match(
     css,
-    /\.sn-select > select::picker\(select\)\s*\{[^}]*border-radius: var\(--radius-lg\)/,
+    /\.sn-select > select::picker\(select\)\s*\{[^}]*border-radius: var\(--radius\)/,
   );
   assert.match(
     css,
