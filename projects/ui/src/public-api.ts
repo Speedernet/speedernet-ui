@@ -22,6 +22,7 @@ export * from './lib/screen-state/empty-state';
 export * from './lib/screen-state/error-state';
 export * from './lib/card/card';
 export * from './lib/tooltip/tooltip';
+export * from './lib/dialog/dialog';
 export * from './lib/confirm-dialog/confirm-dialog';
 export * from './lib/app-header/to-initials';
 export * from './lib/app-header/app-header';
