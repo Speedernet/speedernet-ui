@@ -1,12 +1,20 @@
-import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
-import { LucideArrowLeft, LucideCalendarPlus, LucidePencil } from '@lucide/angular';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import {
+  LucideArrowLeft,
+  LucideCalendarPlus,
+  LucideCopy,
+  LucidePencil,
+  LucideX,
+} from '@lucide/angular';
+import {
+  SnActionMenu,
   SnBadge,
   SnButton,
   SnCard,
   SnCheckbox,
   SnConfirmDialog,
   SnControl,
+  SnDialog,
   SnEmptyState,
   SnErrorState,
   SnField,
@@ -15,23 +23,29 @@ import {
   SnIconButton,
   SnInfoBanner,
   SnLoading,
+  SnMenuItem,
   SnMessage,
   SnRadio,
   SnRadioGroup,
+  SnSelect,
   SnStatusBadge,
   SnSwitch,
+  SnToastRef,
+  SnToastService,
   SnTooltip,
 } from '@speedernet/ui';
 
 @Component({
   selector: 'demo-components-page',
   imports: [
+    SnActionMenu,
     SnBadge,
     SnButton,
     SnCard,
     SnCheckbox,
     SnConfirmDialog,
     SnControl,
+    SnDialog,
     SnEmptyState,
     SnErrorState,
     SnField,
@@ -39,9 +53,11 @@ import {
     SnIconButton,
     SnInfoBanner,
     SnLoading,
+    SnMenuItem,
     SnMessage,
     SnRadio,
     SnRadioGroup,
+    SnSelect,
     SnStatusBadge,
     SnSwitch,
     SnTooltip,
@@ -77,6 +93,84 @@ import {
     >
       Salle Croix-Rousse, de 14:00 à 15:00. Cette action est définitive.
     </sn-confirm-dialog>
+
+    <h2>Fenêtre modale</h2>
+    <div class="row">
+      <button snButton variant="secondary" type="button" (click)="formDialog.open()">
+        Avec formulaire
+      </button>
+      <button snButton variant="secondary" type="button" (click)="longDialog.open()">
+        Contenu long
+      </button>
+      <button snButton variant="secondary" type="button" (click)="infoDialog.open()">
+        Sans actions
+      </button>
+      <button snButton variant="danger" type="button" (click)="dialog().open()">
+        Confirmation
+      </button>
+    </div>
+    <p class="sn-text-muted">Dernière fermeture : {{ lastClose() }}</p>
+    <sn-dialog #formDialog title="Modifier la réservation" (dismissed)="lastClose.set('Échap')">
+      <div class="stack">
+        <sn-field label="Date" hint="Format attendu : jj/mm/aaaa.">
+          <input snControl type="text" value="12/03/2026" />
+        </sn-field>
+        <sn-field label="Commentaire">
+          <textarea snControl rows="3"></textarea>
+        </sn-field>
+      </div>
+      <button snDialogActions snButton type="button" (click)="closeWith(formDialog, 'Annuler')">
+        Annuler
+      </button>
+      <button
+        snDialogActions
+        snButton
+        variant="primary"
+        type="button"
+        (click)="closeWith(formDialog, 'Enregistrer')"
+      >
+        Enregistrer
+      </button>
+    </sn-dialog>
+    <sn-dialog #longDialog title="Règlement des salles" (dismissed)="lastClose.set('Échap')">
+      @for (n of rules; track n) {
+        <p>
+          Article {{ n }}. Les salles se réservent au plus 30 jours à l'avance, pour un créneau de
+          quatre heures au maximum. Libérez la salle à l'heure et laissez-la rangée.
+        </p>
+      }
+      <button
+        snDialogActions
+        snButton
+        variant="primary"
+        type="button"
+        (click)="closeWith(longDialog, 'J’ai compris')"
+      >
+        J’ai compris
+      </button>
+    </sn-dialog>
+    <sn-dialog #infoDialog title="Salle Confluence" (dismissed)="lastClose.set('Échap')">
+      <p>Projecteur, tableau blanc, 12 places. Fermez avec Échap.</p>
+    </sn-dialog>
+    <h2>Menu d'actions</h2>
+    <div class="row">
+      <sn-action-menu label="Actions pour la réservation du 12/03">
+        <button snMenuItem [icon]="pencil" (click)="menuChoice.set('Modifier')">Modifier</button>
+        <button snMenuItem [icon]="copy" (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
+        <button snMenuItem [icon]="cancel" tone="danger" (click)="menuChoice.set('Annuler')">
+          Annuler la réservation
+        </button>
+      </sn-action-menu>
+      <sn-action-menu label="Actions pour la réservation du 02/02 (passée)">
+        <button snMenuItem (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
+        <button snMenuItem disabled>Modifier</button>
+        <button snMenuItem tone="danger" disabled>Annuler la réservation</button>
+      </sn-action-menu>
+    </div>
+    <p class="sn-text-muted">
+      Avec icônes et action dangereuse, puis sans icônes avec actions désactivées. Dernier choix :
+      {{ menuChoice() }}
+    </p>
 
     <h2>Badges</h2>
     <div class="row">
@@ -121,18 +215,51 @@ import {
       <sn-field label="Date de fin" error="Cette date n'existe pas. Format attendu : jj/mm/aaaa.">
         <input snControl type="text" value="31/02/2026" />
       </sn-field>
-      <sn-field label="Salle">
-        <select snControl>
-          <option>Croix-Rousse</option>
-          <option>Fourvière</option>
-          <option>Confluence</option>
-        </select>
-      </sn-field>
       <sn-field label="Commentaire">
         <textarea snControl rows="3"></textarea>
       </sn-field>
       <sn-field label="Champ désactivé">
         <input snControl type="text" value="Non modifiable" disabled />
+      </sn-field>
+    </div>
+
+    <h3>Liste déroulante</h3>
+    <div class="stack">
+      <sn-field label="Salle">
+        <sn-select>
+          <select snControl>
+            <option value="" disabled selected>Choisir une salle</option>
+            @for (room of rooms; track room) {
+              <option>{{ room }}</option>
+            }
+          </select>
+        </sn-select>
+      </sn-field>
+      <sn-field label="Créneau" hint="Les créneaux durent une heure.">
+        <sn-select>
+          <select snControl>
+            <option>09:00 - 10:00</option>
+            <option selected>14:00 - 15:00</option>
+            <option>16:00 - 17:00</option>
+          </select>
+        </sn-select>
+      </sn-field>
+      <sn-field label="Salle de repli" error="Choisissez une salle de repli.">
+        <sn-select>
+          <select snControl>
+            <option value="" disabled selected>Choisir une salle</option>
+            @for (room of rooms; track room) {
+              <option>{{ room }}</option>
+            }
+          </select>
+        </sn-select>
+      </sn-field>
+      <sn-field label="Étage" hint="Fixé par la salle choisie.">
+        <sn-select>
+          <select snControl disabled>
+            <option>3e étage</option>
+          </select>
+        </sn-select>
       </sn-field>
     </div>
 
@@ -228,6 +355,15 @@ import {
       <sn-info-banner href="#">Consulter le règlement des salles.</sn-info-banner>
     </div>
 
+    <h2>Notification temporaire</h2>
+    <div class="row">
+      <button snButton type="button" (click)="toastSimple()">Simple</button>
+      <button snButton type="button" (click)="toastWithAction()">Avec action « Annuler »</button>
+      <button snButton type="button" (click)="toastLong()">Texte long</button>
+      <button snButton type="button" (click)="toastError()">Erreur</button>
+    </div>
+    <p class="sn-text-muted">Résultat du dernier toast : {{ toastResult() }}</p>
+
     <h2>États d'écran</h2>
     <sn-loading label="Chargement des réservations" />
     <sn-empty-state title="Aucune réservation" text="Vous n'avez pas encore réservé de salle.">
@@ -285,8 +421,14 @@ import {
 })
 export class ComponentsPage {
   protected readonly dialog = viewChild.required(SnConfirmDialog);
+  protected readonly lastClose = signal('aucune');
+  protected readonly rules = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly deleted = signal(false);
   protected readonly retries = signal(0);
+  protected readonly toastResult = signal('aucun');
+  private readonly toast = inject(SnToastService);
+  protected readonly menuChoice = signal('aucun');
+  protected readonly rooms = ['Croix-Rousse', 'Fourvière', 'Confluence'];
   protected readonly filter = signal('week');
 
   protected readonly tones = ['neutral', 'primary', 'accent', 'brand', 'solid', 'outline'] as const;
@@ -296,6 +438,45 @@ export class ComponentsPage {
     { value: 'past', label: 'Passées' },
   ];
   protected readonly pencil = LucidePencil.icon;
+  protected readonly copy = LucideCopy.icon;
+  protected readonly cancel = LucideX.icon;
   protected readonly back = LucideArrowLeft.icon;
   protected readonly calendar = LucideCalendarPlus.icon;
+
+  protected toastSimple(): void {
+    this.track(this.toast.show('Réservation enregistrée.'));
+  }
+
+  protected toastWithAction(): void {
+    this.track(this.toast.show('Réservation du 12/03 supprimée.', { action: 'Annuler' }));
+  }
+
+  protected toastLong(): void {
+    this.track(
+      this.toast.show(
+        'Réservation enregistrée : salle Croix-Rousse, le 12/03/2026 de 14:00 à 15:00. Un courriel de confirmation vous a été envoyé.',
+      ),
+    );
+  }
+
+  protected toastError(): void {
+    this.track(
+      this.toast.show("La réservation n'a pas pu être supprimée.", {
+        type: 'error',
+        action: 'Réessayer',
+      }),
+    );
+  }
+
+  private track(ref: SnToastRef): void {
+    this.toastResult.set('affiché');
+    ref.result.then((result) =>
+      this.toastResult.set(result === 'action' ? 'action « Annuler »' : 'fermé'),
+    );
+  }
+
+  protected closeWith(dialog: SnDialog, action: string): void {
+    dialog.close();
+    this.lastClose.set(action);
+  }
 }

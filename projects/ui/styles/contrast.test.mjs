@@ -14,7 +14,7 @@ const NON_TEXT = 3; // borders, focus outlines and icons that carry meaning
 
 const associations = [
   // Text on surfaces
-  ['--color-text', '--color-surface', TEXT, 'text on cards, header, dialogs, fields'],
+  ['--color-text', '--color-surface', TEXT, 'text on cards, header, dialogs, fields, toasts'],
   ['--color-text', '--color-background', TEXT, 'page text'],
   ['--color-text-muted', '--color-surface', TEXT, 'help text, header subtitle'],
   [
@@ -23,6 +23,7 @@ const associations = [
     TEXT,
     'muted text on the page, disabled choice label',
   ],
+  ['--color-text-muted', '--color-disabled', TEXT, 'disabled select'],
   ['--color-danger', '--color-surface', TEXT, 'field error text'],
   // Text on tints and highlights
   ['--color-text', '--tint-neutral', TEXT, 'neutral badge, filter tabs'],
@@ -30,7 +31,13 @@ const associations = [
   ['--color-text', '--tint-primary-subtle', TEXT, 'hovered table row'],
   ['--color-text', '--tint-accent', TEXT, 'accent badge'],
   ['--color-text', '--tint-brand', TEXT, 'brand badge'],
-  ['--color-text', '--tint-highlight', TEXT, 'hovered link'],
+  ['--color-danger', '--tint-neutral', TEXT, 'focused danger menu item'],
+  [
+    '--color-text',
+    '--tint-highlight',
+    TEXT,
+    'hovered link, focused menu item, highlighted select option, hovered toast button',
+  ],
   ['--color-text', '--color-accent', TEXT, 'title highlight, header'],
   ['--color-text', '--cyan-100', TEXT, 'header link highlight'],
   // White text on dark fills
@@ -42,9 +49,17 @@ const associations = [
   ['--color-on-dark', '--color-text', NON_TEXT, 'thumb of a switch that is on'],
   ['--color-text-muted', '--color-disabled', NON_TEXT, 'thumb of a disabled switch'],
   ['--color-border-strong', '--color-background', NON_TEXT, 'switch track on the page'],
+  ['--color-text', '--color-surface', NON_TEXT, 'select chevron'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
   ['--color-danger', '--color-background', NON_TEXT, 'error ring around a checkbox or radio'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
+  ['--color-text', '--tint-neutral', NON_TEXT, 'focus outline on a danger menu item'],
+  [
+    '--color-text',
+    '--tint-highlight',
+    NON_TEXT,
+    'focus outline on a menu item, a select option or a hovered toast button',
+  ],
 ];
 
 const declarations = new Map(
