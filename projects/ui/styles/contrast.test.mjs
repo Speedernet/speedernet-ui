@@ -26,7 +26,7 @@ const associations = [
   ['--color-text', '--tint-primary-subtle', TEXT, 'hovered table row'],
   ['--color-text', '--tint-accent', TEXT, 'accent badge'],
   ['--color-text', '--tint-brand', TEXT, 'brand badge'],
-  ['--color-text', '--tint-highlight', TEXT, 'hovered link'],
+  ['--color-text', '--tint-highlight', TEXT, 'hovered link, highlighted select option'],
   ['--color-text', '--color-accent', TEXT, 'title highlight, header'],
   ['--color-text', '--cyan-100', TEXT, 'header link highlight'],
   // White text on dark fills
@@ -38,6 +38,7 @@ const associations = [
   ['--color-text', '--color-surface', NON_TEXT, 'select chevron'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
+  ['--color-text', '--tint-highlight', NON_TEXT, 'focus outline on a select option'],
 ];
 
 const declarations = new Map(
