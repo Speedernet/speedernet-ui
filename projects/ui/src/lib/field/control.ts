@@ -1,7 +1,10 @@
 import { Directive, inject } from '@angular/core';
-import { SnField } from './field';
+import { SnFieldContext } from './field-context';
 
-/** Native control of an `sn-field`: receives its id, `aria-invalid` and `aria-describedby`. */
+/**
+ * Native control of an `sn-field`, `sn-checkbox`, `sn-radio` or `sn-switch`: receives its id,
+ * `aria-invalid` and `aria-describedby`.
+ */
 @Directive({
   selector: 'input[snControl], select[snControl], textarea[snControl]',
   host: {
@@ -11,10 +14,12 @@ import { SnField } from './field';
   },
 })
 export class SnControl {
-  protected readonly field: SnField = (() => {
-    const field = inject(SnField, { optional: true });
+  protected readonly field: SnFieldContext = (() => {
+    const field = inject(SnFieldContext, { optional: true });
     if (!field) {
-      throw new Error('[snControl] must be placed inside an <sn-field>.');
+      throw new Error(
+        '[snControl] must be placed inside an <sn-field>, <sn-checkbox>, <sn-radio> or <sn-switch>.',
+      );
     }
     return field;
   })();

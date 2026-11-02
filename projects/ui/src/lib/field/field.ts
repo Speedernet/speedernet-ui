@@ -6,6 +6,7 @@ import {
   input,
 } from '@angular/core';
 import { LucideCircleAlert, LucideDynamicIcon } from '@lucide/angular';
+import { SnFieldContext } from './field-context';
 
 let nextFieldId = 0;
 
@@ -30,8 +31,9 @@ let nextFieldId = 0;
   `,
   styleUrl: './field.scss',
   host: { class: 'sn-field' },
+  providers: [{ provide: SnFieldContext, useExisting: SnField }],
 })
-export class SnField {
+export class SnField implements SnFieldContext {
   readonly label = input.required<string>();
   readonly hint = input<string | null>(null);
   readonly error = input<string | null>(null);

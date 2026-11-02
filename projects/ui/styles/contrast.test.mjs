@@ -17,7 +17,12 @@ const associations = [
   ['--color-text', '--color-surface', TEXT, 'text on cards, header, dialogs, fields'],
   ['--color-text', '--color-background', TEXT, 'page text'],
   ['--color-text-muted', '--color-surface', TEXT, 'help text, header subtitle'],
-  ['--color-text-muted', '--color-background', TEXT, 'muted text on the page'],
+  [
+    '--color-text-muted',
+    '--color-background',
+    TEXT,
+    'muted text on the page, disabled choice label',
+  ],
   ['--color-danger', '--color-surface', TEXT, 'field error text'],
   // Text on tints and highlights
   ['--color-text', '--tint-neutral', TEXT, 'neutral badge, filter tabs'],
@@ -33,8 +38,12 @@ const associations = [
   ['--color-on-dark', '--color-night', TEXT, 'hovered primary button'],
   ['--color-on-dark', '--color-danger', TEXT, 'danger button'],
   // Non-text elements
-  ['--color-border-strong', '--color-surface', NON_TEXT, 'field border'],
+  ['--color-border-strong', '--color-surface', NON_TEXT, 'field border, switch track and thumb'],
+  ['--color-on-dark', '--color-text', NON_TEXT, 'thumb of a switch that is on'],
+  ['--color-text-muted', '--color-disabled', NON_TEXT, 'thumb of a disabled switch'],
+  ['--color-border-strong', '--color-background', NON_TEXT, 'switch track on the page'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
+  ['--color-danger', '--color-background', NON_TEXT, 'error ring around a checkbox or radio'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
 ];
 
