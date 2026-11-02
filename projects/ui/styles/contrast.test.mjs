@@ -18,6 +18,7 @@ const associations = [
   ['--color-text', '--color-background', TEXT, 'page text'],
   ['--color-text-muted', '--color-surface', TEXT, 'help text, header subtitle'],
   ['--color-text-muted', '--color-background', TEXT, 'muted text on the page'],
+  ['--color-text-muted', '--color-disabled', TEXT, 'disabled select'],
   ['--color-danger', '--color-surface', TEXT, 'field error text'],
   // Text on tints and highlights
   ['--color-text', '--tint-neutral', TEXT, 'neutral badge, filter tabs'],
@@ -34,6 +35,7 @@ const associations = [
   ['--color-on-dark', '--color-danger', TEXT, 'danger button'],
   // Non-text elements
   ['--color-border-strong', '--color-surface', NON_TEXT, 'field border'],
+  ['--color-text', '--color-surface', NON_TEXT, 'select chevron'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
 ];

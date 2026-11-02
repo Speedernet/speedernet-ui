@@ -15,6 +15,7 @@ import {
   SnInfoBanner,
   SnLoading,
   SnMessage,
+  SnSelect,
   SnStatusBadge,
   SnTooltip,
 } from '@speedernet/ui';
@@ -35,6 +36,7 @@ import {
     SnInfoBanner,
     SnLoading,
     SnMessage,
+    SnSelect,
     SnStatusBadge,
     SnTooltip,
   ],
@@ -113,13 +115,6 @@ import {
       <sn-field label="Date de fin" error="Cette date n'existe pas. Format attendu : jj/mm/aaaa.">
         <input snControl type="text" value="31/02/2026" />
       </sn-field>
-      <sn-field label="Salle">
-        <select snControl>
-          <option>Croix-Rousse</option>
-          <option>Fourvière</option>
-          <option>Confluence</option>
-        </select>
-      </sn-field>
       <sn-field label="Commentaire">
         <textarea snControl rows="3"></textarea>
       </sn-field>
@@ -128,6 +123,46 @@ import {
       </sn-field>
       <sn-field label="Recevoir une confirmation par courriel">
         <input snControl type="checkbox" checked />
+      </sn-field>
+    </div>
+
+    <h3>Liste déroulante</h3>
+    <div class="stack">
+      <sn-field label="Salle">
+        <sn-select>
+          <select snControl>
+            <option value="" disabled selected>Choisir une salle</option>
+            @for (room of rooms; track room) {
+              <option>{{ room }}</option>
+            }
+          </select>
+        </sn-select>
+      </sn-field>
+      <sn-field label="Créneau" hint="Les créneaux durent une heure.">
+        <sn-select>
+          <select snControl>
+            <option>09:00 - 10:00</option>
+            <option selected>14:00 - 15:00</option>
+            <option>16:00 - 17:00</option>
+          </select>
+        </sn-select>
+      </sn-field>
+      <sn-field label="Salle de repli" error="Choisissez une salle de repli.">
+        <sn-select>
+          <select snControl>
+            <option value="" disabled selected>Choisir une salle</option>
+            @for (room of rooms; track room) {
+              <option>{{ room }}</option>
+            }
+          </select>
+        </sn-select>
+      </sn-field>
+      <sn-field label="Étage" hint="Fixé par la salle choisie.">
+        <sn-select>
+          <select snControl disabled>
+            <option>3e étage</option>
+          </select>
+        </sn-select>
       </sn-field>
     </div>
 
@@ -208,6 +243,7 @@ export class ComponentsPage {
   protected readonly dialog = viewChild.required(SnConfirmDialog);
   protected readonly deleted = signal(false);
   protected readonly retries = signal(0);
+  protected readonly rooms = ['Croix-Rousse', 'Fourvière', 'Confluence'];
   protected readonly filter = signal('week');
 
   protected readonly tones = ['neutral', 'primary', 'accent', 'brand', 'solid', 'outline'] as const;

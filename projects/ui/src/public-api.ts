@@ -25,3 +25,4 @@ export * from './lib/tooltip/tooltip';
 export * from './lib/confirm-dialog/confirm-dialog';
 export * from './lib/app-header/to-initials';
 export * from './lib/app-header/app-header';
+export * from './lib/select/select';
