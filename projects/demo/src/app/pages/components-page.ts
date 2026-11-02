@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
-import { LucideArrowLeft, LucideCalendarPlus, LucidePencil } from '@lucide/angular';
 import {
+  LucideArrowLeft,
+  LucideCalendarPlus,
+  LucideCopy,
+  LucidePencil,
+  LucideX,
+} from '@lucide/angular';
+import {
+  SnActionMenu,
   SnBadge,
   SnButton,
   SnCard,
@@ -14,6 +21,7 @@ import {
   SnIconButton,
   SnInfoBanner,
   SnLoading,
+  SnMenuItem,
   SnMessage,
   SnStatusBadge,
   SnTooltip,
@@ -22,6 +30,7 @@ import {
 @Component({
   selector: 'demo-components-page',
   imports: [
+    SnActionMenu,
     SnBadge,
     SnButton,
     SnCard,
@@ -34,6 +43,7 @@ import {
     SnIconButton,
     SnInfoBanner,
     SnLoading,
+    SnMenuItem,
     SnMessage,
     SnStatusBadge,
     SnTooltip,
@@ -69,6 +79,26 @@ import {
     >
       Salle Croix-Rousse, de 14:00 à 15:00. Cette action est définitive.
     </sn-confirm-dialog>
+
+    <h2>Menu d'actions</h2>
+    <div class="row">
+      <sn-action-menu label="Actions pour la réservation du 12/03">
+        <button snMenuItem [icon]="pencil" (click)="menuChoice.set('Modifier')">Modifier</button>
+        <button snMenuItem [icon]="copy" (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
+        <button snMenuItem [icon]="cancel" tone="danger" (click)="menuChoice.set('Annuler')">
+          Annuler la réservation
+        </button>
+      </sn-action-menu>
+      <sn-action-menu label="Actions pour la réservation du 02/02 (passée)">
+        <button snMenuItem (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
+        <button snMenuItem disabled>Modifier</button>
+        <button snMenuItem tone="danger" disabled>Annuler la réservation</button>
+      </sn-action-menu>
+    </div>
+    <p class="sn-text-muted">
+      Avec icônes et action dangereuse, puis sans icônes avec actions désactivées. Dernier choix :
+      {{ menuChoice() }}
+    </p>
 
     <h2>Badges</h2>
     <div class="row">
@@ -208,6 +238,7 @@ export class ComponentsPage {
   protected readonly dialog = viewChild.required(SnConfirmDialog);
   protected readonly deleted = signal(false);
   protected readonly retries = signal(0);
+  protected readonly menuChoice = signal('aucun');
   protected readonly filter = signal('week');
 
   protected readonly tones = ['neutral', 'primary', 'accent', 'brand', 'solid', 'outline'] as const;
@@ -217,6 +248,8 @@ export class ComponentsPage {
     { value: 'past', label: 'Passées' },
   ];
   protected readonly pencil = LucidePencil.icon;
+  protected readonly copy = LucideCopy.icon;
+  protected readonly cancel = LucideX.icon;
   protected readonly back = LucideArrowLeft.icon;
   protected readonly calendar = LucideCalendarPlus.icon;
 }

@@ -25,7 +25,8 @@ const associations = [
   ['--color-text', '--tint-primary-subtle', TEXT, 'hovered table row'],
   ['--color-text', '--tint-accent', TEXT, 'accent badge'],
   ['--color-text', '--tint-brand', TEXT, 'brand badge'],
-  ['--color-text', '--tint-highlight', TEXT, 'hovered link'],
+  ['--color-text', '--tint-highlight', TEXT, 'hovered link, focused menu item'],
+  ['--color-danger', '--tint-neutral', TEXT, 'focused danger menu item'],
   ['--color-text', '--color-accent', TEXT, 'title highlight, header'],
   ['--color-text', '--cyan-100', TEXT, 'header link highlight'],
   // White text on dark fills
@@ -36,6 +37,8 @@ const associations = [
   ['--color-border-strong', '--color-surface', NON_TEXT, 'field border'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
+  ['--color-text', '--tint-highlight', NON_TEXT, 'focus outline on a menu item'],
+  ['--color-text', '--tint-neutral', NON_TEXT, 'focus outline on a danger menu item'],
 ];
 
 const declarations = new Map(
