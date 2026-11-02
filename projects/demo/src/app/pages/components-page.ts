@@ -394,6 +394,7 @@ import {
             <th scope="col">Salle</th>
             <th scope="col">Date</th>
             <th scope="col">Statut</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
           </tr>
         </thead>
         <tbody>
@@ -401,11 +402,25 @@ import {
             <td>Croix-Rousse</td>
             <td>12/03/2026</td>
             <td><sn-status-badge status="confirmed" label="Confirmée" /></td>
+            <td>
+              <sn-action-menu label="Actions pour Croix-Rousse le 12/03/2026">
+                <button snMenuItem [icon]="pencil">Modifier</button>
+                <button snMenuItem [icon]="copy">Dupliquer</button>
+                <button snMenuItem [icon]="cancel" tone="danger">Annuler la réservation</button>
+              </sn-action-menu>
+            </td>
           </tr>
           <tr>
             <td>Fourvière</td>
             <td>14/03/2026</td>
             <td><sn-status-badge status="pending" label="En attente" /></td>
+            <td>
+              <sn-action-menu label="Actions pour Fourvière le 14/03/2026">
+                <button snMenuItem [icon]="pencil">Modifier</button>
+                <button snMenuItem [icon]="copy">Dupliquer</button>
+                <button snMenuItem [icon]="cancel" tone="danger">Annuler la réservation</button>
+              </sn-action-menu>
+            </td>
           </tr>
         </tbody>
       </table>

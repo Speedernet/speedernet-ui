@@ -14,6 +14,10 @@ test('action menu hides its closed list', () => {
   assert.match(css, /\.sn-action-menu-list\[hidden\]\s*\{\s*display: none/);
 });
 
+test('action menu list is fixed in the top layer, not clipped by a scrolling parent', () => {
+  assert.match(css, /\.sn-action-menu-list\s*\{[^}]*position: fixed;[^}]*inset: auto/);
+});
+
 test('menu items show keyboard focus with a highlight and a ring', () => {
   assert.match(css, /\.sn-menu-item:hover:not\(:disabled\), \.sn-menu-item:focus-visible\s*\{/);
   assert.match(css, /\.sn-menu-item:focus-visible\s*\{\s*outline-offset: -3px/);

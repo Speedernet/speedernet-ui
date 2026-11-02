@@ -56,6 +56,49 @@ describe('SnActionMenu', () => {
     expect(trigger.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
   });
 
+  it('opens as a popover where supported, so a parent that clips its overflow cannot cut it', () => {
+    const proto = HTMLElement.prototype as Partial<HTMLElement>;
+    const shown: Element[] = [];
+    proto.showPopover = function (this: HTMLElement) {
+      shown.push(this);
+    };
+    proto.hidePopover = () => undefined;
+    try {
+      const other = TestBed.createComponent(Host);
+      other.detectChanges();
+      const list: HTMLElement = other.nativeElement.querySelector('[role="menu"]');
+      expect(list.getAttribute('popover')).toBe('manual');
+      other.nativeElement.querySelector('.sn-action-menu-trigger').click();
+      other.detectChanges();
+      TestBed.tick();
+      expect(shown).toEqual([list]);
+    } finally {
+      delete proto.showPopover;
+      delete proto.hidePopover;
+    }
+  });
+
+  it('keeps the list in place without the Popover API', () => {
+    expect(menu.hasAttribute('popover')).toBe(false);
+  });
+
+  it('places the open menu under its button, aligned on its right edge', () => {
+    trigger.getBoundingClientRect = () => new DOMRect(300, 100, 48, 48);
+    menu.getBoundingClientRect = () => new DOMRect(0, 0, 200, 150);
+    trigger.click();
+    render();
+    expect(menu.style.left).toBe('148px');
+    expect(menu.style.top).toBe('156px');
+  });
+
+  it('opens above its button when there is no room below', () => {
+    trigger.getBoundingClientRect = () => new DOMRect(300, window.innerHeight - 60, 48, 48);
+    menu.getBoundingClientRect = () => new DOMRect(0, 0, 200, 150);
+    trigger.click();
+    render();
+    expect(menu.style.top).toBe(`${window.innerHeight - 60 - 8 - 150}px`);
+  });
+
   it('gives items the menuitem role, out of the tab order', () => {
     for (const item of items()) {
       expect(item.getAttribute('tabindex')).toBe('-1');
