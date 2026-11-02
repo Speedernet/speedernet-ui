@@ -26,3 +26,4 @@ export * from './lib/dialog/dialog';
 export * from './lib/confirm-dialog/confirm-dialog';
 export * from './lib/app-header/to-initials';
 export * from './lib/app-header/app-header';
+export * from './lib/toast/toast';
