@@ -32,10 +32,14 @@ const associations = [
   ['--color-on-dark', '--color-text', TEXT, 'primary button, dark badge, active tab, table head'],
   ['--color-on-dark', '--color-night', TEXT, 'hovered primary button'],
   ['--color-on-dark', '--color-danger', TEXT, 'danger button'],
+  ['--color-accent', '--color-text', TEXT, 'toast action'],
+  ['--color-accent', '--color-night', TEXT, 'hovered toast action'],
   // Non-text elements
   ['--color-border-strong', '--color-surface', NON_TEXT, 'field border'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
+  ['--color-on-dark', '--color-text', NON_TEXT, 'focus outline inside a toast'],
+  ['--color-on-dark', '--color-night', NON_TEXT, 'focus outline on a hovered toast button'],
 ];
 
 const declarations = new Map(

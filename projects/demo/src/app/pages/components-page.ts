@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { LucideArrowLeft, LucideCalendarPlus, LucidePencil } from '@lucide/angular';
 import {
   SnBadge,
@@ -16,6 +16,8 @@ import {
   SnLoading,
   SnMessage,
   SnStatusBadge,
+  SnToastRef,
+  SnToastService,
   SnTooltip,
 } from '@speedernet/ui';
 
@@ -149,6 +151,14 @@ import {
       <sn-info-banner href="#">Consulter le règlement des salles.</sn-info-banner>
     </div>
 
+    <h2>Notification temporaire</h2>
+    <div class="row">
+      <button snButton type="button" (click)="toastSimple()">Simple</button>
+      <button snButton type="button" (click)="toastWithAction()">Avec action « Annuler »</button>
+      <button snButton type="button" (click)="toastLong()">Texte long</button>
+    </div>
+    <p class="sn-text-muted">Résultat du dernier toast : {{ toastResult() }}</p>
+
     <h2>États d'écran</h2>
     <sn-loading label="Chargement des réservations" />
     <sn-empty-state title="Aucune réservation" text="Vous n'avez pas encore réservé de salle.">
@@ -208,6 +218,8 @@ export class ComponentsPage {
   protected readonly dialog = viewChild.required(SnConfirmDialog);
   protected readonly deleted = signal(false);
   protected readonly retries = signal(0);
+  protected readonly toastResult = signal('aucun');
+  private readonly toast = inject(SnToastService);
   protected readonly filter = signal('week');
 
   protected readonly tones = ['neutral', 'primary', 'accent', 'brand', 'solid', 'outline'] as const;
@@ -219,4 +231,27 @@ export class ComponentsPage {
   protected readonly pencil = LucidePencil.icon;
   protected readonly back = LucideArrowLeft.icon;
   protected readonly calendar = LucideCalendarPlus.icon;
+
+  protected toastSimple(): void {
+    this.track(this.toast.show('Réservation enregistrée.'));
+  }
+
+  protected toastWithAction(): void {
+    this.track(this.toast.show('Réservation du 12/03 supprimée.', { action: 'Annuler' }));
+  }
+
+  protected toastLong(): void {
+    this.track(
+      this.toast.show(
+        'Réservation enregistrée : salle Croix-Rousse, le 12/03/2026 de 14:00 à 15:00. Un courriel de confirmation vous a été envoyé.',
+      ),
+    );
+  }
+
+  private track(ref: SnToastRef): void {
+    this.toastResult.set('affiché');
+    ref.result.then((result) =>
+      this.toastResult.set(result === 'action' ? 'action « Annuler »' : 'fermé'),
+    );
+  }
 }
