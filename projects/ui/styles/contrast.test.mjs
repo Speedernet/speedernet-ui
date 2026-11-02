@@ -18,6 +18,7 @@ const associations = [
   ['--color-text', '--color-background', TEXT, 'page text'],
   ['--color-text-muted', '--color-surface', TEXT, 'help text, header subtitle'],
   ['--color-text-muted', '--color-background', TEXT, 'muted text on the page'],
+  ['--color-text-muted', '--color-disabled', TEXT, 'disabled select'],
   ['--color-danger', '--color-surface', TEXT, 'field error text'],
   // Text on tints and highlights
   ['--color-text', '--tint-neutral', TEXT, 'neutral badge, filter tabs'],
@@ -30,7 +31,7 @@ const associations = [
     '--color-text',
     '--tint-highlight',
     TEXT,
-    'hovered link, focused menu item, hovered toast button',
+    'hovered link, focused menu item, highlighted select option, hovered toast button',
   ],
   ['--color-text', '--color-accent', TEXT, 'title highlight, header'],
   ['--color-text', '--cyan-100', TEXT, 'header link highlight'],
@@ -40,6 +41,7 @@ const associations = [
   ['--color-on-dark', '--color-danger', TEXT, 'danger button'],
   // Non-text elements
   ['--color-border-strong', '--color-surface', NON_TEXT, 'field border'],
+  ['--color-text', '--color-surface', NON_TEXT, 'select chevron'],
   ['--color-danger', '--color-surface', NON_TEXT, 'invalid field border, error icon'],
   ['--color-text', '--color-background', NON_TEXT, 'focus outline'],
   ['--color-text', '--tint-neutral', NON_TEXT, 'focus outline on a danger menu item'],
@@ -47,7 +49,7 @@ const associations = [
     '--color-text',
     '--tint-highlight',
     NON_TEXT,
-    'focus outline on a menu item or a hovered toast button',
+    'focus outline on a menu item, a select option or a hovered toast button',
   ],
 ];
 

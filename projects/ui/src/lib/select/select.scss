@@ -1,0 +1,116 @@
+// Drop-down list: the native select without its browser arrow, and a chevron on top that lets
+// clicks through. Border, focus and error styles are the shared field styles.
+.sn-select {
+  position: relative;
+  display: flex;
+
+  > select {
+    flex: 1;
+    min-width: 0;
+    padding-right: 2.75rem;
+    appearance: none;
+    cursor: pointer;
+
+    &:disabled {
+      border-color: var(--color-border-strong);
+      background: var(--color-disabled);
+      color: var(--color-text-muted);
+      cursor: not-allowed;
+    }
+
+    &:disabled + .sn-select-chevron {
+      color: var(--color-text-muted);
+    }
+  }
+}
+
+.sn-select-chevron {
+  position: absolute;
+  top: 50%;
+  right: 0.875rem;
+  translate: 0 -50%;
+  color: var(--color-text);
+  pointer-events: none;
+}
+
+// Browsers that support customisable selects draw the list of options close to `sn-action-menu`:
+// white panel with the field radius, one highlighted row per option. Others keep their system list.
+@supports (appearance: base-select) {
+  .sn-select > select,
+  .sn-select > select::picker(select) {
+    appearance: base-select;
+  }
+
+  // The customisable select lays out its text like a button: centre it vertically. Its width
+  // follows the chosen option rather than the longest one, so a minimum width limits the jumps
+  // when the choice changes in a field that is not stretched.
+  .sn-select > select {
+    display: flex;
+    align-items: center;
+    min-width: 12rem;
+  }
+
+  // Our own chevron replaces the built-in icon; it turns over while the list is open.
+  .sn-select > select::picker-icon {
+    display: none;
+  }
+
+  .sn-select > select:open + .sn-select-chevron {
+    rotate: 180deg;
+  }
+
+  .sn-select > select::picker(select) {
+    margin-block: var(--space-2);
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-message);
+    color: var(--color-text);
+  }
+
+  .sn-select option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 44px;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background: var(--tint-highlight);
+    }
+
+    &:focus-visible {
+      outline-offset: -3px;
+    }
+
+    &:checked {
+      font-weight: 800;
+    }
+
+    // Tick of the selected option, at the end of its row.
+    &::checkmark {
+      order: 1;
+      margin-left: auto;
+    }
+
+    &:disabled {
+      color: var(--color-text-muted);
+      cursor: not-allowed;
+    }
+  }
+}
+
+.sn-select-chevron {
+  transition: rotate 0.15s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sn-select-chevron {
+    transition: none;
+  }
+}

@@ -28,3 +28,4 @@ export * from './lib/app-header/to-initials';
 export * from './lib/app-header/app-header';
 export * from './lib/toast/toast';
 export * from './lib/action-menu/action-menu';
+export * from './lib/select/select';
