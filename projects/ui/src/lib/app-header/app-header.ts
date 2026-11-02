@@ -17,6 +17,7 @@ import { LucideDynamicIcon, LucideLogOut, LucideMenu, LucideX } from '@lucide/an
 import { filter } from 'rxjs';
 import { SnIconButton } from '../button/icon-button';
 import { SnLogo } from '../logo/logo';
+import { SnMenu, SnMenuItem, SnMenuTrigger } from '../menu/menu';
 import { toInitials } from './to-initials';
 
 export interface SnNavItem {
@@ -28,14 +29,13 @@ export interface SnHeaderUser {
   displayName: string;
 }
 
-type OpenMenu = 'user' | 'mobile' | null;
-
 let nextId = 0;
 
 /**
  * Application header: logo and name linking home, main navigation and user menu from desktop;
- * below desktop, both move into a mobile menu. Menus follow the disclosure pattern: Escape closes
- * them and returns focus to their button, a click outside or a navigation closes them.
+ * below desktop, both move into a mobile menu. The user menu is an `sn-menu`; the mobile menu,
+ * which holds navigation links, follows the disclosure pattern: Escape closes it and returns
+ * focus to its button, a click outside or a navigation closes it.
  */
 @Component({
   selector: 'sn-app-header',
@@ -46,6 +46,9 @@ let nextId = 0;
     LucideDynamicIcon,
     SnLogo,
     SnIconButton,
+    SnMenu,
+    SnMenuItem,
+    SnMenuTrigger,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -64,25 +67,18 @@ let nextId = 0;
         }
 
         @if (user(); as currentUser) {
-          <div #userMenu class="sn-app-header-user">
-            <button
-              #userButton
-              type="button"
-              class="sn-app-header-user-button"
-              [attr.aria-expanded]="openMenu() === 'user'"
-              [attr.aria-controls]="userPanelId"
-              (click)="toggle('user')"
-            >
+          <div class="sn-app-header-user">
+            <button type="button" class="sn-app-header-user-button" [snMenuTrigger]="userMenu">
               <span class="sn-app-header-user-name" [title]="currentUser.displayName">{{
                 currentUser.displayName
               }}</span>
               <span class="sn-app-header-initials" aria-hidden="true">{{ initials() }}</span>
             </button>
-            @if (openMenu() === 'user') {
-              <div class="sn-app-header-panel sn-app-header-user-panel" [id]="userPanelId">
-                <ng-container *ngTemplateOutlet="logoutButton" />
-              </div>
-            }
+            <sn-menu #userMenu (opened)="closeMenu()">
+              <button snMenuItem [icon]="logoutIcon" (click)="onUserLogout()">
+                {{ logoutLabel() }}
+              </button>
+            </sn-menu>
           </div>
         }
 
@@ -168,14 +164,12 @@ export class SnAppHeader {
   protected readonly logoutIcon = LucideLogOut.icon;
 
   private readonly id = nextId++;
-  protected readonly userPanelId = `sn-app-header-user-panel-${this.id}`;
   protected readonly mobilePanelId = `sn-app-header-mobile-panel-${this.id}`;
 
-  protected readonly openMenu = signal<OpenMenu>(null);
+  protected readonly openMenu = signal<'mobile' | null>(null);
   protected readonly initials = computed(() => toInitials(this.user()?.displayName ?? ''));
 
-  private readonly userMenu = viewChild<ElementRef<HTMLElement>>('userMenu');
-  private readonly userButton = viewChild<ElementRef<HTMLButtonElement>>('userButton');
+  private readonly userMenu = viewChild(SnMenu);
   private readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
   private readonly menuButton = viewChild('menuButton', { read: ElementRef<HTMLButtonElement> });
   private readonly mobilePanel = viewChild<ElementRef<HTMLElement>>('mobilePanel');
@@ -186,11 +180,16 @@ export class SnAppHeader {
         filter((event) => event instanceof NavigationEnd),
         takeUntilDestroyed(),
       )
-      .subscribe(() => this.closeMenu());
+      .subscribe(() => {
+        this.closeMenu();
+        this.userMenu()?.close(false);
+      });
   }
 
-  protected toggle(menu: Exclude<OpenMenu, null>): void {
+  protected toggle(menu: 'mobile'): void {
     this.openMenu.update((open) => (open === menu ? null : menu));
+    // One menu open at a time.
+    this.userMenu()?.close(false);
   }
 
   protected closeMenu(): void {
@@ -202,31 +201,32 @@ export class SnAppHeader {
     this.logout.emit();
   }
 
+  /** Logout from the user menu: focus goes back to the user button before the event. */
+  protected onUserLogout(): void {
+    this.userMenu()?.close();
+    this.logout.emit();
+  }
+
   protected onKeydown(event: KeyboardEvent): void {
     if (event.key !== 'Escape' || this.openMenu() === null) return;
     event.preventDefault();
     this.closeMenuAndFocusTrigger();
   }
 
-  /** Closes the open menu and gives focus back to the button that opened it. */
+  /** Closes the mobile menu and gives focus back to its button. */
   private closeMenuAndFocusTrigger(): void {
-    const open = this.openMenu();
+    if (this.openMenu() === null) return;
     this.closeMenu();
-    const trigger =
-      open === 'user' ? this.userButton() : open === 'mobile' ? this.menuButton() : undefined;
-    trigger?.nativeElement.focus();
+    this.menuButton()?.nativeElement.focus();
   }
 
-  /** A click outside the open menu (its button included) closes it. */
+  /** A click outside the mobile menu (its button included) closes it. */
   protected onDocumentClick(event: MouseEvent): void {
-    const open = this.openMenu();
-    if (open === null) return;
+    if (this.openMenu() === null) return;
     const target = event.target as Node | null;
     const inside =
-      open === 'user'
-        ? this.userMenu()?.nativeElement.contains(target)
-        : this.mobileMenu()?.nativeElement.contains(target) ||
-          this.mobilePanel()?.nativeElement.contains(target);
+      this.mobileMenu()?.nativeElement.contains(target) ||
+      this.mobilePanel()?.nativeElement.contains(target);
     if (!inside) this.closeMenu();
   }
 }

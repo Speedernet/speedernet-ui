@@ -153,10 +153,11 @@ describe('SnAppHeader', () => {
     it('opens on click and emits logout from the menu', async () => {
       const { userButton, panel, detect, host } = await setup();
       const button = userButton()!;
-      expect(panel(button)).toBeNull();
+      expect(panel(button)!.hidden).toBe(true);
       button.click();
       await detect();
       expect(button.getAttribute('aria-expanded')).toBe('true');
+      expect(panel(button)!.hidden).toBe(false);
       const logout = Array.from(panel(button)!.querySelectorAll('button')).find((b) =>
         b.textContent!.includes('Se déconnecter'),
       )!;
@@ -177,7 +178,7 @@ describe('SnAppHeader', () => {
       logout.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       await detect();
       expect(button.getAttribute('aria-expanded')).toBe('false');
-      expect(panel(button)).toBeNull();
+      expect(panel(button)!.hidden).toBe(true);
       expect(document.activeElement).toBe(button);
     });
 
@@ -190,7 +191,7 @@ describe('SnAppHeader', () => {
       document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       await detect();
       expect(button.getAttribute('aria-expanded')).toBe('false');
-      expect(panel(button)).toBeNull();
+      expect(panel(button)!.hidden).toBe(true);
       expect(document.activeElement).toBe(button);
     });
 
@@ -205,6 +206,28 @@ describe('SnAppHeader', () => {
       await detect();
       expect(host.focusedOnLogout).toBe(button);
       expect(document.activeElement).toBe(button);
+    });
+
+    it('is an sn-menu labelled by the button, with logout as a menu item', async () => {
+      const { userButton, panel } = await setup();
+      const button = userButton()!;
+      const menu = panel(button)!;
+      expect(button.getAttribute('aria-haspopup')).toBe('menu');
+      expect(menu.tagName).toBe('SN-MENU');
+      expect(menu.getAttribute('role')).toBe('menu');
+      expect(menu.getAttribute('aria-labelledby')).toBe(button.id);
+      const item = menu.querySelector('[role="menuitem"]')!;
+      expect(item.textContent).toContain('Se déconnecter');
+      expect(item.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
+    });
+
+    it('opens with Arrow down on its first item', async () => {
+      const { userButton, panel, detect } = await setup();
+      const button = userButton()!;
+      button.focus();
+      button.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+      await detect();
+      expect(document.activeElement).toBe(panel(button)!.querySelector('[role="menuitem"]'));
     });
 
     it('shows the full name as a title, the visible name being truncated if needed', async () => {

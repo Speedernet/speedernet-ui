@@ -167,7 +167,7 @@ sn-app-header {
   font-weight: 800;
 }
 
-// Open menus: white panel under their button.
+// Open mobile menu: white panel under the header.
 .sn-app-header-panel {
   box-sizing: border-box;
   position: absolute;
@@ -177,12 +177,6 @@ sn-app-header {
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: var(--shadow-message);
-}
-
-.sn-app-header-user-panel {
-  top: calc(100% + var(--space-2));
-  right: 0;
-  min-width: 220px;
 }
 
 // Full width minus side margins, right under the header.
