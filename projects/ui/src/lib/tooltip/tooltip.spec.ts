@@ -6,12 +6,12 @@ import { SnTooltip } from './tooltip';
   imports: [SnTooltip],
   template: `
     <sn-tooltip [text]="text()">
-      <button type="button">Copier</button>
+      <button type="button">Copy</button>
     </sn-tooltip>
   `,
 })
 class Host {
-  readonly text = signal('Copier #0DC8D9');
+  readonly text = signal('Copy #0DC8D9');
 }
 
 function render(): ComponentFixture<Host> {
@@ -23,7 +23,7 @@ function render(): ComponentFixture<Host> {
 describe('SnTooltip', () => {
   it('renders its text in an element with the tooltip role', () => {
     const tip = render().nativeElement.querySelector('[role="tooltip"]')!;
-    expect(tip.textContent!.trim()).toBe('Copier #0DC8D9');
+    expect(tip.textContent!.trim()).toBe('Copy #0DC8D9');
   });
 
   it('describes the wrapped element with its text', async () => {
@@ -37,10 +37,10 @@ describe('SnTooltip', () => {
 
   it('follows text changes', () => {
     const fixture = render();
-    fixture.componentInstance.text.set('Copié');
+    fixture.componentInstance.text.set('Copied');
     fixture.detectChanges();
     const tip = fixture.nativeElement.querySelector('[role="tooltip"]')!;
-    expect(tip.textContent!.trim()).toBe('Copié');
+    expect(tip.textContent!.trim()).toBe('Copied');
   });
 
   it('hides on Escape until the pointer or focus comes back', () => {

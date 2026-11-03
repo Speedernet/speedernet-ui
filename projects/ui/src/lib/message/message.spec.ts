@@ -29,10 +29,10 @@ describe('messageAppearance', () => {
 @Component({
   imports: [SnMessage, SnInfoBanner],
   template: `
-    <sn-message type="error">Enregistrement impossible.</sn-message>
-    <sn-message type="info">Rien à signaler.</sn-message>
-    <sn-info-banner id="linked" href="/x">Nouveautés</sn-info-banner>
-    <sn-info-banner id="plain">Maintenance ce soir</sn-info-banner>
+    <sn-message type="error">Could not save.</sn-message>
+    <sn-message type="info">Nothing to report.</sn-message>
+    <sn-info-banner id="linked" href="/x">What's new</sn-info-banner>
+    <sn-info-banner id="plain">Maintenance tonight</sn-info-banner>
   `,
 })
 class Host {}
@@ -49,7 +49,7 @@ describe('SnMessage', () => {
     expect(message.getAttribute('role')).toBe('status');
     expect(message.querySelector('.sn-badge')!.textContent!.trim()).toBe('Erreur');
     expect(message.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
-    expect(message.textContent).toContain('Enregistrement impossible.');
+    expect(message.textContent).toContain('Could not save.');
   });
 
   it('has no icon for the info type', () => {
@@ -65,7 +65,7 @@ describe('SnInfoBanner', () => {
     const link = banner.querySelector('a')!;
     expect(link.getAttribute('href')).toBe('/x');
     expect(link.querySelector('.sn-badge')!.textContent!.trim()).toBe('Info');
-    expect(link.textContent).toContain('Nouveautés');
+    expect(link.textContent).toContain("What's new");
     const arrow = link.querySelector('svg')!;
     expect(arrow.getAttribute('aria-hidden')).toBe('true');
     expect(arrow.getAttribute('width')).toBe('14');
@@ -76,6 +76,6 @@ describe('SnInfoBanner', () => {
     expect(banner.querySelector('a')).toBeNull();
     expect(banner.querySelector('div.sn-info-banner-body')).not.toBeNull();
     expect(banner.querySelector('svg')!.getAttribute('width')).toBe('14');
-    expect(banner.textContent).toContain('Maintenance ce soir');
+    expect(banner.textContent).toContain('Maintenance tonight');
   });
 });

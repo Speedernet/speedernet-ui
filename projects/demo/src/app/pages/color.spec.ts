@@ -10,7 +10,7 @@ describe('swatchInfo', () => {
   it('picks the text color with the best contrast and its WCAG level', () => {
     expect(swatchInfo('oklch(97.5% 0 0)')).toMatchObject({ text: 'dark', level: 'AA' });
     expect(swatchInfo('oklch(31.3% 0 0)')).toMatchObject({ text: 'light', level: 'AA' });
-    expect(swatchInfo('oklch(63.6% 0 0)')?.level).toBe('AA gros texte');
+    expect(swatchInfo('oklch(63.6% 0 0)')?.level).toBe('AA large text');
   });
 
   it('returns null for a value that is not OKLCH', () => {

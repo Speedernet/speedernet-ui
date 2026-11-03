@@ -5,16 +5,16 @@ import { routes } from '../app.routes';
 
 describe('demo pages', () => {
   const words: Record<string, string> = {
-    '/fondations': 'fondations',
-    '/composants': 'composants',
-    '/ecran-type': 'réservations',
+    '/foundations': 'foundations',
+    '/components': 'components',
+    '/sample-screen': 'bookings',
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [provideRouter(routes)] });
   });
 
-  for (const path of ['/fondations', '/composants', '/ecran-type']) {
+  for (const path of ['/foundations', '/components', '/sample-screen']) {
     it(`loads ${path} with a single h1 containing a highlight`, async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl(path);

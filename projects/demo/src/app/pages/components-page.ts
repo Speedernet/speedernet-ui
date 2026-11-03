@@ -69,78 +69,78 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
-    <h1>Les <span class="sn-highlight">composants</span></h1>
-    <p class="sn-text-muted">Chaque composant dans toutes ses variantes et ses états.</p>
+    <h1>The <span class="sn-highlight">components</span></h1>
+    <p class="sn-text-muted">Every component in all its variants and states.</p>
 
-    <h2>Boutons</h2>
+    <h2>Buttons</h2>
     <div id="buttons" class="row">
-      <button snButton variant="primary" type="button">Réserver une salle</button>
-      <button snButton variant="secondary" type="button">Annuler</button>
+      <button snButton variant="primary" type="button">Book a room</button>
+      <button snButton variant="secondary" type="button">Cancel</button>
       <button snButton variant="danger" type="button" (click)="dialog().open()">
-        Supprimer la réservation
+        Delete the booking
       </button>
-      <button snButton variant="primary" type="button" disabled>Désactivé</button>
-      <a snButton variant="secondary" href="/composants#buttons">Lien en bouton</a>
+      <button snButton variant="primary" type="button" disabled>Disabled</button>
+      <a snButton variant="secondary" href="/components#buttons">Link as a button</a>
     </div>
-    <h3>Boutons-icônes</h3>
+    <h3>Icon buttons</h3>
     <div class="row">
-      <button snIconButton label="Modifier" [icon]="pencil" variant="light" type="button"></button>
-      <button snIconButton label="Retour" [icon]="back" variant="dark" type="button"></button>
+      <button snIconButton label="Edit" [icon]="pencil" variant="light" type="button"></button>
+      <button snIconButton label="Back" [icon]="back" variant="dark" type="button"></button>
     </div>
     @if (deleted()) {
-      <sn-message type="success">Réservation du 12/03 supprimée.</sn-message>
+      <sn-message type="success">Booking of 12/03 deleted.</sn-message>
     }
     <sn-confirm-dialog
-      title="Supprimer la réservation du 12/03 ?"
-      confirmLabel="Supprimer"
+      title="Delete the booking of 12/03?"
+      confirmLabel="Delete"
       (confirmed)="deleted.set(true)"
     >
-      Salle Croix-Rousse, de 14:00 à 15:00. Cette action est définitive.
+      Croix-Rousse room, from 14:00 to 15:00. This cannot be undone.
     </sn-confirm-dialog>
 
-    <h2>Fenêtre modale</h2>
+    <h2>Dialog</h2>
     <div class="row">
       <button snButton variant="secondary" type="button" (click)="formDialog.open()">
-        Avec formulaire
+        With a form
       </button>
       <button snButton variant="secondary" type="button" (click)="longDialog.open()">
-        Contenu long
+        Long content
       </button>
       <button snButton variant="secondary" type="button" (click)="infoDialog.open()">
-        Sans actions
+        No actions
       </button>
       <button snButton variant="danger" type="button" (click)="dialog().open()">
         Confirmation
       </button>
     </div>
-    <p class="sn-text-muted">Dernière fermeture : {{ lastClose() }}</p>
-    <sn-dialog #formDialog title="Modifier la réservation" (dismissed)="lastClose.set('Échap')">
+    <p class="sn-text-muted">Last closed with: {{ lastClose() }}</p>
+    <sn-dialog #formDialog title="Edit the booking" (dismissed)="lastClose.set('Escape')">
       <div class="stack">
-        <sn-field label="Date" hint="Format attendu : jj/mm/aaaa.">
+        <sn-field label="Date" hint="Expected format: dd/mm/yyyy.">
           <input snControl type="text" value="12/03/2026" />
         </sn-field>
-        <sn-field label="Commentaire">
+        <sn-field label="Comment">
           <textarea snControl rows="3"></textarea>
         </sn-field>
       </div>
-      <button snDialogActions snButton type="button" (click)="closeWith(formDialog, 'Annuler')">
-        Annuler
+      <button snDialogActions snButton type="button" (click)="closeWith(formDialog, 'Cancel')">
+        Cancel
       </button>
       <button
         snDialogActions
         snButton
         variant="primary"
         type="button"
-        (click)="closeWith(formDialog, 'Enregistrer')"
+        (click)="closeWith(formDialog, 'Save')"
       >
-        Enregistrer
+        Save
       </button>
     </sn-dialog>
-    <sn-dialog #longDialog title="Règlement des salles" (dismissed)="lastClose.set('Échap')">
+    <sn-dialog #longDialog title="Room rules" (dismissed)="lastClose.set('Escape')">
       @for (n of rules; track n) {
         <p>
-          Article {{ n }}. Les salles se réservent au plus 30 jours à l'avance, pour un créneau de
-          quatre heures au maximum. Libérez la salle à l'heure et laissez-la rangée.
+          Article {{ n }}. Rooms can be booked up to 30 days in advance, for a slot of four hours at
+          most. Leave the room on time and leave it tidy.
         </p>
       }
       <button
@@ -148,44 +148,44 @@ import {
         snButton
         variant="primary"
         type="button"
-        (click)="closeWith(longDialog, 'J’ai compris')"
+        (click)="closeWith(longDialog, 'Got it')"
       >
-        J’ai compris
+        Got it
       </button>
     </sn-dialog>
-    <sn-dialog #infoDialog title="Salle Confluence" (dismissed)="lastClose.set('Échap')">
-      <p>Projecteur, tableau blanc, 12 places. Fermez avec Échap.</p>
+    <sn-dialog #infoDialog title="Confluence room" (dismissed)="lastClose.set('Escape')">
+      <p>Projector, whiteboard, 12 seats. Close with Escape.</p>
     </sn-dialog>
-    <h2>Menu d'actions</h2>
+    <h2>Action menu</h2>
     <div class="row">
-      <sn-action-menu label="Actions pour la réservation du 12/03">
-        <button snMenuItem [icon]="pencil" (click)="menuChoice.set('Modifier')">Modifier</button>
-        <button snMenuItem [icon]="copy" (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
-        <button snMenuItem [icon]="cancel" tone="danger" (click)="menuChoice.set('Annuler')">
-          Annuler la réservation
+      <sn-action-menu label="Actions for the booking of 12/03">
+        <button snMenuItem [icon]="pencil" (click)="menuChoice.set('Edit')">Edit</button>
+        <button snMenuItem [icon]="copy" (click)="menuChoice.set('Duplicate')">Duplicate</button>
+        <button snMenuItem [icon]="cancel" tone="danger" (click)="menuChoice.set('Cancel')">
+          Cancel the booking
         </button>
       </sn-action-menu>
-      <sn-action-menu label="Actions pour la réservation du 02/02 (passée)">
-        <button snMenuItem (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
-        <button snMenuItem disabled>Modifier</button>
-        <button snMenuItem tone="danger" disabled>Annuler la réservation</button>
+      <sn-action-menu label="Actions for the booking of 02/02 (past)">
+        <button snMenuItem (click)="menuChoice.set('Duplicate')">Duplicate</button>
+        <button snMenuItem disabled>Edit</button>
+        <button snMenuItem tone="danger" disabled>Cancel the booking</button>
       </sn-action-menu>
     </div>
-    <h3>Menu sur un autre bouton</h3>
+    <h3>Menu on another button</h3>
     <p class="sn-text-muted">
-      <code>snMenuTrigger</code> ouvre un <code>sn-menu</code> depuis n'importe quel bouton, comme
-      le menu utilisateur de l'en-tête.
+      <code>snMenuTrigger</code> opens an <code>sn-menu</code> from any button, like the user menu
+      in the header.
     </p>
     <div class="row">
-      <button snButton type="button" [snMenuTrigger]="exportMenu">Exporter</button>
+      <button snButton type="button" [snMenuTrigger]="exportMenu">Export</button>
       <sn-menu #exportMenu>
-        <button snMenuItem (click)="menuChoice.set('Exporter en PDF')">En PDF</button>
-        <button snMenuItem (click)="menuChoice.set('Exporter en tableur')">En tableur</button>
+        <button snMenuItem (click)="menuChoice.set('Export as PDF')">As PDF</button>
+        <button snMenuItem (click)="menuChoice.set('Export as spreadsheet')">As spreadsheet</button>
       </sn-menu>
     </div>
     <p class="sn-text-muted">
-      Avec icônes et action dangereuse, sans icônes avec actions désactivées, puis sur un bouton
-      classique. Dernier choix : {{ menuChoice() }}
+      With icons and a dangerous action, without icons with disabled actions, then on a regular
+      button. Last choice: {{ menuChoice() }}
     </p>
 
     <h2>Badges</h2>
@@ -193,65 +193,59 @@ import {
       @for (tone of tones; track tone) {
         <sn-badge [tone]="tone">{{ tone }}</sn-badge>
       }
-      <sn-badge tone="primary" [icon]="calendar">Avec icône</sn-badge>
+      <sn-badge tone="primary" [icon]="calendar">With icon</sn-badge>
     </div>
-    <h3>Statuts</h3>
+    <h3>Statuses</h3>
     <div class="row">
-      <sn-status-badge status="confirmed" label="Confirmée" />
-      <sn-status-badge status="pending" label="En attente" />
-      <sn-status-badge status="cancelled" label="Annulée" />
-      <sn-status-badge status="archived" label="Archivée" />
+      <sn-status-badge status="confirmed" label="Confirmed" />
+      <sn-status-badge status="pending" label="Pending" />
+      <sn-status-badge status="cancelled" label="Cancelled" />
+      <sn-status-badge status="archived" label="Archived" />
     </div>
 
-    <h2>Infobulle</h2>
+    <h2>Tooltip</h2>
     <div class="row">
-      <sn-tooltip text="Modifier la réservation">
-        <button
-          snIconButton
-          label="Modifier"
-          [icon]="pencil"
-          variant="light"
-          type="button"
-        ></button>
+      <sn-tooltip text="Edit the booking">
+        <button snIconButton label="Edit" [icon]="pencil" variant="light" type="button"></button>
       </sn-tooltip>
-      <sn-tooltip text="Revenir à la liste">
-        <button snButton variant="secondary" type="button">Retour</button>
+      <sn-tooltip text="Back to the list">
+        <button snButton variant="secondary" type="button">Back</button>
       </sn-tooltip>
     </div>
 
-    <h2>Filtres</h2>
-    <sn-filter-tabs label="Période des réservations" [options]="filters" [(value)]="filter" />
-    <p class="sn-text-muted">Filtre sélectionné : {{ filter() }}</p>
+    <h2>Filters</h2>
+    <sn-filter-tabs label="Booking period" [options]="filters" [(value)]="filter" />
+    <p class="sn-text-muted">Selected filter: {{ filter() }}</p>
 
-    <h2>Champs</h2>
+    <h2>Fields</h2>
     <div class="stack">
-      <sn-field label="Date" hint="Format attendu : jj/mm/aaaa.">
+      <sn-field label="Date" hint="Expected format: dd/mm/yyyy.">
         <input snControl type="text" value="12/03/2026" />
       </sn-field>
-      <sn-field label="Date de fin" error="Cette date n'existe pas. Format attendu : jj/mm/aaaa.">
+      <sn-field label="End date" error="This date does not exist. Expected format: dd/mm/yyyy.">
         <input snControl type="text" value="31/02/2026" />
       </sn-field>
-      <sn-field label="Commentaire">
+      <sn-field label="Comment">
         <textarea snControl rows="3"></textarea>
       </sn-field>
-      <sn-field label="Champ désactivé">
-        <input snControl type="text" value="Non modifiable" disabled />
+      <sn-field label="Disabled field">
+        <input snControl type="text" value="Read-only" disabled />
       </sn-field>
     </div>
 
-    <h3>Liste déroulante</h3>
+    <h3>Select</h3>
     <div class="stack">
-      <sn-field label="Salle">
+      <sn-field label="Room">
         <sn-select>
           <select snControl>
-            <option value="" disabled selected>Choisir une salle</option>
+            <option value="" disabled selected>Choose a room</option>
             @for (room of rooms; track room) {
               <option>{{ room }}</option>
             }
           </select>
         </sn-select>
       </sn-field>
-      <sn-field label="Créneau" hint="Les créneaux durent une heure.">
+      <sn-field label="Time slot" hint="Slots last one hour.">
         <sn-select>
           <select snControl>
             <option>09:00 - 10:00</option>
@@ -260,156 +254,145 @@ import {
           </select>
         </sn-select>
       </sn-field>
-      <sn-field label="Salle de repli" error="Choisissez une salle de repli.">
+      <sn-field label="Fallback room" error="Choose a fallback room.">
         <sn-select>
           <select snControl>
-            <option value="" disabled selected>Choisir une salle</option>
+            <option value="" disabled selected>Choose a room</option>
             @for (room of rooms; track room) {
               <option>{{ room }}</option>
             }
           </select>
         </sn-select>
       </sn-field>
-      <sn-field label="Étage" hint="Fixé par la salle choisie.">
+      <sn-field label="Floor" hint="Set by the chosen room.">
         <sn-select>
           <select snControl disabled>
-            <option>3e étage</option>
+            <option>3rd floor</option>
           </select>
         </sn-select>
       </sn-field>
     </div>
 
-    <h3>Cases à cocher</h3>
+    <h3>Checkboxes</h3>
     <div class="stack">
-      <sn-checkbox label="Ajouter un vidéoprojecteur">
+      <sn-checkbox label="Add a video projector">
         <input type="checkbox" snControl />
       </sn-checkbox>
-      <sn-checkbox label="Réservation récurrente" hint="Chaque semaine, le même jour.">
+      <sn-checkbox label="Recurring booking" hint="Every week, on the same day.">
         <input type="checkbox" snControl checked />
       </sn-checkbox>
-      <sn-checkbox
-        label="J'accepte le règlement des salles"
-        error="Acceptez le règlement pour réserver."
-      >
+      <sn-checkbox label="I accept the room rules" error="Accept the rules to book.">
         <input type="checkbox" snControl />
       </sn-checkbox>
-      <sn-checkbox label="Accès handicapé (toutes les salles)">
+      <sn-checkbox label="Wheelchair access (all rooms)">
         <input type="checkbox" snControl checked disabled />
       </sn-checkbox>
-      <sn-checkbox label="Traiteur (indisponible)">
+      <sn-checkbox label="Catering (unavailable)">
         <input type="checkbox" snControl disabled />
       </sn-checkbox>
     </div>
 
-    <h3>Boutons radio</h3>
+    <h3>Radio buttons</h3>
     <div class="stack">
-      <sn-radio-group legend="Durée" hint="Une réservation dure au plus deux heures.">
+      <sn-radio-group legend="Duration" hint="A booking lasts two hours at most.">
         <sn-radio label="30 minutes">
           <input type="radio" name="duration" value="30" snControl />
         </sn-radio>
-        <sn-radio label="1 heure" hint="Le plus fréquent pour une réunion.">
+        <sn-radio label="1 hour" hint="The most common for a meeting.">
           <input type="radio" name="duration" value="60" snControl checked />
         </sn-radio>
-        <sn-radio label="2 heures">
+        <sn-radio label="2 hours">
           <input type="radio" name="duration" value="120" snControl />
         </sn-radio>
-        <sn-radio label="Journée entière (sur demande)">
+        <sn-radio label="Full day (on request)">
           <input type="radio" name="duration" value="day" snControl disabled />
         </sn-radio>
       </sn-radio-group>
-      <sn-radio-group
-        legend="Disposition de la salle"
-        orientation="horizontal"
-        error="Choisissez une disposition."
-      >
-        <sn-radio label="Réunion">
+      <sn-radio-group legend="Room layout" orientation="horizontal" error="Choose a layout.">
+        <sn-radio label="Meeting">
           <input type="radio" name="layout" value="meeting" snControl />
         </sn-radio>
-        <sn-radio label="Conférence">
+        <sn-radio label="Conference">
           <input type="radio" name="layout" value="conference" snControl />
         </sn-radio>
-        <sn-radio label="Atelier">
+        <sn-radio label="Workshop">
           <input type="radio" name="layout" value="workshop" snControl />
         </sn-radio>
       </sn-radio-group>
     </div>
 
-    <h3>Interrupteurs</h3>
+    <h3>Switches</h3>
     <div class="stack">
-      <sn-switch label="Recevoir une confirmation par courriel">
+      <sn-switch label="Get a confirmation by email">
         <input type="checkbox" role="switch" snControl checked />
       </sn-switch>
-      <sn-switch label="Rappel la veille" hint="Envoyé à 18:00.">
+      <sn-switch label="Reminder the day before" hint="Sent at 18:00.">
         <input type="checkbox" role="switch" snControl />
       </sn-switch>
-      <sn-switch label="Partager avec mon équipe" error="Vous n'avez pas encore d'équipe.">
+      <sn-switch label="Share with my team" error="You do not have a team yet.">
         <input type="checkbox" role="switch" snControl />
       </sn-switch>
-      <sn-switch label="Synchroniser l'agenda (géré par l'administrateur)">
+      <sn-switch label="Sync the calendar (managed by the administrator)">
         <input type="checkbox" role="switch" snControl checked disabled />
       </sn-switch>
-      <sn-switch label="Mode hors ligne (bientôt)">
+      <sn-switch label="Offline mode (coming soon)">
         <input type="checkbox" role="switch" snControl disabled />
       </sn-switch>
     </div>
 
     <h2>Messages</h2>
     <div class="stack">
-      <sn-message type="success">
-        Réservation enregistrée : salle Croix-Rousse, le 12/03/2026.
-      </sn-message>
-      <sn-message type="info">
-        Les réservations sont ouvertes jusqu'à 30 jours à l'avance.
-      </sn-message>
+      <sn-message type="success"> Booking saved: Croix-Rousse room, on 12/03/2026. </sn-message>
+      <sn-message type="info"> Bookings open up to 30 days in advance. </sn-message>
       <sn-message type="warning">
-        Salle déjà réservée à 15:00 : votre créneau s'arrêtera à 15:00.
+        Room already booked at 15:00: your slot will end at 15:00.
       </sn-message>
       <sn-message type="error">
-        Le service est indisponible. Réessayez dans quelques minutes.
+        The service is unavailable. Try again in a few minutes.
       </sn-message>
-      <sn-info-banner>Nouveau : les salles Confluence sont réservables.</sn-info-banner>
-      <sn-info-banner href="#">Consulter le règlement des salles.</sn-info-banner>
+      <sn-info-banner>New: the Confluence rooms can now be booked.</sn-info-banner>
+      <sn-info-banner href="#">Read the room rules.</sn-info-banner>
     </div>
 
-    <h2>Notification temporaire</h2>
+    <h2>Toast</h2>
     <div class="row">
       <button snButton type="button" (click)="toastSimple()">Simple</button>
-      <button snButton type="button" (click)="toastWithAction()">Avec action « Annuler »</button>
-      <button snButton type="button" (click)="toastLong()">Texte long</button>
-      <button snButton type="button" (click)="toastError()">Erreur</button>
+      <button snButton type="button" (click)="toastWithAction()">With a “Cancel” action</button>
+      <button snButton type="button" (click)="toastLong()">Long text</button>
+      <button snButton type="button" (click)="toastError()">Error</button>
     </div>
-    <p class="sn-text-muted">Résultat du dernier toast : {{ toastResult() }}</p>
+    <p class="sn-text-muted">Last toast result: {{ toastResult() }}</p>
 
-    <h2>États d'écran</h2>
-    <sn-loading label="Chargement des réservations" />
-    <sn-empty-state title="Aucune réservation" text="Vous n'avez pas encore réservé de salle.">
-      <button snButton variant="primary" type="button">Réserver une salle</button>
+    <h2>Screen states</h2>
+    <sn-loading label="Loading bookings" />
+    <sn-empty-state title="No bookings" text="You have not booked a room yet.">
+      <button snButton variant="primary" type="button">Book a room</button>
     </sn-empty-state>
     <sn-error-state
-      title="Chargement impossible"
-      text="Le service est indisponible. Réessayez dans quelques minutes."
+      title="Could not load"
+      text="The service is unavailable. Try again in a few minutes."
       (retry)="retries.set(retries() + 1)"
     />
-    <p class="sn-text-muted">Nouvelles tentatives : {{ retries() }}</p>
+    <p class="sn-text-muted">Retries: {{ retries() }}</p>
 
-    <h2>Carte</h2>
+    <h2>Card</h2>
     <sn-card>
       <h3 snCardHeader>Croix-Rousse</h3>
-      <p class="card-line">12/03/2026, de 14:00 à 15:00</p>
-      <sn-status-badge status="confirmed" label="Confirmée" />
+      <p class="card-line">12/03/2026, from 14:00 to 15:00</p>
+      <sn-status-badge status="confirmed" label="Confirmed" />
       <div snCardActions>
-        <button snButton variant="secondary" type="button">Modifier</button>
+        <button snButton variant="secondary" type="button">Edit</button>
       </div>
     </sn-card>
 
-    <h2>Tableau</h2>
+    <h2>Table</h2>
     <div class="sn-table-wrapper">
       <table class="sn-table">
         <thead>
           <tr>
-            <th scope="col">Salle</th>
+            <th scope="col">Room</th>
             <th scope="col">Date</th>
-            <th scope="col">Statut</th>
+            <th scope="col">Status</th>
             <th scope="col"><span class="visually-hidden">Actions</span></th>
           </tr>
         </thead>
@@ -417,24 +400,24 @@ import {
           <tr>
             <td>Croix-Rousse</td>
             <td>12/03/2026</td>
-            <td><sn-status-badge status="confirmed" label="Confirmée" /></td>
+            <td><sn-status-badge status="confirmed" label="Confirmed" /></td>
             <td>
-              <sn-action-menu label="Actions pour Croix-Rousse le 12/03/2026">
-                <button snMenuItem [icon]="pencil">Modifier</button>
-                <button snMenuItem [icon]="copy">Dupliquer</button>
-                <button snMenuItem [icon]="cancel" tone="danger">Annuler la réservation</button>
+              <sn-action-menu label="Actions for Croix-Rousse on 12/03/2026">
+                <button snMenuItem [icon]="pencil">Edit</button>
+                <button snMenuItem [icon]="copy">Duplicate</button>
+                <button snMenuItem [icon]="cancel" tone="danger">Cancel the booking</button>
               </sn-action-menu>
             </td>
           </tr>
           <tr>
             <td>Fourvière</td>
             <td>14/03/2026</td>
-            <td><sn-status-badge status="pending" label="En attente" /></td>
+            <td><sn-status-badge status="pending" label="Pending" /></td>
             <td>
-              <sn-action-menu label="Actions pour Fourvière le 14/03/2026">
-                <button snMenuItem [icon]="pencil">Modifier</button>
-                <button snMenuItem [icon]="copy">Dupliquer</button>
-                <button snMenuItem [icon]="cancel" tone="danger">Annuler la réservation</button>
+              <sn-action-menu label="Actions for Fourvière on 14/03/2026">
+                <button snMenuItem [icon]="pencil">Edit</button>
+                <button snMenuItem [icon]="copy">Duplicate</button>
+                <button snMenuItem [icon]="cancel" tone="danger">Cancel the booking</button>
               </sn-action-menu>
             </td>
           </tr>
@@ -442,31 +425,31 @@ import {
       </table>
     </div>
 
-    <h2>En-tête</h2>
+    <h2>Header</h2>
     <p>
-      L'en-tête de cette démonstration est celui du composant <code>sn-app-header</code> : avec
-      l'utilisateur fictif « Camille Dupont », ouvrez son menu en haut à droite, ou le menu mobile
-      en dessous de 960 px, puis essayez « Se déconnecter ».
+      The header of this demo is the <code>sn-app-header</code> component: with the sample user
+      “Camille Dupont”, open their menu at the top right, or the mobile menu below 960 px, then try
+      “Se déconnecter” (the library's default label, in French).
     </p>
   `,
 })
 export class ComponentsPage {
   protected readonly dialog = viewChild.required(SnConfirmDialog);
-  protected readonly lastClose = signal('aucune');
+  protected readonly lastClose = signal('none');
   protected readonly rules = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly deleted = signal(false);
   protected readonly retries = signal(0);
-  protected readonly toastResult = signal('aucun');
+  protected readonly toastResult = signal('none');
   private readonly toast = inject(SnToastService);
-  protected readonly menuChoice = signal('aucun');
+  protected readonly menuChoice = signal('none');
   protected readonly rooms = ['Croix-Rousse', 'Fourvière', 'Confluence'];
   protected readonly filter = signal('week');
 
   protected readonly tones = ['neutral', 'primary', 'accent', 'brand', 'solid', 'outline'] as const;
   protected readonly filters: SnFilterOption[] = [
-    { value: 'week', label: 'Cette semaine' },
-    { value: 'month', label: 'Ce mois-ci' },
-    { value: 'past', label: 'Passées' },
+    { value: 'week', label: 'This week' },
+    { value: 'month', label: 'This month' },
+    { value: 'past', label: 'Past' },
   ];
   protected readonly pencil = LucidePencil.icon;
   protected readonly copy = LucideCopy.icon;
@@ -475,34 +458,34 @@ export class ComponentsPage {
   protected readonly calendar = LucideCalendarPlus.icon;
 
   protected toastSimple(): void {
-    this.track(this.toast.show('Réservation enregistrée.'));
+    this.track(this.toast.show('Booking saved.'));
   }
 
   protected toastWithAction(): void {
-    this.track(this.toast.show('Réservation du 12/03 supprimée.', { action: 'Annuler' }));
+    this.track(this.toast.show('Booking of 12/03 deleted.', { action: 'Cancel' }));
   }
 
   protected toastLong(): void {
     this.track(
       this.toast.show(
-        'Réservation enregistrée : salle Croix-Rousse, le 12/03/2026 de 14:00 à 15:00. Un courriel de confirmation vous a été envoyé.',
+        'Booking saved: Croix-Rousse room, on 12/03/2026 from 14:00 to 15:00. A confirmation email has been sent to you.',
       ),
     );
   }
 
   protected toastError(): void {
     this.track(
-      this.toast.show("La réservation n'a pas pu être supprimée.", {
+      this.toast.show('The booking could not be deleted.', {
         type: 'error',
-        action: 'Réessayer',
+        action: 'Try again',
       }),
     );
   }
 
   private track(ref: SnToastRef): void {
-    this.toastResult.set('affiché');
+    this.toastResult.set('shown');
     ref.result.then((result) =>
-      this.toastResult.set(result === 'action' ? 'action « Annuler »' : 'fermé'),
+      this.toastResult.set(result === 'action' ? '“Cancel” action' : 'closed'),
     );
   }
 

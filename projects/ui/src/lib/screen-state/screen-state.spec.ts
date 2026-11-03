@@ -9,16 +9,16 @@ import { SnLoading } from './loading';
 @Component({
   imports: [SnLoading, SnEmptyState, SnErrorState, SnButton],
   template: `
-    <sn-loading label="Chargement des réservations…" />
-    <sn-empty-state title="Aucune réservation" text="Vous n'avez rien réservé pour le moment.">
-      <button snButton variant="primary" type="button">Réserver</button>
+    <sn-loading label="Loading bookings…" />
+    <sn-empty-state title="No bookings" text="You haven't booked anything yet.">
+      <button snButton variant="primary" type="button">Book</button>
     </sn-empty-state>
     <sn-empty-state id="custom" title="T" text="X" [icon]="customIcon" />
-    <sn-error-state id="label" title="T" text="X" retryLabel="Recommencer" />
+    <sn-error-state id="label" title="T" text="X" retryLabel="Start over" />
     <sn-error-state
       id="main"
-      title="Chargement impossible"
-      text="Une erreur est survenue."
+      title="Could not load"
+      text="An error occurred."
       (retry)="count = count + 1"
     />
   `,
@@ -38,7 +38,7 @@ describe('SnLoading', () => {
   it('is a status with its label and a decorative animation', () => {
     const loading = setup().el.querySelector('sn-loading')!;
     expect(loading.getAttribute('role')).toBe('status');
-    expect(loading.textContent).toContain('Chargement des réservations…');
+    expect(loading.textContent).toContain('Loading bookings…');
     expect(loading.querySelector('.sn-loading-spinner')!.getAttribute('aria-hidden')).toBe('true');
     const lines = loading.querySelector('.sn-loading-lines')!;
     expect(lines.getAttribute('aria-hidden')).toBe('true');
@@ -51,10 +51,10 @@ describe('SnLoading', () => {
 describe('SnEmptyState', () => {
   it('shows the title, text, icon and projected action', () => {
     const empty = setup().el.querySelector('sn-empty-state')!;
-    expect(empty.querySelector('strong')!.textContent).toBe('Aucune réservation');
-    expect(empty.textContent).toContain("Vous n'avez rien réservé");
+    expect(empty.querySelector('strong')!.textContent).toBe('No bookings');
+    expect(empty.textContent).toContain("You haven't booked anything");
     expect(empty.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
-    expect(empty.querySelector('button')!.textContent).toContain('Réserver');
+    expect(empty.querySelector('button')!.textContent).toContain('Book');
   });
 
   it('renders the default icon, or the custom one when given', () => {
@@ -71,13 +71,13 @@ describe('SnErrorState', () => {
   it('is an alert with title and text', () => {
     const error = setup().el.querySelector('#main')!;
     expect(error.getAttribute('role')).toBe('alert');
-    expect(error.querySelector('strong')!.textContent).toBe('Chargement impossible');
-    expect(error.textContent).toContain('Une erreur est survenue.');
+    expect(error.querySelector('strong')!.textContent).toBe('Could not load');
+    expect(error.textContent).toContain('An error occurred.');
   });
 
   it('uses a custom retry label', () => {
     const button = setup().el.querySelector('#label button')!;
-    expect(button.textContent!.trim()).toBe('Recommencer');
+    expect(button.textContent!.trim()).toBe('Start over');
   });
 
   it('emits retry once per click on the retry button', () => {

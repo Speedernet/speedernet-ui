@@ -68,6 +68,6 @@ export function swatchInfo(value: string): SwatchInfo | null {
         .toUpperCase(),
     text: dark >= light ? 'dark' : 'light',
     ratio,
-    level: ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA gros texte' : 'insuffisant',
+    level: ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA large text' : 'insufficient',
   };
 }

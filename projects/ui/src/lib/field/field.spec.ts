@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { SnControl } from './control';
 import { SnField } from './field';
 
-const ERROR = "Cette date n'existe pas. Format attendu : jj/mm/aaaa.";
+const ERROR = 'This date does not exist. Expected format: dd/mm/yyyy.';
 
 @Component({
   imports: [SnField, SnControl],
@@ -11,7 +11,7 @@ const ERROR = "Cette date n'existe pas. Format attendu : jj/mm/aaaa.";
     <sn-field id="first" label="Date" [hint]="hint()" [error]="error()">
       <input snControl />
     </sn-field>
-    <sn-field id="second" label="Nom"><input snControl /></sn-field>
+    <sn-field id="second" label="Name"><input snControl /></sn-field>
   `,
 })
 class Host {
@@ -21,7 +21,7 @@ class Host {
 
 @Component({
   imports: [SnField, SnControl],
-  template: `<sn-field label="Statut"
+  template: `<sn-field label="Status"
     ><select snControl>
       <option>A</option>
     </select></sn-field
@@ -61,10 +61,10 @@ describe('SnField', () => {
 
   it('describes the control by the hint when there is one', () => {
     const { fixture, root, input } = setup();
-    fixture.componentInstance.hint.set('Exemple : 31/12/2026');
+    fixture.componentInstance.hint.set('Example: 31/12/2026');
     fixture.detectChanges();
     const hint = root.querySelector('#first .sn-field-hint')!;
-    expect(hint.textContent!.trim()).toBe('Exemple : 31/12/2026');
+    expect(hint.textContent!.trim()).toBe('Example: 31/12/2026');
     expect(referencedIds(input())).toEqual([hint.id]);
     expect(input().hasAttribute('aria-invalid')).toBe(false);
   });
@@ -82,7 +82,7 @@ describe('SnField', () => {
 
   it('lists hint and error together', () => {
     const { fixture, root, input } = setup();
-    fixture.componentInstance.hint.set('Aide');
+    fixture.componentInstance.hint.set('Help');
     fixture.componentInstance.error.set(ERROR);
     fixture.detectChanges();
     const hintId = root.querySelector('#first .sn-field-hint')!.id;
@@ -92,7 +92,7 @@ describe('SnField', () => {
 
   it('removes aria-invalid and the reference when the error goes away', () => {
     const { fixture, root, input } = setup();
-    fixture.componentInstance.hint.set('Aide');
+    fixture.componentInstance.hint.set('Help');
     fixture.componentInstance.error.set(ERROR);
     fixture.detectChanges();
     const hintId = root.querySelector('#first .sn-field-hint')!.id;

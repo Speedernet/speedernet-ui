@@ -5,14 +5,14 @@ import { SnConfirmDialog } from './confirm-dialog';
 @Component({
   imports: [SnConfirmDialog],
   template: `
-    <button id="opener" type="button">Ouvrir</button>
+    <button id="opener" type="button">Open</button>
     <sn-confirm-dialog
-      title="Supprimer la réservation du 12/03 ?"
-      confirmLabel="Supprimer"
+      title="Delete the booking on 12/03?"
+      confirmLabel="Delete"
       (confirmed)="confirmed = confirmed + 1"
       (cancelled)="cancelled = cancelled + 1"
     >
-      Cette action est définitive.
+      This cannot be undone.
     </sn-confirm-dialog>
   `,
 })
@@ -71,7 +71,7 @@ describe('SnConfirmDialog', () => {
     expect(dialog.open).toBe(true);
     const title = document.getElementById(dialog.getAttribute('aria-labelledby')!)!;
     expect(title.tagName).toBe('H2');
-    expect(title.textContent).toContain('Supprimer la réservation du 12/03 ?');
+    expect(title.textContent).toContain('Delete the booking on 12/03?');
     expect(buttons()[0].textContent).toContain('Annuler');
     expect(document.activeElement).toBe(buttons()[0]);
   });
@@ -79,9 +79,9 @@ describe('SnConfirmDialog', () => {
   it('projects the message and shows a danger confirm button after cancel', () => {
     const { dialog, open, buttons } = setup();
     open();
-    expect(dialog.textContent).toContain('Cette action est définitive.');
+    expect(dialog.textContent).toContain('This cannot be undone.');
     expect(buttons()[0].classList).toContain('sn-button-secondary');
-    expect(buttons()[1].textContent).toContain('Supprimer');
+    expect(buttons()[1].textContent).toContain('Delete');
     expect(buttons()[1].classList).toContain('sn-button-danger');
   });
 
@@ -158,8 +158,8 @@ describe('SnConfirmDialog', () => {
     const fixture = TestBed.createComponent(SnConfirmDialog);
     fixture.componentRef.setInput('title', 'T');
     fixture.componentRef.setInput('confirmLabel', 'OK');
-    fixture.componentRef.setInput('cancelLabel', 'Retour');
+    fixture.componentRef.setInput('cancelLabel', 'Back');
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('button').textContent).toContain('Retour');
+    expect(fixture.nativeElement.querySelector('button').textContent).toContain('Back');
   });
 });

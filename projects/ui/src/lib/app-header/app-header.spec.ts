@@ -18,20 +18,20 @@ class Page {}
   imports: [SnAppHeader, RouterOutlet],
   template: `
     <sn-app-header
-      appName="Réservation de salles"
+      appName="Room booking"
       [homeLink]="homeLink"
       [navItems]="navItems"
       [user]="user"
       (logout)="onLogout()"
     />
-    <button id="outside" type="button">Ailleurs</button>
+    <button id="outside" type="button">Elsewhere</button>
     <router-outlet />
   `,
 })
 class Host {
   readonly navItems: SnNavItem[] = [
-    { label: 'Accueil', link: '/' },
-    { label: 'Réservations', link: '/reservations' },
+    { label: 'Home', link: '/' },
+    { label: 'Bookings', link: '/bookings' },
   ];
   readonly user = hostUser;
   readonly homeLink = hostHomeLink;
@@ -45,7 +45,7 @@ class Host {
 }
 
 async function setup(
-  url = '/reservations',
+  url = '/bookings',
   user: SnHeaderUser | null = { displayName: 'Camille Dupont' },
   homeLink = '/',
 ) {
@@ -59,8 +59,8 @@ async function setup(
           component: Host,
           children: [
             { path: '', component: Page },
-            { path: 'reservations', component: Page },
-            { path: 'accueil', component: Page },
+            { path: 'bookings', component: Page },
+            { path: 'home', component: Page },
           ],
         },
       ]),
@@ -100,16 +100,16 @@ describe('SnAppHeader', () => {
     const home = header().querySelector('a.sn-app-header-home') as HTMLAnchorElement;
     expect(home.getAttribute('href')).toBe('/');
     expect(home.querySelector('sn-logo img')!.getAttribute('alt')).toBe('');
-    expect(home.textContent).toContain('Réservation de salles');
+    expect(home.textContent).toContain('Room booking');
   });
 
   it('renders the main navigation and marks only the active route', async () => {
-    const { header } = await setup('/reservations');
+    const { header } = await setup('/bookings');
     const nav = header().querySelector('nav.sn-app-header-nav')!;
     expect(nav.getAttribute('aria-label')).toBe('Navigation principale');
     const [home, bookings] = Array.from(nav.querySelectorAll('a'));
-    expect(home.textContent).toContain('Accueil');
-    expect(bookings.getAttribute('href')).toBe('/reservations');
+    expect(home.textContent).toContain('Home');
+    expect(bookings.getAttribute('href')).toBe('/bookings');
     expect(bookings.getAttribute('aria-current')).toBe('page');
     expect(bookings.classList).toContain('sn-nav-active');
     expect(home.hasAttribute('aria-current')).toBe(false);
@@ -124,7 +124,7 @@ describe('SnAppHeader', () => {
   });
 
   it('never marks a "/" item active on other pages, even with another home link', async () => {
-    const { header } = await setup('/reservations', undefined, '/accueil');
+    const { header } = await setup('/bookings', undefined, '/home');
     const [home, bookings] = Array.from(header().querySelectorAll('nav.sn-app-header-nav a'));
     expect(home.hasAttribute('aria-current')).toBe(false);
     expect(home.classList).not.toContain('sn-nav-active');
@@ -271,13 +271,13 @@ describe('SnAppHeader', () => {
       expect(nav.getAttribute('aria-label')).toBe('Navigation principale');
       expect(Array.from(nav.querySelectorAll('a')).map((a) => a.getAttribute('href'))).toEqual([
         '/',
-        '/reservations',
+        '/bookings',
       ]);
       expect(content.textContent).toContain('Se déconnecter');
     });
 
     it('closes when a link to another page is chosen', async () => {
-      const { menuButton, panel, detect, harness } = await setup('/reservations');
+      const { menuButton, panel, detect, harness } = await setup('/bookings');
       const button = menuButton();
       button.click();
       await detect();
@@ -290,17 +290,17 @@ describe('SnAppHeader', () => {
     });
 
     it('closes when the link of the current page is chosen', async () => {
-      const { menuButton, panel, detect } = await setup('/reservations');
+      const { menuButton, panel, detect } = await setup('/bookings');
       const button = menuButton();
       button.click();
       await detect();
-      (panel(button)!.querySelector('a[href="/reservations"]') as HTMLAnchorElement).click();
+      (panel(button)!.querySelector('a[href="/bookings"]') as HTMLAnchorElement).click();
       await detect();
       expect(button.getAttribute('aria-expanded')).toBe('false');
     });
 
     it('closes after any navigation', async () => {
-      const { menuButton, detect, harness } = await setup('/reservations');
+      const { menuButton, detect, harness } = await setup('/bookings');
       const button = menuButton();
       button.click();
       await detect();
@@ -348,7 +348,7 @@ describe('SnAppHeader', () => {
   });
 
   it('shows neither user button nor logout without a user', async () => {
-    const { header, userButton, menuButton, panel, detect } = await setup('/reservations', null);
+    const { header, userButton, menuButton, panel, detect } = await setup('/bookings', null);
     expect(userButton()).toBeNull();
     menuButton().click();
     await detect();

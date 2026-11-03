@@ -15,9 +15,7 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('sn-app-header')?.textContent).toContain(
-      'Démonstration @speedernet/ui',
-    );
+    expect(compiled.querySelector('sn-app-header')?.textContent).toContain('@speedernet/ui demo');
     expect(compiled.querySelector('main.sn-container')).not.toBeNull();
   });
 
@@ -28,6 +26,6 @@ describe('App', () => {
     fixture.detectChanges();
     expect(
       (fixture.nativeElement as HTMLElement).querySelector('sn-message')?.textContent,
-    ).toContain('Déconnexion simulée.');
+    ).toContain('Simulated logout.');
   });
 });
