@@ -26,6 +26,8 @@ if (published) {
 } else {
   run('npm run build:ui');
   run('npm publish ./dist/ui');
-  // Prints "New tag: ..." lines, which changesets/action pushes and turns into GitHub releases
-  run('npx changeset tag');
+  run('npx changeset git-tag');
+  // changesets/action pushes the tags and creates GitHub releases from these lines;
+  // Changesets 3 no longer prints them itself
+  console.log(`New tag: ${name}@${version}`);
 }

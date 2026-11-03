@@ -1,9 +1,8 @@
 name: CI
 
+# Pull requests only: once merged, main is checked again by the Release workflow (tests and build)
 on:
   pull_request:
-  push:
-    branches: [main]
 
 permissions:
   contents: read

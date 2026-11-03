@@ -49,7 +49,7 @@ Publishing is automated by the [Release workflow](.github/workflows/release.yml)
 
 Nothing is published until the release pull request is merged. Merging more pull requests before that simply updates it.
 
-Pull requests opened by the workflow don't trigger the CI workflow (a GitHub limitation of `GITHUB_TOKEN`); the Release workflow runs the tests itself before publishing.
+The CI workflow only runs on pull requests. After every merge, the Release workflow runs the tests and builds the library on `main` before doing anything else. Pull requests opened by the workflow don't trigger CI either (a GitHub limitation of `GITHUB_TOKEN`), so this check also covers the release pull request.
 
 ### Requirements
 
