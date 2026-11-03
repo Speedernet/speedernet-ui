@@ -1,11 +1,11 @@
 // Filter tabs: pills that filter one list; the active pill is dark.
-.sn-filter-tabs {
+.speed-filter-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.sn-filter-tab {
+.speed-filter-tab {
   min-height: 44px;
   padding: 0 24px;
   border: 1px solid var(--tint-neutral-border);

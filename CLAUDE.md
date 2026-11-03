@@ -7,4 +7,5 @@
 - Never put a token in the repository or in the conversation.
 - The reference mockup is the source of truth.
 - Check before claiming: `npm test` and `npm run build:ui`.
+- Components, directives, services and CSS classes use the `speed` prefix (`SpeedButton`, `<speed-field>`, `speedControl`, `.speed-container`).
 - Publishing a version: see "Publishing" in `README.md`.

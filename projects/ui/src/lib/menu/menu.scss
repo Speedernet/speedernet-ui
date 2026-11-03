@@ -1,5 +1,5 @@
 // Menu: white panel next to its button, one row per action.
-.sn-menu {
+.speed-menu {
   // Popover in the top layer: fixed to the viewport, placed by the component next to its button.
   position: fixed;
   inset: auto;
@@ -14,14 +14,14 @@
   background: var(--color-surface);
   box-shadow: var(--shadow-message);
   color: var(--color-text);
-  animation: sn-menu-in 0.15s ease-out;
+  animation: speed-menu-in 0.15s ease-out;
 
   &[hidden] {
     display: none;
   }
 }
 
-.sn-menu-item {
+.speed-menu-item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -55,7 +55,7 @@
 }
 
 // Red text; its highlight is gray, as red on the yellow highlight is too faint.
-.sn-menu-item-danger:not(:disabled) {
+.speed-menu-item-danger:not(:disabled) {
   color: var(--color-danger);
 
   &:hover,
@@ -64,7 +64,7 @@
   }
 }
 
-@keyframes sn-menu-in {
+@keyframes speed-menu-in {
   from {
     opacity: 0;
     translate: 0 -0.25rem;
@@ -72,7 +72,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sn-menu {
+  .speed-menu {
     animation: none;
   }
 }

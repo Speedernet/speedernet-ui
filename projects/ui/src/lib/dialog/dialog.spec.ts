@@ -1,12 +1,12 @@
 import { Component, viewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SnDialog } from './dialog';
+import { SpeedDialog } from './dialog';
 
 @Component({
-  imports: [SnDialog],
+  imports: [SpeedDialog],
   template: `
     <button id="opener" type="button">Open</button>
-    <sn-dialog
+    <speed-dialog
       title="Book a room"
       (closed)="closed = closed + 1"
       (dismissed)="dismissed = dismissed + 1"
@@ -14,31 +14,31 @@ import { SnDialog } from './dialog';
       <label for="room">Room</label>
       <input id="room" />
       <input id="date" />
-      <button snDialogActions id="cancel" type="button">Cancel</button>
-      <button snDialogActions id="submit" type="button">Book</button>
-    </sn-dialog>
+      <button speedDialogActions id="cancel" type="button">Cancel</button>
+      <button speedDialogActions id="submit" type="button">Book</button>
+    </speed-dialog>
   `,
 })
 class Host {
   closed = 0;
   dismissed = 0;
-  readonly dialog = viewChild.required(SnDialog);
+  readonly dialog = viewChild.required(SpeedDialog);
 }
 
 @Component({
-  imports: [SnDialog],
+  imports: [SpeedDialog],
   template: `
-    <sn-dialog title="Information">
+    <speed-dialog title="Information">
       <p>No focusable element in the content.</p>
-      <button snDialogActions type="button">Got it</button>
-    </sn-dialog>
+      <button speedDialogActions type="button">Got it</button>
+    </speed-dialog>
   `,
 })
 class TextOnlyHost {
-  readonly dialog = viewChild.required(SnDialog);
+  readonly dialog = viewChild.required(SpeedDialog);
 }
 
-describe('SnDialog', () => {
+describe('SpeedDialog', () => {
   const proto = HTMLDialogElement.prototype;
   const original = { showModal: proto.showModal, close: proto.close };
 
@@ -94,8 +94,8 @@ describe('SnDialog', () => {
 
   it('projects the content in the body and the actions in the actions area', () => {
     const { dialog } = setup();
-    expect(dialog.querySelector('.sn-dialog-body #room')).not.toBeNull();
-    const actions = dialog.querySelectorAll('.sn-dialog-actions button');
+    expect(dialog.querySelector('.speed-dialog-body #room')).not.toBeNull();
+    const actions = dialog.querySelectorAll('.speed-dialog-actions button');
     expect([...actions].map((b) => b.id)).toEqual(['cancel', 'submit']);
   });
 

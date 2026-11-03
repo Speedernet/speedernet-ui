@@ -46,7 +46,7 @@ Breakpoint mixins are available for your own styles:
 }
 ```
 
-If you serve them at another URL, provide `SN_ASSETS_BASE` for the logos (the font URLs in the styles stay `/speedernet-ui/fonts`).
+If you serve them at another URL, provide `SPEED_ASSETS_BASE` for the logos (the font URLs in the styles stay `/speedernet-ui/fonts`).
 
 ## Use
 
@@ -54,15 +54,15 @@ Components are standalone: import the ones you need.
 
 ```ts
 import { Component } from '@angular/core';
-import { SnButton, SnField, SnControl } from '@speedernet/ui';
+import { SpeedButton, SpeedField, SpeedControl } from '@speedernet/ui';
 
 @Component({
-  imports: [SnButton, SnField, SnControl],
+  imports: [SpeedButton, SpeedField, SpeedControl],
   template: `
-    <sn-field label="Room">
-      <input snControl />
-    </sn-field>
-    <button snButton variant="primary" type="button">Book</button>
+    <speed-field label="Room">
+      <input speedControl />
+    </speed-field>
+    <button speedButton variant="primary" type="button">Book</button>
   `,
 })
 export class BookingForm {}

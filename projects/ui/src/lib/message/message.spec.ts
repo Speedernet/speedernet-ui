@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { LucideCheck, LucideCircleAlert, LucideTriangleAlert } from '@lucide/angular';
-import { SnInfoBanner } from './info-banner';
-import { SnMessage } from './message';
+import { SpeedInfoBanner } from './info-banner';
+import { SpeedMessage } from './message';
 import { messageAppearance } from './message-appearance';
 
 describe('messageAppearance', () => {
@@ -27,12 +27,12 @@ describe('messageAppearance', () => {
 });
 
 @Component({
-  imports: [SnMessage, SnInfoBanner],
+  imports: [SpeedMessage, SpeedInfoBanner],
   template: `
-    <sn-message type="error">Could not save.</sn-message>
-    <sn-message type="info">Nothing to report.</sn-message>
-    <sn-info-banner id="linked" href="/x">What's new</sn-info-banner>
-    <sn-info-banner id="plain">Maintenance tonight</sn-info-banner>
+    <speed-message type="error">Could not save.</speed-message>
+    <speed-message type="info">Nothing to report.</speed-message>
+    <speed-info-banner id="linked" href="/x">What's new</speed-info-banner>
+    <speed-info-banner id="plain">Maintenance tonight</speed-info-banner>
   `,
 })
 class Host {}
@@ -43,28 +43,28 @@ function setup() {
   return fixture.nativeElement as HTMLElement;
 }
 
-describe('SnMessage', () => {
+describe('SpeedMessage', () => {
   it('is a status with the badge word and the projected text', () => {
-    const message = setup().querySelector('sn-message')!;
+    const message = setup().querySelector('speed-message')!;
     expect(message.getAttribute('role')).toBe('status');
-    expect(message.querySelector('.sn-badge')!.textContent!.trim()).toBe('Erreur');
+    expect(message.querySelector('.speed-badge')!.textContent!.trim()).toBe('Erreur');
     expect(message.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
     expect(message.textContent).toContain('Could not save.');
   });
 
   it('has no icon for the info type', () => {
-    const message = setup().querySelectorAll('sn-message')[1];
-    expect(message.querySelector('.sn-badge')!.textContent!.trim()).toBe('Info');
+    const message = setup().querySelectorAll('speed-message')[1];
+    expect(message.querySelector('.speed-badge')!.textContent!.trim()).toBe('Info');
     expect(message.querySelector('svg')).toBeNull();
   });
 });
 
-describe('SnInfoBanner', () => {
+describe('SpeedInfoBanner', () => {
   it('renders a link with the badge and a decorative arrow when href is set', () => {
     const banner = setup().querySelector('#linked')!;
     const link = banner.querySelector('a')!;
     expect(link.getAttribute('href')).toBe('/x');
-    expect(link.querySelector('.sn-badge')!.textContent!.trim()).toBe('Info');
+    expect(link.querySelector('.speed-badge')!.textContent!.trim()).toBe('Info');
     expect(link.textContent).toContain("What's new");
     const arrow = link.querySelector('svg')!;
     expect(arrow.getAttribute('aria-hidden')).toBe('true');
@@ -74,7 +74,7 @@ describe('SnInfoBanner', () => {
   it('renders a div instead of a link without href', () => {
     const banner = setup().querySelector('#plain')!;
     expect(banner.querySelector('a')).toBeNull();
-    expect(banner.querySelector('div.sn-info-banner-body')).not.toBeNull();
+    expect(banner.querySelector('div.speed-info-banner-body')).not.toBeNull();
     expect(banner.querySelector('svg')!.getAttribute('width')).toBe('14');
     expect(banner.textContent).toContain('Maintenance tonight');
   });

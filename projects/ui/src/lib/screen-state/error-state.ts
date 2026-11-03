@@ -6,28 +6,28 @@ import {
   output,
 } from '@angular/core';
 import { LucideCircleAlert, LucideDynamicIcon } from '@lucide/angular';
-import { SnButton } from '../button/button';
+import { SpeedButton } from '../button/button';
 
 /** Error screen with a retry button. */
 @Component({
-  selector: 'sn-error-state',
-  imports: [LucideDynamicIcon, SnButton],
+  selector: 'speed-error-state',
+  imports: [LucideDynamicIcon, SpeedButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span class="sn-state-icon"
+    <span class="speed-state-icon"
       ><svg [lucideIcon]="icon" [size]="26" aria-hidden="true"></svg
     ></span>
     <strong>{{ title() }}</strong>
     <p>{{ text() }}</p>
-    <button snButton variant="secondary" type="button" (click)="retry.emit()">
+    <button speedButton variant="secondary" type="button" (click)="retry.emit()">
       {{ retryLabel() }}
     </button>
   `,
   styleUrl: './screen-state.scss',
-  host: { class: 'sn-error-state', role: 'alert' },
+  host: { class: 'speed-error-state', role: 'alert' },
 })
-export class SnErrorState {
+export class SpeedErrorState {
   readonly title = input.required<string>();
   readonly text = input.required<string>();
   readonly retryLabel = input('Réessayer');

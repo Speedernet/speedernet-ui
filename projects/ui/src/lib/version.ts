@@ -1,1 +1,1 @@
-export const SN_UI_NAME = '@speedernet/ui';
+export const SPEED_UI_NAME = '@speedernet/ui';

@@ -7,7 +7,7 @@ const file = fileURLToPath(new URL('../src/lib/tooltip/tooltip.scss', import.met
 const css = sass.compile(file).css;
 
 test('tooltip shows on hover and keyboard focus, not after a mouse click', () => {
-  assert.match(css, /\.sn-tooltip:is\(:hover, :has\(:focus-visible\)\)/);
+  assert.match(css, /\.speed-tooltip:is\(:hover, :has\(:focus-visible\)\)/);
   assert.doesNotMatch(css, /:focus-within/);
 });
 

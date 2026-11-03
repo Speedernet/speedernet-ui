@@ -1,17 +1,17 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SnControl } from './control';
-import { SnField } from './field';
+import { SpeedControl } from './control';
+import { SpeedField } from './field';
 
 const ERROR = 'This date does not exist. Expected format: dd/mm/yyyy.';
 
 @Component({
-  imports: [SnField, SnControl],
+  imports: [SpeedField, SpeedControl],
   template: `
-    <sn-field id="first" label="Date" [hint]="hint()" [error]="error()">
-      <input snControl />
-    </sn-field>
-    <sn-field id="second" label="Name"><input snControl /></sn-field>
+    <speed-field id="first" label="Date" [hint]="hint()" [error]="error()">
+      <input speedControl />
+    </speed-field>
+    <speed-field id="second" label="Name"><input speedControl /></speed-field>
   `,
 })
 class Host {
@@ -20,16 +20,16 @@ class Host {
 }
 
 @Component({
-  imports: [SnField, SnControl],
-  template: `<sn-field label="Status"
-    ><select snControl>
+  imports: [SpeedField, SpeedControl],
+  template: `<speed-field label="Status"
+    ><select speedControl>
       <option>A</option>
-    </select></sn-field
+    </select></speed-field
   >`,
 })
 class SelectHost {}
 
-@Component({ imports: [SnControl], template: `<input snControl />` })
+@Component({ imports: [SpeedControl], template: `<input speedControl />` })
 class Orphan {}
 
 function setup() {
@@ -44,7 +44,7 @@ function referencedIds(input: HTMLElement): string[] {
   return (input.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean);
 }
 
-describe('SnField', () => {
+describe('SpeedField', () => {
   it('links the label to the control', () => {
     const { root, input } = setup();
     const label = root.querySelector<HTMLLabelElement>('#first label')!;
@@ -63,7 +63,7 @@ describe('SnField', () => {
     const { fixture, root, input } = setup();
     fixture.componentInstance.hint.set('Example: 31/12/2026');
     fixture.detectChanges();
-    const hint = root.querySelector('#first .sn-field-hint')!;
+    const hint = root.querySelector('#first .speed-field-hint')!;
     expect(hint.textContent!.trim()).toBe('Example: 31/12/2026');
     expect(referencedIds(input())).toEqual([hint.id]);
     expect(input().hasAttribute('aria-invalid')).toBe(false);
@@ -73,7 +73,7 @@ describe('SnField', () => {
     const { fixture, root, input } = setup();
     fixture.componentInstance.error.set(ERROR);
     fixture.detectChanges();
-    const message = root.querySelector('#first .sn-field-error')!;
+    const message = root.querySelector('#first .speed-field-error')!;
     expect(input().getAttribute('aria-invalid')).toBe('true');
     expect(referencedIds(input())).toContain(message.id);
     expect(message.textContent!.trim()).toBe(ERROR);
@@ -85,8 +85,8 @@ describe('SnField', () => {
     fixture.componentInstance.hint.set('Help');
     fixture.componentInstance.error.set(ERROR);
     fixture.detectChanges();
-    const hintId = root.querySelector('#first .sn-field-hint')!.id;
-    const errorId = root.querySelector('#first .sn-field-error')!.id;
+    const hintId = root.querySelector('#first .speed-field-hint')!.id;
+    const errorId = root.querySelector('#first .speed-field-error')!.id;
     expect(referencedIds(input())).toEqual([hintId, errorId]);
   });
 
@@ -95,12 +95,12 @@ describe('SnField', () => {
     fixture.componentInstance.hint.set('Help');
     fixture.componentInstance.error.set(ERROR);
     fixture.detectChanges();
-    const hintId = root.querySelector('#first .sn-field-hint')!.id;
+    const hintId = root.querySelector('#first .speed-field-hint')!.id;
     fixture.componentInstance.error.set(null);
     fixture.detectChanges();
     expect(input().hasAttribute('aria-invalid')).toBe(false);
     expect(referencedIds(input())).toEqual([hintId]);
-    expect(root.querySelector('#first .sn-field-error')).toBeNull();
+    expect(root.querySelector('#first .speed-field-error')).toBeNull();
     for (const id of referencedIds(input())) {
       expect(root.querySelector(`[id="${id}"]`)).not.toBeNull();
     }
@@ -123,8 +123,8 @@ describe('SnField', () => {
   });
 });
 
-describe('SnControl', () => {
-  it('throws a clear error outside an sn-field', () => {
-    expect(() => TestBed.createComponent(Orphan)).toThrowError(/sn-field/);
+describe('SpeedControl', () => {
+  it('throws a clear error outside a speed-field', () => {
+    expect(() => TestBed.createComponent(Orphan)).toThrowError(/speed-field/);
   });
 });

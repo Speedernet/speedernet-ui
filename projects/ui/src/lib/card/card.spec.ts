@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SnCard } from './card';
+import { SpeedCard } from './card';
 
 @Component({
-  imports: [SnCard],
+  imports: [SpeedCard],
   template: `
-    <sn-card>
-      <div snCardActions id="actions">Actions</div>
+    <speed-card>
+      <div speedCardActions id="actions">Actions</div>
       <p id="content">Content</p>
-      <div snCardHeader id="header">Header</div>
-    </sn-card>
+      <div speedCardHeader id="header">Header</div>
+    </speed-card>
   `,
 })
 class Host {}
 
-describe('SnCard', () => {
+describe('SpeedCard', () => {
   function setup() {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
-    return fixture.nativeElement.querySelector('sn-card') as HTMLElement;
+    return fixture.nativeElement.querySelector('speed-card') as HTMLElement;
   }
 
   it('is an article', () => {

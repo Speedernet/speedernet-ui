@@ -1,13 +1,13 @@
 // Checkbox, radio button and switch: the control, then its clickable label with the hint and the
-// error under it. Hint and error styles are those of `sn-field`.
-.sn-choice {
+// error under it. Hint and error styles are those of `speed-field`.
+.speed-choice {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
 }
 
 // As high as the first line of the label, so the control stays centred on it.
-.sn-choice-control {
+.speed-choice-control {
   position: relative;
   display: flex;
   flex: none;
@@ -20,42 +20,42 @@
   }
 }
 
-.sn-choice-text {
+.speed-choice-text {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
   min-width: 0;
 }
 
-.sn-choice-label {
+.speed-choice-label {
   cursor: pointer;
 }
 
-.sn-choice:has(input:disabled) .sn-choice-label,
-.sn-choice:has(input:disabled) .sn-choice-control > input {
+.speed-choice:has(input:disabled) .speed-choice-label,
+.speed-choice:has(input:disabled) .speed-choice-control > input {
   cursor: not-allowed;
 }
 
-.sn-choice:has(input:disabled) .sn-choice-label {
+.speed-choice:has(input:disabled) .speed-choice-label {
   color: var(--color-text-muted);
 }
 
 // Error: a red ring around the box or the dot, on top of the message (never colour alone).
-.sn-checkbox,
-.sn-radio {
-  > .sn-choice-control > input[aria-invalid='true']:not(:focus-visible) {
+.speed-checkbox,
+.speed-radio {
+  > .speed-choice-control > input[aria-invalid='true']:not(:focus-visible) {
     outline: 2px solid var(--color-danger);
     outline-offset: 2px;
   }
 }
 
 // Round outlines (focus and error) around the dot of a radio button.
-.sn-radio > .sn-choice-control > input {
+.speed-radio > .speed-choice-control > input {
   border-radius: 50%;
 }
 
 // Switch: the native checkbox, transparent, covers the drawn track and receives clicks and focus.
-.sn-switch .sn-choice-control {
+.speed-switch .speed-choice-control {
   width: 44px;
 
   > input {
@@ -69,7 +69,7 @@
   }
 }
 
-.sn-switch-track {
+.speed-switch-track {
   position: relative;
   width: 44px;
   height: 24px;
@@ -96,8 +96,8 @@
   }
 }
 
-.sn-switch .sn-choice-control > input {
-  &:checked + .sn-switch-track {
+.speed-switch .speed-choice-control > input {
+  &:checked + .speed-switch-track {
     border-color: var(--color-text);
     background: var(--color-text);
 
@@ -107,16 +107,16 @@
     }
   }
 
-  &:focus-visible + .sn-switch-track {
+  &:focus-visible + .speed-switch-track {
     outline: 3px solid var(--color-text);
     outline-offset: 3px;
   }
 
-  &[aria-invalid='true'] + .sn-switch-track {
+  &[aria-invalid='true'] + .speed-switch-track {
     border-color: var(--color-danger);
   }
 
-  &:disabled + .sn-switch-track {
+  &:disabled + .speed-switch-track {
     border-color: var(--color-border-strong);
     background: var(--color-disabled);
 
@@ -127,7 +127,7 @@
 }
 
 // Radio group: legend, options, then hint and error.
-.sn-radio-group-fieldset {
+.speed-radio-group-fieldset {
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -138,26 +138,26 @@
     padding: 0;
   }
 
-  > .sn-field-hint,
-  > .sn-field-error {
+  > .speed-field-hint,
+  > .speed-field-error {
     margin-top: var(--space-2);
   }
 }
 
-.sn-radio-group-options {
+.speed-radio-group-options {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
 }
 
-.sn-radio-group-horizontal .sn-radio-group-options {
+.speed-radio-group-horizontal .speed-radio-group-options {
   flex-flow: row wrap;
   gap: var(--space-2) var(--space-4);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sn-switch-track,
-  .sn-switch-track::after {
+  .speed-switch-track,
+  .speed-switch-track::after {
     transition: none;
   }
 }

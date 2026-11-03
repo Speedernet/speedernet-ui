@@ -1,24 +1,24 @@
 import { Directive, inject } from '@angular/core';
-import { SnFieldContext } from './field-context';
+import { SpeedFieldContext } from './field-context';
 
 /**
- * Native control of an `sn-field`, `sn-checkbox`, `sn-radio` or `sn-switch`: receives its id,
+ * Native control of an `speed-field`, `speed-checkbox`, `speed-radio` or `speed-switch`: receives its id,
  * `aria-invalid` and `aria-describedby`.
  */
 @Directive({
-  selector: 'input[snControl], select[snControl], textarea[snControl]',
+  selector: 'input[speedControl], select[speedControl], textarea[speedControl]',
   host: {
     '[id]': 'field.controlId',
     '[attr.aria-invalid]': "field.hasError() ? 'true' : null",
     '[attr.aria-describedby]': 'field.describedBy()',
   },
 })
-export class SnControl {
-  protected readonly field: SnFieldContext = (() => {
-    const field = inject(SnFieldContext, { optional: true });
+export class SpeedControl {
+  protected readonly field: SpeedFieldContext = (() => {
+    const field = inject(SpeedFieldContext, { optional: true });
     if (!field) {
       throw new Error(
-        '[snControl] must be placed inside an <sn-field>, <sn-checkbox>, <sn-radio> or <sn-switch>.',
+        '[speedControl] must be placed inside an <speed-field>, <speed-checkbox>, <speed-radio> or <speed-switch>.',
       );
     }
     return field;

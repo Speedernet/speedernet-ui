@@ -16,33 +16,33 @@ const FOCUSABLE =
 
 /**
  * Generic modal dialog built on the native `<dialog>`: a title, free projected content and an
- * actions area (`snDialogActions`). The page behind is inert while it is open, so focus stays
+ * actions area (`speedDialogActions`). The page behind is inert while it is open, so focus stays
  * inside. On opening, focus goes to the element marked `autofocus`, else the first focusable
  * element of the content, else the dialog itself, so a long text is read from its start rather
  * than from the actions. Focus returns to the previously focused element on any close.
  * Escape closes it and emits `dismissed`.
  */
 @Component({
-  selector: 'sn-dialog',
+  selector: 'speed-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <dialog
       #dialog
-      class="sn-dialog"
+      class="speed-dialog"
       tabindex="-1"
       [attr.aria-labelledby]="titleId"
       (cancel)="onCancel($event)"
       (close)="onNativeClose()"
     >
-      <h2 class="sn-dialog-title" [id]="titleId">{{ title() }}</h2>
-      <div class="sn-dialog-body"><ng-content /></div>
-      <div class="sn-dialog-actions"><ng-content select="[snDialogActions]" /></div>
+      <h2 class="speed-dialog-title" [id]="titleId">{{ title() }}</h2>
+      <div class="speed-dialog-body"><ng-content /></div>
+      <div class="speed-dialog-actions"><ng-content select="[speedDialogActions]" /></div>
     </dialog>
   `,
   styleUrl: './dialog.scss',
 })
-export class SnDialog {
+export class SpeedDialog {
   readonly title = input.required<string>();
 
   /** Emitted on every close, whatever its cause. */
@@ -50,7 +50,7 @@ export class SnDialog {
   /** Emitted when the user closes the dialog without an action: Escape or a native close. */
   readonly dismissed = output<void>();
 
-  protected readonly titleId = `sn-dialog-title-${nextId++}`;
+  protected readonly titleId = `speed-dialog-title-${nextId++}`;
 
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   private previouslyFocused: HTMLElement | null = null;
@@ -71,7 +71,7 @@ export class SnDialog {
     dialog.showModal();
     const target =
       dialog.querySelector<HTMLElement>('[autofocus]') ??
-      dialog.querySelector<HTMLElement>(`.sn-dialog-body :is(${FOCUSABLE})`) ??
+      dialog.querySelector<HTMLElement>(`.speed-dialog-body :is(${FOCUSABLE})`) ??
       dialog;
     target.focus();
   }

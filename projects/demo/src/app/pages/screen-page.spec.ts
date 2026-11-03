@@ -20,7 +20,7 @@ describe('ScreenPage', () => {
   afterEach(() => {
     proto.showModal = original.showModal;
     proto.close = original.close;
-    document.querySelectorAll('sn-toaster').forEach((t) => t.remove());
+    document.querySelectorAll('speed-toaster').forEach((t) => t.remove());
   });
 
   async function setup() {
@@ -32,9 +32,10 @@ describe('ScreenPage', () => {
       [...root.querySelectorAll<HTMLButtonElement>('button')].find(
         (b) => b.textContent!.trim() === text,
       )!;
-    const dialog = root.querySelector('sn-dialog dialog') as HTMLDialogElement;
-    const rows = () => [...root.querySelectorAll('.sn-table tbody tr')].map((r) => r.textContent!);
-    const announced = () => document.querySelector('.sn-toast-announcer')!.textContent!.trim();
+    const dialog = root.querySelector('speed-dialog dialog') as HTMLDialogElement;
+    const rows = () =>
+      [...root.querySelectorAll('.speed-table tbody tr')].map((r) => r.textContent!);
+    const announced = () => document.querySelector('.speed-toast-announcer')!.textContent!.trim();
     const set = (name: string, value: string) => {
       const control = dialog.querySelector<HTMLInputElement>(`[formcontrolname="${name}"]`)!;
       control.value = value;
@@ -53,7 +54,7 @@ describe('ScreenPage', () => {
     await fixture.whenStable();
     expect(dialog.open).toBe(true);
     expect(dialog.querySelector('h2')!.textContent).toContain('Book a room');
-    expect(dialog.querySelectorAll('sn-select select')).toHaveLength(2);
+    expect(dialog.querySelectorAll('speed-select select')).toHaveLength(2);
   });
 
   it('shows an error per empty field and keeps the dialog open', async () => {
@@ -61,7 +62,7 @@ describe('ScreenPage', () => {
     button('Book a room').click();
     await fixture.whenStable();
     await submit();
-    const errors = [...dialog.querySelectorAll('.sn-field-error')].map((e) =>
+    const errors = [...dialog.querySelectorAll('.speed-field-error')].map((e) =>
       e.textContent!.trim(),
     );
     expect(errors).toEqual(['Choose a room.', 'Choose a date.', 'Choose a time slot.']);
@@ -85,7 +86,7 @@ describe('ScreenPage', () => {
 
   it('gives each booking an action menu named after it', async () => {
     const { root } = await setup();
-    const labels = [...root.querySelectorAll('.sn-table .sn-action-menu-trigger')].map((b) =>
+    const labels = [...root.querySelectorAll('.speed-table .speed-action-menu-trigger')].map((b) =>
       b.getAttribute('aria-label'),
     );
     expect(labels).toEqual([
@@ -96,14 +97,14 @@ describe('ScreenPage', () => {
 
   it('cancels a booking from its menu and offers to restore it', async () => {
     const { fixture, root, rows, announced } = await setup();
-    const menu = root.querySelector('.sn-table sn-action-menu')!;
-    menu.querySelector<HTMLButtonElement>('.sn-action-menu-trigger')!.click();
+    const menu = root.querySelector('.speed-table speed-action-menu')!;
+    menu.querySelector<HTMLButtonElement>('.speed-action-menu-trigger')!.click();
     await fixture.whenStable();
     [...menu.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')].at(-1)!.click();
     await fixture.whenStable();
     expect(rows()[0]).toContain('Cancelled');
     expect(announced()).toContain('Booking of 12/03/2026 cancelled.');
-    document.querySelector<HTMLButtonElement>('.sn-toast-action')!.click();
+    document.querySelector<HTMLButtonElement>('.speed-toast-action')!.click();
     await fixture.whenStable();
     expect(rows()[0]).toContain('Confirmed');
   });

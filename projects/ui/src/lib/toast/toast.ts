@@ -14,24 +14,24 @@ import {
   signal,
 } from '@angular/core';
 import { LucideDynamicIcon, LucideX } from '@lucide/angular';
-import { SnBadge } from '../badge/badge';
-import { messageAppearance, type SnMessageType } from '../message/message-appearance';
+import { SpeedBadge } from '../badge/badge';
+import { messageAppearance, type SpeedMessageType } from '../message/message-appearance';
 
 /** How a toast ended: its action was used, or it was closed or timed out. */
-export type SnToastResult = 'action' | 'dismissed';
+export type SpeedToastResult = 'action' | 'dismissed';
 
-export interface SnToastOptions {
-  /** Type shown by the badge word, as in `sn-message`; defaults to "success". */
-  type?: SnMessageType;
+export interface SpeedToastOptions {
+  /** Type shown by the badge word, as in `speed-message`; defaults to "success". */
+  type?: SpeedMessageType;
   /** Label of an optional action button, for example "Undo". */
   action?: string;
   /** Display time in milliseconds; defaults to 5 s, or 10 s with an action. */
   duration?: number;
 }
 
-export interface SnToastRef {
+export interface SpeedToastRef {
   /** Resolves once, when the toast goes away. */
-  readonly result: Promise<SnToastResult>;
+  readonly result: Promise<SpeedToastResult>;
   /** Removes the toast now. */
   dismiss(): void;
 }
@@ -44,7 +44,7 @@ interface Toast {
   remaining: number;
   startedAt: number;
   timer: ReturnType<typeof setTimeout> | null;
-  resolve: (result: SnToastResult) => void;
+  resolve: (result: SpeedToastResult) => void;
 }
 
 const DEFAULT_DURATION = 5000;
@@ -54,44 +54,44 @@ const MAX_TOASTS = 3;
 let nextId = 0;
 
 /**
- * Stack of toasts at the bottom of the page, created by `SnToastService`. Messages are announced
+ * Stack of toasts at the bottom of the page, created by `SpeedToastService`. Messages are announced
  * through a polite live region; focus never moves to a toast. Timers stop while the pointer is
  * over the stack or focus is inside it. Escape closes the focused toast and focus goes back to
  * where it came from.
  */
 @Component({
-  selector: 'sn-toaster',
-  imports: [LucideDynamicIcon, SnBadge],
+  selector: 'speed-toaster',
+  imports: [LucideDynamicIcon, SpeedBadge],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="sn-toast-announcer" role="status">
+    <div class="speed-toast-announcer" role="status">
       @for (toast of announced(); track toast.id) {
         <span>{{ toast.appearance.label }} : {{ toast.message }}</span>
       }
     </div>
     <div
-      class="sn-toast-stack"
+      class="speed-toast-stack"
       (mouseenter)="setHovered(true)"
       (mouseleave)="setHovered(false)"
       (focusin)="onFocusIn($event)"
       (focusout)="onFocusOut($event)"
     >
       @for (toast of toasts(); track toast.id) {
-        <div class="sn-toast" [attr.data-toast]="toast.id" (keydown.escape)="close(toast)">
-          <sn-badge [tone]="toast.appearance.tone" [icon]="toast.appearance.icon">{{
+        <div class="speed-toast" [attr.data-toast]="toast.id" (keydown.escape)="close(toast)">
+          <speed-badge [tone]="toast.appearance.tone" [icon]="toast.appearance.icon">{{
             toast.appearance.label
-          }}</sn-badge>
-          <p class="sn-toast-message">{{ toast.message }}</p>
-          <div class="sn-toast-buttons">
+          }}</speed-badge>
+          <p class="speed-toast-message">{{ toast.message }}</p>
+          <div class="speed-toast-buttons">
             @if (toast.action) {
-              <button type="button" class="sn-toast-action" (click)="end(toast, 'action')">
+              <button type="button" class="speed-toast-action" (click)="end(toast, 'action')">
                 {{ toast.action }}
               </button>
             }
             <button
               type="button"
-              class="sn-toast-close"
+              class="speed-toast-close"
               [attr.aria-label]="closeLabel"
               (click)="close(toast)"
             >
@@ -103,9 +103,9 @@ let nextId = 0;
     </div>
   `,
   styleUrl: './toast.scss',
-  host: { class: 'sn-toaster' },
+  host: { class: 'speed-toaster' },
 })
-export class SnToaster {
+export class SpeedToaster {
   protected readonly closeIcon = LucideX.icon;
   protected readonly closeLabel = 'Fermer la notification';
   protected readonly toasts = signal<Toast[]>([]);
@@ -117,9 +117,9 @@ export class SnToaster {
   private focused = false;
   private returnFocus: HTMLElement | null = null;
 
-  show(message: string, options: SnToastOptions = {}): SnToastRef {
-    let resolve!: (result: SnToastResult) => void;
-    const result = new Promise<SnToastResult>((r) => (resolve = r));
+  show(message: string, options: SpeedToastOptions = {}): SpeedToastRef {
+    let resolve!: (result: SpeedToastResult) => void;
+    const result = new Promise<SpeedToastResult>((r) => (resolve = r));
     const toast: Toast = {
       id: nextId++,
       message,
@@ -144,7 +144,7 @@ export class SnToaster {
     this.end(toast, 'dismissed');
   }
 
-  protected end(toast: Toast, result: SnToastResult): void {
+  protected end(toast: Toast, result: SpeedToastResult): void {
     if (!this.toasts().includes(toast)) return;
     this.stop(toast);
     const element = this.host.querySelector(`[data-toast="${toast.id}"]`);
@@ -215,20 +215,22 @@ export class SnToaster {
  * added to the page then, so that screen readers are ready to announce the first message.
  */
 @Injectable({ providedIn: 'root' })
-export class SnToastService {
-  private readonly toaster: ComponentRef<SnToaster>;
+export class SpeedToastService {
+  private readonly toaster: ComponentRef<SpeedToaster>;
 
   constructor() {
     const appRef = inject(ApplicationRef);
     const document = inject(DOCUMENT);
-    this.toaster = createComponent(SnToaster, { environmentInjector: inject(EnvironmentInjector) });
+    this.toaster = createComponent(SpeedToaster, {
+      environmentInjector: inject(EnvironmentInjector),
+    });
     appRef.attachView(this.toaster.hostView);
     document.body.appendChild(this.toaster.location.nativeElement);
     inject(DestroyRef).onDestroy(() => this.toaster.destroy());
   }
 
   /** Shows a toast; `result` tells whether its action was used. */
-  show(message: string, options?: SnToastOptions): SnToastRef {
+  show(message: string, options?: SpeedToastOptions): SpeedToastRef {
     const ref = this.toaster.instance.show(message, options);
     this.toaster.changeDetectorRef.detectChanges();
     return ref;

@@ -51,26 +51,26 @@ function rule(source, selector) {
 }
 
 test('hides the navigation and the user menu below desktop', () => {
-  assert.match(rule(mobile, '.sn-app-header-nav'), /display:\s*none/);
-  assert.match(rule(mobile, '.sn-app-header-user'), /display:\s*none/);
-  assert.doesNotMatch(rule(mobile, '.sn-app-header-menu'), /display:\s*none/);
+  assert.match(rule(mobile, '.speed-app-header-nav'), /display:\s*none/);
+  assert.match(rule(mobile, '.speed-app-header-user'), /display:\s*none/);
+  assert.doesNotMatch(rule(mobile, '.speed-app-header-menu'), /display:\s*none/);
 });
 
 test('shows them from desktop and hides the mobile menu', () => {
   assert.ok(desktopBlocks.length > 0, 'expected a 960px media query');
-  assert.match(rule(desktop, '.sn-app-header-nav'), /display:\s*flex/);
-  assert.match(rule(desktop, '.sn-app-header-user'), /display:\s*block/);
-  assert.match(rule(desktop, '.sn-app-header-menu'), /display:\s*none/);
+  assert.match(rule(desktop, '.speed-app-header-nav'), /display:\s*flex/);
+  assert.match(rule(desktop, '.speed-app-header-user'), /display:\s*block/);
+  assert.match(rule(desktop, '.speed-app-header-menu'), /display:\s*none/);
 });
 
 test('lets a long application name wrap instead of overflowing', () => {
-  const name = rule(css, '.sn-app-header-name');
+  const name = rule(css, '.speed-app-header-name');
   assert.match(name, /overflow-wrap:\s*anywhere/);
   assert.match(name, /min-width:\s*0/);
 });
 
 test('truncates a long user name on one line', () => {
-  const name = rule(css, '.sn-app-header-user-name');
+  const name = rule(css, '.speed-app-header-user-name');
   assert.match(name, /max-width:\s*16ch/);
   assert.match(name, /overflow:\s*hidden/);
   assert.match(name, /text-overflow:\s*ellipsis/);

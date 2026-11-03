@@ -10,23 +10,23 @@ import {
 } from '@angular/core';
 import { nextTabIndex } from './next-tab-index';
 
-export interface SnFilterOption {
+export interface SpeedFilterOption {
   value: string;
   label: string;
 }
 
 /** Pills that filter one list (WAI-ARIA tabs, roving tabindex, selection follows focus). */
 @Component({
-  selector: 'sn-filter-tabs',
+  selector: 'speed-filter-tabs',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="sn-filter-tabs" role="tablist" [attr.aria-label]="label()">
+    <div class="speed-filter-tabs" role="tablist" [attr.aria-label]="label()">
       @for (option of options(); track option.value) {
         <button
           type="button"
           role="tab"
-          class="sn-filter-tab"
+          class="speed-filter-tab"
           [attr.aria-selected]="option.value === value()"
           [attr.tabindex]="$index === tabStopIndex() ? 0 : -1"
           (click)="value.set(option.value)"
@@ -39,8 +39,8 @@ export interface SnFilterOption {
   `,
   styleUrl: './filter-tabs.scss',
 })
-export class SnFilterTabs {
-  readonly options = input.required<SnFilterOption[]>();
+export class SpeedFilterTabs {
+  readonly options = input.required<SpeedFilterOption[]>();
   readonly label = input.required<string>();
   readonly value = model.required<string>();
 

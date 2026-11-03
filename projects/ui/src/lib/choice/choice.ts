@@ -1,21 +1,21 @@
 import { Directive, computed, inject, input } from '@angular/core';
 import { LucideCircleAlert } from '@lucide/angular';
-import { SnFieldContext } from '../field/field-context';
-import { SnRadioGroup } from './radio-group';
+import { SpeedFieldContext } from '../field/field-context';
+import { SpeedRadioGroup } from './radio-group';
 
 let nextId = 0;
 
 /**
- * Shared part of `sn-checkbox`, `sn-radio` and `sn-switch`: a native input (`snControl`) followed
+ * Shared part of `speed-checkbox`, `speed-radio` and `speed-switch`: a native input (`speedControl`) followed
  * by its clickable label, then an optional hint and error message under the label.
  */
 @Directive()
-export abstract class SnChoice implements SnFieldContext {
+export abstract class SpeedChoice implements SpeedFieldContext {
   readonly label = input.required<string>();
   readonly hint = input<string | null>(null);
   readonly error = input<string | null>(null);
 
-  private readonly uid = `sn-choice-${++nextId}`;
+  private readonly uid = `speed-choice-${++nextId}`;
   readonly controlId = `${this.uid}-control`;
   readonly hintId = `${this.uid}-hint`;
   readonly errorId = `${this.uid}-error`;
@@ -23,7 +23,7 @@ export abstract class SnChoice implements SnFieldContext {
   protected readonly alertIcon = LucideCircleAlert.icon;
 
   /** Radio group around a radio button: its error flags and describes every button. */
-  protected readonly group = inject(SnRadioGroup, { optional: true });
+  protected readonly group = inject(SpeedRadioGroup, { optional: true });
 
   readonly hasError = computed(() => !!this.error() || !!this.group?.hasError());
 

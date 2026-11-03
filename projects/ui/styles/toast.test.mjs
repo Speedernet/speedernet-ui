@@ -18,18 +18,18 @@ test('toast uses tokens only, no raw colors', () => {
 });
 
 test('toast centers badge and buttons vertically and wraps long messages', () => {
-  assert.match(css, /\.sn-toast\s*\{[^}]*align-items: center/);
-  assert.match(css, /\.sn-toast\s*\{[^}]*flex-wrap: wrap/);
+  assert.match(css, /\.speed-toast\s*\{[^}]*align-items: center/);
+  assert.match(css, /\.speed-toast\s*\{[^}]*flex-wrap: wrap/);
 });
 
 test('toast announcer is visually hidden, not hidden from screen readers', () => {
-  assert.match(css, /\.sn-toast-announcer\s*\{[^}]*clip-path: inset\(50%\)/);
-  assert.doesNotMatch(css, /\.sn-toast-announcer\s*\{[^}]*display: none/);
+  assert.match(css, /\.speed-toast-announcer\s*\{[^}]*clip-path: inset\(50%\)/);
+  assert.doesNotMatch(css, /\.speed-toast-announcer\s*\{[^}]*display: none/);
 });
 
 test('toast disables its animation under prefers-reduced-motion', () => {
   assert.match(
     css,
-    /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.sn-toast\s*\{\s*animation: none/,
+    /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.speed-toast\s*\{\s*animation: none/,
   );
 });

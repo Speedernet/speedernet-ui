@@ -11,33 +11,36 @@ test('select uses tokens only, no raw colors', () => {
 });
 
 test('select replaces the browser arrow with a chevron that lets clicks through', () => {
-  assert.match(css, /\.sn-select > select\s*\{[^}]*appearance: none/);
-  assert.match(css, /\.sn-select-chevron\s*\{[^}]*pointer-events: none/);
+  assert.match(css, /\.speed-select > select\s*\{[^}]*appearance: none/);
+  assert.match(css, /\.speed-select-chevron\s*\{[^}]*pointer-events: none/);
 });
 
 test('select keeps room for the chevron so the text never runs under it', () => {
-  assert.match(css, /\.sn-select > select\s*\{[^}]*padding-right: 2\.75rem/);
+  assert.match(css, /\.speed-select > select\s*\{[^}]*padding-right: 2\.75rem/);
 });
 
 test('disabled select looks disabled', () => {
-  assert.match(css, /\.sn-select > select:disabled\s*\{[^}]*background: var\(--color-disabled\)/);
+  assert.match(
+    css,
+    /\.speed-select > select:disabled\s*\{[^}]*background: var\(--color-disabled\)/,
+  );
 });
 
 test('select draws its option list in a white rounded panel where browsers allow it', () => {
   assert.match(css, /@supports \(appearance: base-select\)/);
   assert.match(
     css,
-    /\.sn-select > select::picker\(select\)\s*\{[^}]*border-radius: var\(--radius\)/,
+    /\.speed-select > select::picker\(select\)\s*\{[^}]*border-radius: var\(--radius\)/,
   );
   assert.match(
     css,
-    /\.sn-select option:hover:not\(:disabled\), \.sn-select option:focus-visible\s*\{/,
+    /\.speed-select option:hover:not\(:disabled\), \.speed-select option:focus-visible\s*\{/,
   );
 });
 
 test('select disables the chevron animation under prefers-reduced-motion', () => {
   assert.match(
     css,
-    /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.sn-select-chevron\s*\{\s*transition: none/,
+    /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.speed-select-chevron\s*\{\s*transition: none/,
   );
 });

@@ -1,13 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SnFilterTabs, type SnFilterOption } from './filter-tabs';
+import { SpeedFilterTabs, type SpeedFilterOption } from './filter-tabs';
 
 @Component({
-  imports: [SnFilterTabs],
-  template: `<sn-filter-tabs [options]="options" label="Period" [(value)]="value" />`,
+  imports: [SpeedFilterTabs],
+  template: `<speed-filter-tabs [options]="options" label="Period" [(value)]="value" />`,
 })
 class Host {
-  readonly options: SnFilterOption[] = [
+  readonly options: SpeedFilterOption[] = [
     { value: 'week', label: 'This week' },
     { value: 'month', label: 'This month' },
     { value: 'past', label: 'Past' },
@@ -23,7 +23,7 @@ function render() {
   return { fixture, root, tabs };
 }
 
-describe('SnFilterTabs', () => {
+describe('SpeedFilterTabs', () => {
   it('renders a labelled tablist', () => {
     const { root } = render();
     const list = root.querySelector('[role="tablist"]')!;

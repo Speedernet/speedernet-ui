@@ -1,6 +1,6 @@
 // Drop-down list: the native select without its browser arrow, and a chevron on top that lets
 // clicks through. Border, focus and error styles are the shared field styles.
-.sn-select {
+.speed-select {
   position: relative;
   display: flex;
 
@@ -18,13 +18,13 @@
       cursor: not-allowed;
     }
 
-    &:disabled + .sn-select-chevron {
+    &:disabled + .speed-select-chevron {
       color: var(--color-text-muted);
     }
   }
 }
 
-.sn-select-chevron {
+.speed-select-chevron {
   position: absolute;
   top: 50%;
   right: 0.875rem;
@@ -33,33 +33,33 @@
   pointer-events: none;
 }
 
-// Browsers that support customisable selects draw the list of options close to `sn-action-menu`:
+// Browsers that support customisable selects draw the list of options close to `speed-action-menu`:
 // white panel with the field radius, one highlighted row per option. Others keep their system list.
 @supports (appearance: base-select) {
-  .sn-select > select,
-  .sn-select > select::picker(select) {
+  .speed-select > select,
+  .speed-select > select::picker(select) {
     appearance: base-select;
   }
 
   // The customisable select lays out its text like a button: centre it vertically. Its width
   // follows the chosen option rather than the longest one, so a minimum width limits the jumps
   // when the choice changes in a field that is not stretched.
-  .sn-select > select {
+  .speed-select > select {
     display: flex;
     align-items: center;
     min-width: 12rem;
   }
 
   // Our own chevron replaces the built-in icon; it turns over while the list is open.
-  .sn-select > select::picker-icon {
+  .speed-select > select::picker-icon {
     display: none;
   }
 
-  .sn-select > select:open + .sn-select-chevron {
+  .speed-select > select:open + .speed-select-chevron {
     rotate: 180deg;
   }
 
-  .sn-select > select::picker(select) {
+  .speed-select > select::picker(select) {
     margin-block: var(--space-2);
     padding: var(--space-2);
     border: 1px solid var(--color-border);
@@ -69,7 +69,7 @@
     color: var(--color-text);
   }
 
-  .sn-select option {
+  .speed-select option {
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -105,12 +105,12 @@
   }
 }
 
-.sn-select-chevron {
+.speed-select-chevron {
   transition: rotate 0.15s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sn-select-chevron {
+  .speed-select-chevron {
     transition: none;
   }
 }
