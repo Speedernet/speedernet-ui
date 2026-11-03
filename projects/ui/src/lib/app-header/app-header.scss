@@ -2,11 +2,11 @@
 
 // Application header. Mobile first: below desktop, navigation and user menu move into the
 // mobile menu so the header never scrolls horizontally, whatever the name or number of links.
-sn-app-header {
+speed-app-header {
   display: block;
 }
 
-.sn-app-header {
+.speed-app-header {
   position: relative;
   z-index: 10;
   border-bottom: 1px solid var(--color-border);
@@ -14,7 +14,7 @@ sn-app-header {
   color: var(--color-text);
 }
 
-.sn-app-header-content {
+.speed-app-header-content {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -23,7 +23,7 @@ sn-app-header {
   padding-block: var(--space-2);
 }
 
-.sn-app-header-home {
+.speed-app-header-home {
   display: flex;
   flex: 1 1 auto;
   align-items: center;
@@ -42,12 +42,12 @@ sn-app-header {
   }
 }
 
-.sn-app-header-logo {
+.speed-app-header-logo {
   flex: none;
   height: 40px;
 }
 
-.sn-app-header-name {
+.speed-app-header-name {
   min-width: 0;
   font-size: 1rem;
   font-weight: 900;
@@ -59,44 +59,44 @@ sn-app-header {
   }
 }
 
-.sn-app-header-nav {
+.speed-app-header-nav {
   display: none;
 }
 
-.sn-app-header-user {
+.speed-app-header-user {
   display: none;
 }
 
-.sn-app-header-menu {
+.speed-app-header-menu {
   flex: none;
 }
 
 @include bp.from(desktop) {
-  .sn-app-header-nav {
+  .speed-app-header-nav {
     display: flex;
     flex: 1 1 auto;
     min-width: 0;
     margin-inline-start: var(--space-4);
   }
 
-  .sn-app-header-user {
+  .speed-app-header-user {
     display: block;
     position: relative;
     flex: none;
     margin-inline-start: auto;
   }
 
-  .sn-app-header-menu {
+  .speed-app-header-menu {
     display: none;
   }
 
   // A mobile menu left open while the window widens must not stay on screen.
-  .sn-app-header-mobile-panel {
+  .speed-app-header-mobile-panel {
     display: none;
   }
 }
 
-.sn-app-header-links {
+.speed-app-header-links {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -106,7 +106,7 @@ sn-app-header {
   list-style: none;
 }
 
-.sn-app-header-link {
+.speed-app-header-link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -119,7 +119,7 @@ sn-app-header {
     color: var(--color-text);
   }
 
-  &.sn-nav-active {
+  &.speed-nav-active {
     color: var(--color-text);
     font-weight: 800;
 
@@ -130,7 +130,7 @@ sn-app-header {
   }
 }
 
-.sn-app-header-user-button {
+.speed-app-header-user-button {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -146,14 +146,14 @@ sn-app-header {
 }
 
 // A long name is cut with an ellipsis; the full name stays in the DOM and in the title.
-.sn-app-header-user-name {
+.speed-app-header-user-name {
   max-width: 16ch;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.sn-app-header-initials {
+.speed-app-header-initials {
   display: inline-flex;
   flex: none;
   align-items: center;
@@ -168,7 +168,7 @@ sn-app-header {
 }
 
 // Open mobile menu: white panel under the header.
-.sn-app-header-panel {
+.speed-app-header-panel {
   box-sizing: border-box;
   position: absolute;
   z-index: 20;
@@ -180,23 +180,23 @@ sn-app-header {
 }
 
 // Full width minus side margins, right under the header.
-.sn-app-header-mobile-panel {
+.speed-app-header-mobile-panel {
   top: calc(100% + var(--space-2));
   right: var(--space-3);
   left: var(--space-3);
 
-  .sn-app-header-links {
+  .speed-app-header-links {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .sn-app-header-link {
+  .speed-app-header-link {
     display: flex;
     padding: 0 var(--space-3);
   }
 }
 
-.sn-app-header-panel-user {
+.speed-app-header-panel-user {
   margin: var(--space-2) 0 0;
   padding: var(--space-2) var(--space-3) 0;
   border-top: 1px solid var(--color-border);
@@ -205,7 +205,7 @@ sn-app-header {
   overflow-wrap: anywhere;
 }
 
-.sn-app-header-panel-item {
+.speed-app-header-panel-item {
   display: flex;
   align-items: center;
   gap: var(--space-2);

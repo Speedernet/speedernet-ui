@@ -15,10 +15,10 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('sn-app-header')?.textContent).toContain(
+    expect(compiled.querySelector('speed-app-header')?.textContent).toContain(
       'Démonstration @speedernet/ui',
     );
-    expect(compiled.querySelector('main.sn-container')).not.toBeNull();
+    expect(compiled.querySelector('main.speed-container')).not.toBeNull();
   });
 
   it('shows a simulated logout message', async () => {
@@ -27,7 +27,7 @@ describe('App', () => {
     fixture.componentInstance['loggedOut'].set(true);
     fixture.detectChanges();
     expect(
-      (fixture.nativeElement as HTMLElement).querySelector('sn-message')?.textContent,
+      (fixture.nativeElement as HTMLElement).querySelector('speed-message')?.textContent,
     ).toContain('Déconnexion simulée.');
   });
 });

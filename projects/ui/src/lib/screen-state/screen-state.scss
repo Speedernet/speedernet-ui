@@ -1,7 +1,7 @@
 // Screen states: a centred column in a card-like block.
-.sn-loading,
-.sn-empty-state,
-.sn-error-state {
+.speed-loading,
+.speed-empty-state,
+.speed-error-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,7 +26,7 @@
   }
 }
 
-.sn-state-icon {
+.speed-state-icon {
   display: grid;
   place-items: center;
   width: 56px;
@@ -35,72 +35,72 @@
   background: var(--tint-neutral);
 }
 
-.sn-error-state .sn-state-icon {
+.speed-error-state .speed-state-icon {
   background: var(--tint-brand);
 }
 
-.sn-loading {
+.speed-loading {
   align-items: stretch;
   text-align: left;
 }
 
-.sn-loading-label {
+.speed-loading-label {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   color: var(--color-text-muted);
 }
 
-.sn-loading-spinner {
+.speed-loading-spinner {
   flex: none;
   width: 1rem;
   height: 1rem;
   border: 2px solid var(--tint-neutral-border);
   border-top-color: var(--color-text-muted);
   border-radius: 50%;
-  animation: sn-spin 0.9s linear infinite;
+  animation: speed-spin 0.9s linear infinite;
 }
 
-.sn-loading-line {
+.speed-loading-line {
   height: 16px;
   border-radius: var(--radius);
   background: var(--tint-neutral);
-  animation: sn-pulse 1.4s ease-in-out infinite;
+  animation: speed-pulse 1.4s ease-in-out infinite;
 }
 
-.sn-loading-lines {
+.speed-loading-lines {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
 }
 
-.sn-loading-line-1 {
+.speed-loading-line-1 {
   width: 100%;
 }
 
-.sn-loading-line-2 {
+.speed-loading-line-2 {
   width: 80%;
 }
 
-.sn-loading-line-3 {
+.speed-loading-line-3 {
   width: 55%;
 }
 
-@keyframes sn-spin {
+@keyframes speed-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes sn-pulse {
+@keyframes speed-pulse {
   50% {
     opacity: 0.45;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sn-loading-spinner,
-  .sn-loading-line {
+  .speed-loading-spinner,
+  .speed-loading-line {
     animation: none;
   }
 }

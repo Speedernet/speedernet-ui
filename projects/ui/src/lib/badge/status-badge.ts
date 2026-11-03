@@ -6,11 +6,11 @@ import {
   input,
 } from '@angular/core';
 import { LucideDynamicIcon } from '@lucide/angular';
-import { statusAppearance, type SnStatus } from './status-appearance';
+import { statusAppearance, type SpeedStatus } from './status-appearance';
 
-/** Badge whose tone and icon follow a status; shares the SnBadge stylesheet. */
+/** Badge whose tone and icon follow a status; shares the SpeedBadge stylesheet. */
 @Component({
-  selector: 'sn-status-badge',
+  selector: 'speed-status-badge',
   imports: [LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -18,12 +18,12 @@ import { statusAppearance, type SnStatus } from './status-appearance';
     >{{ label() }}`,
   styleUrl: './badge.scss',
   host: {
-    class: 'sn-badge',
-    '[class]': "'sn-badge-' + appearance().tone",
+    class: 'speed-badge',
+    '[class]': "'speed-badge-' + appearance().tone",
   },
 })
-export class SnStatusBadge {
-  readonly status = input.required<SnStatus>();
+export class SpeedStatusBadge {
+  readonly status = input.required<SpeedStatus>();
   readonly label = input.required<string>();
   protected readonly appearance = computed(() => statusAppearance(this.status()));
 }

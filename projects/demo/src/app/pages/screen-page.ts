@@ -13,20 +13,20 @@ import { NgTemplateOutlet } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LucideCopy, LucidePencil, LucideX } from '@lucide/angular';
 import {
-  SnActionMenu,
-  SnButton,
-  SnCard,
-  SnControl,
-  SnDialog,
-  SnField,
-  SnFilterOption,
-  SnFilterTabs,
-  SnMenuItem,
-  SnMessage,
-  SnSelect,
-  SnStatus,
-  SnStatusBadge,
-  SnToastService,
+  SpeedActionMenu,
+  SpeedButton,
+  SpeedCard,
+  SpeedControl,
+  SpeedDialog,
+  SpeedField,
+  SpeedFilterOption,
+  SpeedFilterTabs,
+  SpeedMenuItem,
+  SpeedMessage,
+  SpeedSelect,
+  SpeedStatus,
+  SpeedStatusBadge,
+  SpeedToastService,
 } from '@speedernet/ui';
 
 interface Booking {
@@ -34,7 +34,7 @@ interface Booking {
   room: string;
   date: string;
   slot: string;
-  status: SnStatus;
+  status: SpeedStatus;
   statusLabel: string;
   period: 'week' | 'month' | 'past';
 }
@@ -106,52 +106,52 @@ function toIsoDate(display: string): string {
   imports: [
     NgTemplateOutlet,
     ReactiveFormsModule,
-    SnActionMenu,
-    SnButton,
-    SnCard,
-    SnControl,
-    SnDialog,
-    SnField,
-    SnFilterTabs,
-    SnMenuItem,
-    SnMessage,
-    SnSelect,
-    SnStatusBadge,
+    SpeedActionMenu,
+    SpeedButton,
+    SpeedCard,
+    SpeedControl,
+    SpeedDialog,
+    SpeedField,
+    SpeedFilterTabs,
+    SpeedMenuItem,
+    SpeedMessage,
+    SpeedSelect,
+    SpeedStatusBadge,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
     <div class="page-head">
-      <h1>Mes <span class="sn-highlight">réservations</span></h1>
-      <button snButton variant="primary" type="button" (click)="openNew()">
+      <h1>Mes <span class="speed-highlight">réservations</span></h1>
+      <button speedButton variant="primary" type="button" (click)="openNew()">
         Réserver une salle
       </button>
     </div>
-    <sn-message type="info">
+    <speed-message type="info">
       Les réservations sont ouvertes jusqu'à 30 jours à l'avance.
-    </sn-message>
+    </speed-message>
 
-    <sn-filter-tabs label="Période des réservations" [options]="filters" [(value)]="filter" />
+    <speed-filter-tabs label="Période des réservations" [options]="filters" [(value)]="filter" />
 
     <h2 class="visually-hidden">Liste des réservations</h2>
 
     <ul class="card-list">
       @for (b of visible(); track b.id) {
         <li>
-          <sn-card>
-            <div snCardHeader class="booking-head">
+          <speed-card>
+            <div speedCardHeader class="booking-head">
               <h3>{{ b.room }}</h3>
               <ng-container *ngTemplateOutlet="actions; context: { $implicit: b }" />
             </div>
             <p class="card-line">{{ b.date }}, {{ b.slot }}</p>
-            <sn-status-badge [status]="b.status" [label]="b.statusLabel" />
-          </sn-card>
+            <speed-status-badge [status]="b.status" [label]="b.statusLabel" />
+          </speed-card>
         </li>
       }
     </ul>
 
-    <div class="table-view sn-table-wrapper">
-      <table class="sn-table">
+    <div class="table-view speed-table-wrapper">
+      <table class="speed-table">
         <caption class="visually-hidden">
           Mes réservations
         </caption>
@@ -170,7 +170,7 @@ function toIsoDate(display: string): string {
               <td>{{ b.room }}</td>
               <td>{{ b.date }}</td>
               <td>{{ b.slot }}</td>
-              <td><sn-status-badge [status]="b.status" [label]="b.statusLabel" /></td>
+              <td><speed-status-badge [status]="b.status" [label]="b.statusLabel" /></td>
               <td class="actions-cell">
                 <ng-container *ngTemplateOutlet="actions; context: { $implicit: b }" />
               </td>
@@ -181,13 +181,13 @@ function toIsoDate(display: string): string {
     </div>
 
     <ng-template #actions let-b>
-      <sn-action-menu [label]="'Actions pour ' + b.room + ' le ' + b.date">
-        <button snMenuItem [icon]="pencil" [disabled]="!isActive(b)" (click)="openEdit(b)">
+      <speed-action-menu [label]="'Actions pour ' + b.room + ' le ' + b.date">
+        <button speedMenuItem [icon]="pencil" [disabled]="!isActive(b)" (click)="openEdit(b)">
           Modifier
         </button>
-        <button snMenuItem [icon]="copy" (click)="duplicate(b)">Dupliquer</button>
+        <button speedMenuItem [icon]="copy" (click)="duplicate(b)">Dupliquer</button>
         <button
-          snMenuItem
+          speedMenuItem
           [icon]="cancelIcon"
           tone="danger"
           [disabled]="!isActive(b)"
@@ -195,57 +195,59 @@ function toIsoDate(display: string): string {
         >
           Annuler la réservation
         </button>
-      </sn-action-menu>
+      </speed-action-menu>
     </ng-template>
 
-    <sn-dialog
+    <speed-dialog
       [title]="editing() ? 'Modifier la réservation' : 'Réserver une salle'"
       (closed)="submitted.set(false)"
     >
       <form id="booking-form" class="stack booking-form" [formGroup]="form" (ngSubmit)="save()">
-        <sn-field label="Salle" [error]="errorFor('room', 'Choisissez une salle.')">
-          <sn-select>
-            <select snControl formControlName="room">
+        <speed-field label="Salle" [error]="errorFor('room', 'Choisissez une salle.')">
+          <speed-select>
+            <select speedControl formControlName="room">
               <option value="" disabled>Choisir une salle</option>
               @for (room of rooms; track room) {
                 <option [value]="room">{{ room }}</option>
               }
             </select>
-          </sn-select>
-        </sn-field>
-        <sn-field
+          </speed-select>
+        </speed-field>
+        <speed-field
           label="Date"
           hint="Jusqu'à 30 jours à l'avance."
           [error]="errorFor('date', 'Choisissez une date.')"
         >
-          <input snControl type="date" formControlName="date" />
-        </sn-field>
-        <sn-field label="Créneau" [error]="errorFor('slot', 'Choisissez un créneau.')">
-          <sn-select>
-            <select snControl formControlName="slot">
+          <input speedControl type="date" formControlName="date" />
+        </speed-field>
+        <speed-field label="Créneau" [error]="errorFor('slot', 'Choisissez un créneau.')">
+          <speed-select>
+            <select speedControl formControlName="slot">
               <option value="" disabled>Choisir un créneau</option>
               @for (slot of slots; track slot) {
                 <option [value]="slot">{{ slot }}</option>
               }
             </select>
-          </sn-select>
-        </sn-field>
+          </speed-select>
+        </speed-field>
       </form>
-      <button snDialogActions snButton type="button" (click)="dialog().close()">Annuler</button>
-      <button snDialogActions snButton variant="primary" type="submit" form="booking-form">
+      <button speedDialogActions speedButton type="button" (click)="dialog().close()">
+        Annuler
+      </button>
+      <button speedDialogActions speedButton variant="primary" type="submit" form="booking-form">
         {{ editing() ? 'Enregistrer' : 'Réserver' }}
       </button>
-    </sn-dialog>
+    </speed-dialog>
   `,
 })
 export class ScreenPage {
-  private readonly toast = inject(SnToastService);
+  private readonly toast = inject(SpeedToastService);
   private readonly injector = inject(Injector);
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
-  protected readonly dialog = viewChild.required(SnDialog);
+  protected readonly dialog = viewChild.required(SpeedDialog);
 
   protected readonly filter = signal('week');
-  protected readonly filters: SnFilterOption[] = [
+  protected readonly filters: SpeedFilterOption[] = [
     { value: 'week', label: 'Cette semaine' },
     { value: 'month', label: 'Ce mois-ci' },
     { value: 'past', label: 'Passées' },
@@ -296,7 +298,7 @@ export class ScreenPage {
     if (this.form.invalid) {
       // Once the errors are shown, take the user to the first one.
       afterNextRender(
-        () => this.host.querySelector<HTMLElement>('sn-dialog [aria-invalid="true"]')?.focus(),
+        () => this.host.querySelector<HTMLElement>('speed-dialog [aria-invalid="true"]')?.focus(),
         { injector: this.injector },
       );
       return;

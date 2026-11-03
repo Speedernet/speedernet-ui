@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
 import { LucideDynamicIcon, type LucideIconData } from '@lucide/angular';
 
-export type SnBadgeTone = 'neutral' | 'primary' | 'accent' | 'brand' | 'solid' | 'outline';
+export type SpeedBadgeTone = 'neutral' | 'primary' | 'accent' | 'brand' | 'solid' | 'outline';
 
 /** Small pill with a short word; the optional icon is decorative. */
 @Component({
-  selector: 'sn-badge',
+  selector: 'speed-badge',
   imports: [LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -17,11 +17,11 @@ export type SnBadgeTone = 'neutral' | 'primary' | 'accent' | 'brand' | 'solid' |
   `,
   styleUrl: './badge.scss',
   host: {
-    class: 'sn-badge',
-    '[class]': "'sn-badge-' + tone()",
+    class: 'speed-badge',
+    '[class]': "'speed-badge-' + tone()",
   },
 })
-export class SnBadge {
-  readonly tone = input<SnBadgeTone>('neutral');
+export class SpeedBadge {
+  readonly tone = input<SpeedBadgeTone>('neutral');
   readonly icon = input<LucideIconData | null>(null);
 }

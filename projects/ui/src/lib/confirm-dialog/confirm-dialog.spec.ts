@@ -1,28 +1,28 @@
 import { Component, viewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SnConfirmDialog } from './confirm-dialog';
+import { SpeedConfirmDialog } from './confirm-dialog';
 
 @Component({
-  imports: [SnConfirmDialog],
+  imports: [SpeedConfirmDialog],
   template: `
     <button id="opener" type="button">Open</button>
-    <sn-confirm-dialog
+    <speed-confirm-dialog
       title="Delete the booking on 12/03?"
       confirmLabel="Delete"
       (confirmed)="confirmed = confirmed + 1"
       (cancelled)="cancelled = cancelled + 1"
     >
       This cannot be undone.
-    </sn-confirm-dialog>
+    </speed-confirm-dialog>
   `,
 })
 class Host {
   confirmed = 0;
   cancelled = 0;
-  readonly dialog = viewChild.required(SnConfirmDialog);
+  readonly dialog = viewChild.required(SpeedConfirmDialog);
 }
 
-describe('SnConfirmDialog', () => {
+describe('SpeedConfirmDialog', () => {
   const proto = HTMLDialogElement.prototype;
   const original = { showModal: proto.showModal, close: proto.close };
 
@@ -80,9 +80,9 @@ describe('SnConfirmDialog', () => {
     const { dialog, open, buttons } = setup();
     open();
     expect(dialog.textContent).toContain('This cannot be undone.');
-    expect(buttons()[0].classList).toContain('sn-button-secondary');
+    expect(buttons()[0].classList).toContain('speed-button-secondary');
     expect(buttons()[1].textContent).toContain('Delete');
-    expect(buttons()[1].classList).toContain('sn-button-danger');
+    expect(buttons()[1].classList).toContain('speed-button-danger');
   });
 
   it('uses unique title ids per instance', () => {
@@ -155,7 +155,7 @@ describe('SnConfirmDialog', () => {
   });
 
   it('honors a custom cancel label', () => {
-    const fixture = TestBed.createComponent(SnConfirmDialog);
+    const fixture = TestBed.createComponent(SpeedConfirmDialog);
     fixture.componentRef.setInput('title', 'T');
     fixture.componentRef.setInput('confirmLabel', 'OK');
     fixture.componentRef.setInput('cancelLabel', 'Back');

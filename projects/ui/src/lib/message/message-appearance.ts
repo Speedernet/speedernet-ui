@@ -4,13 +4,13 @@ import {
   LucideTriangleAlert,
   type LucideIconData,
 } from '@lucide/angular';
-import type { SnBadgeTone } from '../badge/badge';
+import type { SpeedBadgeTone } from '../badge/badge';
 
-export type SnMessageType = 'success' | 'info' | 'warning' | 'error';
+export type SpeedMessageType = 'success' | 'info' | 'warning' | 'error';
 
 const APPEARANCES: Record<
-  SnMessageType,
-  { label: string; tone: SnBadgeTone; icon: LucideIconData | null }
+  SpeedMessageType,
+  { label: string; tone: SpeedBadgeTone; icon: LucideIconData | null }
 > = {
   success: { label: "C'est fait", tone: 'solid', icon: LucideCheck.icon },
   info: { label: 'Info', tone: 'primary', icon: null },
@@ -19,9 +19,9 @@ const APPEARANCES: Record<
 };
 
 /** Word, tone and icon of a message type: the type is always carried by a word, never colour alone. */
-export function messageAppearance(type: SnMessageType): {
+export function messageAppearance(type: SpeedMessageType): {
   label: string;
-  tone: SnBadgeTone;
+  tone: SpeedBadgeTone;
   icon: LucideIconData | null;
 } {
   return APPEARANCES[type];

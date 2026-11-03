@@ -3,21 +3,21 @@ import { LucideDynamicIcon, type LucideIconData } from '@lucide/angular';
 
 /** Icon-only button: the accessible name comes from `label`, the icon is decorative. */
 @Component({
-  selector: 'button[snIconButton]',
+  selector: 'button[speedIconButton]',
   imports: [LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `<svg [lucideIcon]="icon()" [size]="20" aria-hidden="true"></svg>`,
-  // Same stylesheet as SnButton: Angular adds identical styles to the page only once.
+  // Same stylesheet as SpeedButton: Angular adds identical styles to the page only once.
   styleUrl: './button.scss',
   host: {
     type: 'button',
-    class: 'sn-button sn-button-icon',
-    '[class.sn-button-primary]': "variant() === 'dark'",
+    class: 'speed-button speed-button-icon',
+    '[class.speed-button-primary]': "variant() === 'dark'",
     '[attr.aria-label]': 'label()',
   },
 })
-export class SnIconButton {
+export class SpeedIconButton {
   readonly label = input.required<string>();
   readonly icon = input.required<LucideIconData>();
   readonly variant = input<'light' | 'dark'>('light');

@@ -13,6 +13,6 @@ test('action menu uses tokens only, no raw colors', () => {
 test('action menu highlights its button while the menu is open', () => {
   assert.match(
     css,
-    /\.sn-action-menu-trigger\[aria-expanded=true\]\s*\{\s*background: var\(--tint-highlight\)/,
+    /\.speed-action-menu-trigger\[aria-expanded=true\]\s*\{\s*background: var\(--tint-highlight\)/,
   );
 });

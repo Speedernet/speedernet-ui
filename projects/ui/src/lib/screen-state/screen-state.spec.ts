@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { LucideCircleAlert } from '@lucide/angular';
-import { SnButton } from '../button/button';
-import { SnEmptyState } from './empty-state';
-import { SnErrorState } from './error-state';
-import { SnLoading } from './loading';
+import { SpeedButton } from '../button/button';
+import { SpeedEmptyState } from './empty-state';
+import { SpeedErrorState } from './error-state';
+import { SpeedLoading } from './loading';
 
 @Component({
-  imports: [SnLoading, SnEmptyState, SnErrorState, SnButton],
+  imports: [SpeedLoading, SpeedEmptyState, SpeedErrorState, SpeedButton],
   template: `
-    <sn-loading label="Loading bookings…" />
-    <sn-empty-state title="No bookings" text="You haven't booked anything yet.">
-      <button snButton variant="primary" type="button">Book</button>
-    </sn-empty-state>
-    <sn-empty-state id="custom" title="T" text="X" [icon]="customIcon" />
-    <sn-error-state id="label" title="T" text="X" retryLabel="Start over" />
-    <sn-error-state
+    <speed-loading label="Loading bookings…" />
+    <speed-empty-state title="No bookings" text="You haven't booked anything yet.">
+      <button speedButton variant="primary" type="button">Book</button>
+    </speed-empty-state>
+    <speed-empty-state id="custom" title="T" text="X" [icon]="customIcon" />
+    <speed-error-state id="label" title="T" text="X" retryLabel="Start over" />
+    <speed-error-state
       id="main"
       title="Could not load"
       text="An error occurred."
@@ -34,23 +34,25 @@ function setup() {
   return { fixture, el: fixture.nativeElement as HTMLElement };
 }
 
-describe('SnLoading', () => {
+describe('SpeedLoading', () => {
   it('is a status with its label and a decorative animation', () => {
-    const loading = setup().el.querySelector('sn-loading')!;
+    const loading = setup().el.querySelector('speed-loading')!;
     expect(loading.getAttribute('role')).toBe('status');
     expect(loading.textContent).toContain('Loading bookings…');
-    expect(loading.querySelector('.sn-loading-spinner')!.getAttribute('aria-hidden')).toBe('true');
-    const lines = loading.querySelector('.sn-loading-lines')!;
+    expect(loading.querySelector('.speed-loading-spinner')!.getAttribute('aria-hidden')).toBe(
+      'true',
+    );
+    const lines = loading.querySelector('.speed-loading-lines')!;
     expect(lines.getAttribute('aria-hidden')).toBe('true');
     const items = Array.from(lines.children);
     expect(items.length).toBe(3);
-    items.forEach((line, i) => expect(line.classList).toContain(`sn-loading-line-${i + 1}`));
+    items.forEach((line, i) => expect(line.classList).toContain(`speed-loading-line-${i + 1}`));
   });
 });
 
-describe('SnEmptyState', () => {
+describe('SpeedEmptyState', () => {
   it('shows the title, text, icon and projected action', () => {
-    const empty = setup().el.querySelector('sn-empty-state')!;
+    const empty = setup().el.querySelector('speed-empty-state')!;
     expect(empty.querySelector('strong')!.textContent).toBe('No bookings');
     expect(empty.textContent).toContain("You haven't booked anything");
     expect(empty.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
@@ -59,7 +61,7 @@ describe('SnEmptyState', () => {
 
   it('renders the default icon, or the custom one when given', () => {
     const { el } = setup();
-    const byDefault = el.querySelector('sn-empty-state svg')!.innerHTML;
+    const byDefault = el.querySelector('speed-empty-state svg')!.innerHTML;
     const custom = el.querySelector('#custom svg')!.innerHTML;
     expect(byDefault).not.toBe('');
     expect(custom).not.toBe('');
@@ -67,7 +69,7 @@ describe('SnEmptyState', () => {
   });
 });
 
-describe('SnErrorState', () => {
+describe('SpeedErrorState', () => {
   it('is an alert with title and text', () => {
     const error = setup().el.querySelector('#main')!;
     expect(error.getAttribute('role')).toBe('alert');

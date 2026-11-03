@@ -1,8 +1,8 @@
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SnToastService } from './toast';
+import { SpeedToastService } from './toast';
 
-describe('SnToastService', () => {
+describe('SpeedToastService', () => {
   beforeEach(() => vi.useFakeTimers());
 
   afterEach(() => {
@@ -15,12 +15,12 @@ describe('SnToastService', () => {
     opener.textContent = 'Delete';
     document.body.appendChild(opener);
     opener.focus();
-    const service = TestBed.inject(SnToastService);
-    const toaster = document.body.querySelector<HTMLElement>('sn-toaster')!;
+    const service = TestBed.inject(SpeedToastService);
+    const toaster = document.body.querySelector<HTMLElement>('speed-toaster')!;
     const appRef = TestBed.inject(ApplicationRef);
     const render = () => appRef.tick();
-    const toasts = () => [...toaster.querySelectorAll<HTMLElement>('.sn-toast')];
-    const stack = toaster.querySelector<HTMLElement>('.sn-toast-stack')!;
+    const toasts = () => [...toaster.querySelectorAll<HTMLElement>('.speed-toast')];
+    const stack = toaster.querySelector<HTMLElement>('.speed-toast-stack')!;
     return { service, toaster, toasts, stack, opener, render };
   }
 
@@ -35,7 +35,7 @@ describe('SnToastService', () => {
     const { service, toaster, toasts, opener } = setup();
     service.show('Booking deleted');
     expect(toasts()).toHaveLength(1);
-    expect(toasts()[0].querySelector('.sn-toast-message')!.textContent).toBe('Booking deleted');
+    expect(toasts()[0].querySelector('.speed-toast-message')!.textContent).toBe('Booking deleted');
     expect(toaster.querySelector('[role="status"]')!.textContent!.trim()).toBe(
       "C'est fait : Booking deleted",
     );
@@ -46,17 +46,17 @@ describe('SnToastService', () => {
     const { service, toasts } = setup();
     service.show('Booking deleted');
     service.show('The booking could not be deleted.', { type: 'error' });
-    const badges = toasts().map((t) => t.querySelector('sn-badge')!);
+    const badges = toasts().map((t) => t.querySelector('speed-badge')!);
     expect(badges[0].textContent!.trim()).toBe("C'est fait");
-    expect(badges[0].classList).toContain('sn-badge-solid');
+    expect(badges[0].classList).toContain('speed-badge-solid');
     expect(badges[1].textContent!.trim()).toBe('Erreur');
-    expect(badges[1].classList).toContain('sn-badge-brand');
+    expect(badges[1].classList).toContain('speed-badge-brand');
   });
 
   it('labels the close button and hides its icon', () => {
     const { service, toasts } = setup();
     service.show('Booking deleted');
-    const close = toasts()[0].querySelector('.sn-toast-close')!;
+    const close = toasts()[0].querySelector('.speed-toast-close')!;
     expect(close.getAttribute('aria-label')).toBe('Fermer la notification');
     expect(close.getAttribute('type')).toBe('button');
     expect(close.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
@@ -79,7 +79,7 @@ describe('SnToastService', () => {
     const ref = service.show('Booking deleted', { action: 'Undo' });
     vi.advanceTimersByTime(9000);
     render();
-    const action = toasts()[0].querySelector<HTMLButtonElement>('.sn-toast-action')!;
+    const action = toasts()[0].querySelector<HTMLButtonElement>('.speed-toast-action')!;
     expect(action.textContent!.trim()).toBe('Undo');
     action.click();
     render();
@@ -98,7 +98,7 @@ describe('SnToastService', () => {
   it('closes with its close button', async () => {
     const { service, toasts, render } = setup();
     const ref = service.show('Booking deleted');
-    toasts()[0].querySelector<HTMLButtonElement>('.sn-toast-close')!.click();
+    toasts()[0].querySelector<HTMLButtonElement>('.speed-toast-close')!.click();
     render();
     expect(toasts()).toHaveLength(0);
     await expect(ref.result).resolves.toBe('dismissed');
@@ -131,7 +131,7 @@ describe('SnToastService', () => {
   it('pauses while focus is inside, then Escape closes it and focus goes back', () => {
     const { service, toasts, opener, render } = setup();
     service.show('Booking deleted', { action: 'Undo' });
-    const action = toasts()[0].querySelector<HTMLButtonElement>('.sn-toast-action')!;
+    const action = toasts()[0].querySelector<HTMLButtonElement>('.speed-toast-action')!;
     action.dispatchEvent(new FocusEvent('focusin', { bubbles: true, relatedTarget: opener }));
     action.focus();
     vi.advanceTimersByTime(60000);
@@ -146,7 +146,7 @@ describe('SnToastService', () => {
   it('keeps at most three toasts, removing the oldest', () => {
     const { service, toasts } = setup();
     for (const n of [1, 2, 3, 4]) service.show(`Message ${n}`);
-    const messages = toasts().map((t) => t.querySelector('.sn-toast-message')!.textContent);
+    const messages = toasts().map((t) => t.querySelector('.speed-toast-message')!.textContent);
     expect(messages).toEqual(['Message 2', 'Message 3', 'Message 4']);
   });
 });

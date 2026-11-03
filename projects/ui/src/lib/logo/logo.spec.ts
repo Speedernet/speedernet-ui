@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SN_ASSETS_BASE } from '../assets-base';
-import { SnLogo } from './logo';
+import { SPEED_ASSETS_BASE } from '../assets-base';
+import { SpeedLogo } from './logo';
 
 @Component({
-  imports: [SnLogo],
-  template: `<sn-logo [variant]="variant" />`,
+  imports: [SpeedLogo],
+  template: `<speed-logo [variant]="variant" />`,
 })
 class Host {
   variant: 'mark' | 'full' = 'mark';
@@ -13,7 +13,7 @@ class Host {
 
 function render(variant: 'mark' | 'full' = 'mark', base?: string): HTMLImageElement {
   TestBed.configureTestingModule({
-    providers: base ? [{ provide: SN_ASSETS_BASE, useValue: base }] : [],
+    providers: base ? [{ provide: SPEED_ASSETS_BASE, useValue: base }] : [],
   });
   const fixture = TestBed.createComponent(Host);
   fixture.componentInstance.variant = variant;
@@ -21,7 +21,7 @@ function render(variant: 'mark' | 'full' = 'mark', base?: string): HTMLImageElem
   return fixture.nativeElement.querySelector('img');
 }
 
-describe('SnLogo', () => {
+describe('SpeedLogo', () => {
   it('shows the mark by default with an empty alt', () => {
     const img = render();
     expect(img.getAttribute('src')).toBe('/speedernet-ui/logos/logo-speedernet-min.svg');

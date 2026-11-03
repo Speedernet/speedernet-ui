@@ -1,6 +1,6 @@
 // Messages and information banner: same pill-ended shape, badge first.
-.sn-message,
-.sn-info-banner-body {
+.speed-message,
+.speed-info-banner-body {
   display: flex;
   align-items: center;
   width: fit-content;
@@ -15,28 +15,28 @@
   min-width: 0;
   overflow-wrap: anywhere;
 
-  > .sn-badge {
+  > .speed-badge {
     flex: none;
     font-weight: 800;
     text-transform: uppercase;
   }
 }
 
-.sn-info-banner {
+.speed-info-banner {
   display: block;
   min-width: 0;
 }
 
-a.sn-info-banner-body {
+a.speed-info-banner-body {
   text-decoration: none;
 }
 
-.sn-info-banner-text {
+.speed-info-banner-text {
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.sn-info-banner-body > svg {
+.speed-info-banner-body > svg {
   flex: none;
 }

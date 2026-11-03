@@ -18,16 +18,16 @@ test('dialog uses tokens only, no raw colors', () => {
 });
 
 test('dialog dims the page with the backdrop token', () => {
-  assert.match(css, /\.sn-dialog::backdrop\s*\{\s*background: var\(--color-backdrop\)/);
+  assert.match(css, /\.speed-dialog::backdrop\s*\{\s*background: var\(--color-backdrop\)/);
 });
 
 test('dialog body scrolls so the title and actions stay visible', () => {
-  assert.match(css, /\.sn-dialog \.sn-dialog-body\s*\{[^}]*overflow-y: auto/);
+  assert.match(css, /\.speed-dialog \.speed-dialog-body\s*\{[^}]*overflow-y: auto/);
 });
 
 test('dialog disables its opening animation under prefers-reduced-motion', () => {
   assert.match(
     css,
-    /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.sn-dialog\[open\]\s*\{\s*animation: none/,
+    /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.speed-dialog\[open\]\s*\{\s*animation: none/,
   );
 });

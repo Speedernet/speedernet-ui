@@ -1,11 +1,11 @@
 import type { Signal } from '@angular/core';
 
 /**
- * What a native control (`snControl`) needs from the component around it: its id, its
- * description and its error state. Provided by `sn-field`, `sn-checkbox`, `sn-radio` and
- * `sn-switch`.
+ * What a native control (`speedControl`) needs from the component around it: its id, its
+ * description and its error state. Provided by `speed-field`, `speed-checkbox`, `speed-radio` and
+ * `speed-switch`.
  */
-export abstract class SnFieldContext {
+export abstract class SpeedFieldContext {
   abstract readonly controlId: string;
   abstract readonly describedBy: Signal<string | null>;
   abstract readonly hasError: Signal<boolean>;

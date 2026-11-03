@@ -6,25 +6,25 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import { SnButton } from '../button/button';
-import { SnDialog } from '../dialog/dialog';
+import { SpeedButton } from '../button/button';
+import { SpeedDialog } from '../dialog/dialog';
 
 /**
- * Modal confirmation dialog built on `sn-dialog`. The message is projected.
+ * Modal confirmation dialog built on `speed-dialog`. The message is projected.
  * Focus starts on the cancel button (the safe action) and returns to the previously focused
  * element on any close, including Escape.
  */
 @Component({
-  selector: 'sn-confirm-dialog',
-  imports: [SnButton, SnDialog],
+  selector: 'speed-confirm-dialog',
+  imports: [SpeedButton, SpeedDialog],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <sn-dialog [title]="title()" (dismissed)="cancelled.emit()">
-      <p class="sn-confirm-dialog-message"><ng-content /></p>
+    <speed-dialog [title]="title()" (dismissed)="cancelled.emit()">
+      <p class="speed-confirm-dialog-message"><ng-content /></p>
       <button
-        snDialogActions
-        snButton
+        speedDialogActions
+        speedButton
         variant="secondary"
         type="button"
         autofocus
@@ -32,14 +32,14 @@ import { SnDialog } from '../dialog/dialog';
       >
         {{ cancelLabel() }}
       </button>
-      <button snDialogActions snButton variant="danger" type="button" (click)="confirm()">
+      <button speedDialogActions speedButton variant="danger" type="button" (click)="confirm()">
         {{ confirmLabel() }}
       </button>
-    </sn-dialog>
+    </speed-dialog>
   `,
-  styles: '.sn-confirm-dialog-message { margin: 0; }',
+  styles: '.speed-confirm-dialog-message { margin: 0; }',
 })
-export class SnConfirmDialog {
+export class SpeedConfirmDialog {
   readonly title = input.required<string>();
   readonly confirmLabel = input.required<string>();
   readonly cancelLabel = input('Annuler');
@@ -47,7 +47,7 @@ export class SnConfirmDialog {
   readonly confirmed = output<void>();
   readonly cancelled = output<void>();
 
-  private readonly dialog = viewChild.required(SnDialog);
+  private readonly dialog = viewChild.required(SpeedDialog);
 
   /** Opens the dialog and moves focus to the cancel button. */
   open(): void {

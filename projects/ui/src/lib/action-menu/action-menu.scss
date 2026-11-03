@@ -1,8 +1,8 @@
-// Action menu: "⋯" icon button opening an `sn-menu`, highlighted while the menu is open.
-.sn-action-menu {
+// Action menu: "⋯" icon button opening an `speed-menu`, highlighted while the menu is open.
+.speed-action-menu {
   display: inline-block;
 }
 
-.sn-action-menu-trigger[aria-expanded='true'] {
+.speed-action-menu-trigger[aria-expanded='true'] {
   background: var(--tint-highlight);
 }

@@ -16,9 +16,9 @@ import { LucideDynamicIcon, type LucideIconData } from '@lucide/angular';
 
 let nextId = 0;
 
-/** Item of an `sn-menu`, on a native `<button>`; the optional icon is decorative. */
+/** Item of an `speed-menu`, on a native `<button>`; the optional icon is decorative. */
 @Component({
-  selector: 'button[snMenuItem]',
+  selector: 'button[speedMenuItem]',
   imports: [LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -32,11 +32,11 @@ let nextId = 0;
     type: 'button',
     role: 'menuitem',
     tabindex: '-1',
-    class: 'sn-menu-item',
-    '[class.sn-menu-item-danger]': "tone() === 'danger'",
+    class: 'speed-menu-item',
+    '[class.speed-menu-item-danger]': "tone() === 'danger'",
   },
 })
-export class SnMenuItem {
+export class SpeedMenuItem {
   readonly icon = input<LucideIconData | null>(null);
   /** `danger` for a destructive action such as cancelling a booking. */
   readonly tone = input<'default' | 'danger'>('default');
@@ -44,20 +44,20 @@ export class SnMenuItem {
 }
 
 /**
- * List of actions opened by a `button[snMenuTrigger]` (menu button pattern):
- * `<button [snMenuTrigger]="menu">…</button> <sn-menu #menu>…items…</sn-menu>`.
+ * List of actions opened by a `button[speedMenuTrigger]` (menu button pattern):
+ * `<button [speedMenuTrigger]="menu">…</button> <speed-menu #menu>…items…</speed-menu>`.
  * Arrow keys, Home and End move between items, a letter jumps to the next item starting with
  * it; Escape, a choice or a click outside closes the menu, and focus returns to the button
  * except when it moved elsewhere. The list opens in the top layer, next to its button.
  */
 @Component({
-  selector: 'sn-menu',
+  selector: 'speed-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `<ng-content />`,
   styleUrl: './menu.scss',
   host: {
-    class: 'sn-menu',
+    class: 'speed-menu',
     role: 'menu',
     '[id]': 'id',
     '[attr.popover]': "popover ? 'manual' : null",
@@ -72,11 +72,11 @@ export class SnMenuItem {
     '(document:click)': 'onDocumentClick($event)',
   },
 })
-export class SnMenu {
+export class SpeedMenu {
   /** Emitted each time the menu opens. */
   readonly opened = output<void>();
 
-  readonly id = `sn-menu-${nextId++}`;
+  readonly id = `speed-menu-${nextId++}`;
 
   // Without the Popover API (old browsers), the list is only fixed to the viewport: a scrolling
   // parent no longer clips it, a transformed one still would.
@@ -86,7 +86,7 @@ export class SnMenu {
   private readonly openState = signal(false);
   /** True while the menu is open. */
   readonly isOpen = this.openState.asReadonly();
-  protected readonly trigger = signal<SnMenuTrigger | null>(null);
+  protected readonly trigger = signal<SpeedMenuTrigger | null>(null);
   // Item to focus once the menu is rendered open.
   private readonly pendingFocus = signal<'first' | 'last' | null>(null);
 
@@ -116,8 +116,8 @@ export class SnMenu {
     });
   }
 
-  /** Called by `snMenuTrigger`: the button that opens this menu and labels it. */
-  attach(trigger: SnMenuTrigger): void {
+  /** Called by `speedMenuTrigger`: the button that opens this menu and labels it. */
+  attach(trigger: SpeedMenuTrigger): void {
     this.trigger.set(trigger);
   }
 
@@ -229,7 +229,7 @@ export class SnMenu {
   }
 
   // Read from the DOM: items may reach the menu through a relayed <ng-content> (as in
-  // `sn-action-menu`), which content queries do not see.
+  // `speed-action-menu`), which content queries do not see.
   private enabledItems(): HTMLButtonElement[] {
     return [...this.host.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')].filter(
       (element) => !element.disabled,
@@ -251,12 +251,12 @@ export class SnMenu {
 }
 
 /**
- * Turns any button into the opener of an `sn-menu`: `aria-haspopup`, `aria-expanded` and
+ * Turns any button into the opener of an `speed-menu`: `aria-haspopup`, `aria-expanded` and
  * `aria-controls`, a click toggles the menu, Arrow down and Arrow up open it on its first or last
  * item. The button keeps its own look and content.
  */
 @Directive({
-  selector: 'button[snMenuTrigger]',
+  selector: 'button[speedMenuTrigger]',
   host: {
     'aria-haspopup': 'menu',
     '[id]': 'id',
@@ -266,10 +266,10 @@ export class SnMenu {
     '(keydown)': 'onKeydown($event)',
   },
 })
-export class SnMenuTrigger {
-  readonly menu = input.required<SnMenu>({ alias: 'snMenuTrigger' });
+export class SpeedMenuTrigger {
+  readonly menu = input.required<SpeedMenu>({ alias: 'speedMenuTrigger' });
   readonly element: HTMLButtonElement = inject(ElementRef).nativeElement;
-  readonly id = this.element.id || `sn-menu-trigger-${nextId++}`;
+  readonly id = this.element.id || `speed-menu-trigger-${nextId++}`;
 
   constructor() {
     // Labels the menu as soon as both exist.

@@ -74,7 +74,7 @@ test('declares the self-hosted font under /speedernet-ui/', () => {
 test('emits the global classes and native field rules', () => {
   assert.match(
     css,
-    /\.sn-highlight\s*{[^}]*linear-gradient\(transparent 60%, var\(--color-accent\) 60%\)/,
+    /\.speed-highlight\s*{[^}]*linear-gradient\(transparent 60%, var\(--color-accent\) 60%\)/,
   );
   assert.match(css, /accent-color: var\(--color-text\)/);
   assert.ok(css.includes('@media (min-width: 960px)'));

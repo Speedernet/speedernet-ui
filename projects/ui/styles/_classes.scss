@@ -1,5 +1,5 @@
 // Yellow marker highlight behind one or two words of every page title (h1).
-.sn-highlight {
+.speed-highlight {
   padding-inline: var(--space-1);
   background: linear-gradient(transparent 60%, var(--color-accent) 60%);
 }
@@ -38,15 +38,15 @@ input[type='radio'] {
   accent-color: var(--color-text);
 }
 
-// Data table; wrap it in .sn-table-wrapper so it scrolls horizontally when it is wider than the screen.
-.sn-table-wrapper {
+// Data table; wrap it in .speed-table-wrapper so it scrolls horizontally when it is wider than the screen.
+.speed-table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
 }
 
-.sn-table {
+.speed-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9375rem;

@@ -6,39 +6,39 @@ import {
   input,
 } from '@angular/core';
 import { LucideCircleAlert, LucideDynamicIcon } from '@lucide/angular';
-import { SnFieldContext } from './field-context';
+import { SpeedFieldContext } from './field-context';
 
 let nextFieldId = 0;
 
-/** Lays out a label, a control (`snControl`), an optional hint and an optional error message. */
+/** Lays out a label, a control (`speedControl`), an optional hint and an optional error message. */
 @Component({
-  selector: 'sn-field',
+  selector: 'speed-field',
   imports: [LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <label class="sn-field-label" [attr.for]="controlId">{{ label() }}</label>
+    <label class="speed-field-label" [attr.for]="controlId">{{ label() }}</label>
     <ng-content />
     @if (hint(); as hint) {
-      <p class="sn-field-hint" [id]="hintId">{{ hint }}</p>
+      <p class="speed-field-hint" [id]="hintId">{{ hint }}</p>
     }
     @if (error(); as error) {
-      <p class="sn-field-error" [id]="errorId">
+      <p class="speed-field-error" [id]="errorId">
         <svg [lucideIcon]="alertIcon" [size]="18" aria-hidden="true"></svg>
         <span>{{ error }}</span>
       </p>
     }
   `,
   styleUrl: './field.scss',
-  host: { class: 'sn-field' },
-  providers: [{ provide: SnFieldContext, useExisting: SnField }],
+  host: { class: 'speed-field' },
+  providers: [{ provide: SpeedFieldContext, useExisting: SpeedField }],
 })
-export class SnField implements SnFieldContext {
+export class SpeedField implements SpeedFieldContext {
   readonly label = input.required<string>();
   readonly hint = input<string | null>(null);
   readonly error = input<string | null>(null);
 
-  private readonly uid = `sn-field-${++nextFieldId}`;
+  private readonly uid = `speed-field-${++nextFieldId}`;
   readonly controlId = `${this.uid}-control`;
   readonly hintId = `${this.uid}-hint`;
   readonly errorId = `${this.uid}-error`;

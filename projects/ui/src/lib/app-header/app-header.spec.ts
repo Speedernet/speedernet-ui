@@ -4,10 +4,10 @@ import { By } from '@angular/platform-browser';
 import { Router, RouterOutlet, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { LucideMenu, LucideX } from '@lucide/angular';
-import { SnIconButton } from '../button/icon-button';
-import { SnAppHeader, SnHeaderUser, SnNavItem } from './app-header';
+import { SpeedIconButton } from '../button/icon-button';
+import { SpeedAppHeader, SpeedHeaderUser, SpeedNavItem } from './app-header';
 
-let hostUser: SnHeaderUser | null = null;
+let hostUser: SpeedHeaderUser | null = null;
 let hostHomeLink = '/';
 
 @Component({ template: `<p>Page</p>` })
@@ -15,9 +15,9 @@ class Page {}
 
 /** Application shell: the header stays in place while the routed page changes. */
 @Component({
-  imports: [SnAppHeader, RouterOutlet],
+  imports: [SpeedAppHeader, RouterOutlet],
   template: `
-    <sn-app-header
+    <speed-app-header
       appName="Room booking"
       [homeLink]="homeLink"
       [navItems]="navItems"
@@ -29,7 +29,7 @@ class Page {}
   `,
 })
 class Host {
-  readonly navItems: SnNavItem[] = [
+  readonly navItems: SpeedNavItem[] = [
     { label: 'Home', link: '/' },
     { label: 'Bookings', link: '/bookings' },
   ];
@@ -46,7 +46,7 @@ class Host {
 
 async function setup(
   url = '/bookings',
-  user: SnHeaderUser | null = { displayName: 'Camille Dupont' },
+  user: SpeedHeaderUser | null = { displayName: 'Camille Dupont' },
   homeLink = '/',
 ) {
   hostUser = user;
@@ -71,11 +71,11 @@ async function setup(
   const host = harness.fixture.debugElement.query(By.directive(Host)).componentInstance as Host;
   const root = harness.fixture.nativeElement as HTMLElement;
   document.body.appendChild(root);
-  const header = () => root.querySelector('sn-app-header') as HTMLElement;
+  const header = () => root.querySelector('speed-app-header') as HTMLElement;
   const userButton = () =>
-    header().querySelector('.sn-app-header-user-button') as HTMLButtonElement | null;
+    header().querySelector('.speed-app-header-user-button') as HTMLButtonElement | null;
   const menuButton = () =>
-    header().querySelector('.sn-app-header-menu-button') as HTMLButtonElement;
+    header().querySelector('.speed-app-header-menu-button') as HTMLButtonElement;
   const panel = (trigger: HTMLElement) =>
     document.getElementById(trigger.getAttribute('aria-controls')!) as HTMLElement | null;
   const detect = async () => {
@@ -84,50 +84,50 @@ async function setup(
   };
   const menuIcon = () =>
     harness.fixture.debugElement
-      .query(By.css('.sn-app-header-menu-button'))
-      .injector.get(SnIconButton)
+      .query(By.css('.speed-app-header-menu-button'))
+      .injector.get(SpeedIconButton)
       .icon();
   return { harness, host, root, header, userButton, menuButton, panel, detect, menuIcon };
 }
 
-describe('SnAppHeader', () => {
+describe('SpeedAppHeader', () => {
   afterEach(() => {
     document.body.innerHTML = '';
   });
 
   it('links home with the decorative logo and the application name', async () => {
     const { header } = await setup();
-    const home = header().querySelector('a.sn-app-header-home') as HTMLAnchorElement;
+    const home = header().querySelector('a.speed-app-header-home') as HTMLAnchorElement;
     expect(home.getAttribute('href')).toBe('/');
-    expect(home.querySelector('sn-logo img')!.getAttribute('alt')).toBe('');
+    expect(home.querySelector('speed-logo img')!.getAttribute('alt')).toBe('');
     expect(home.textContent).toContain('Room booking');
   });
 
   it('renders the main navigation and marks only the active route', async () => {
     const { header } = await setup('/bookings');
-    const nav = header().querySelector('nav.sn-app-header-nav')!;
+    const nav = header().querySelector('nav.speed-app-header-nav')!;
     expect(nav.getAttribute('aria-label')).toBe('Navigation principale');
     const [home, bookings] = Array.from(nav.querySelectorAll('a'));
     expect(home.textContent).toContain('Home');
     expect(bookings.getAttribute('href')).toBe('/bookings');
     expect(bookings.getAttribute('aria-current')).toBe('page');
-    expect(bookings.classList).toContain('sn-nav-active');
+    expect(bookings.classList).toContain('speed-nav-active');
     expect(home.hasAttribute('aria-current')).toBe(false);
-    expect(home.classList).not.toContain('sn-nav-active');
+    expect(home.classList).not.toContain('speed-nav-active');
   });
 
   it('marks the home item active only on the home page', async () => {
     const { header } = await setup('/');
-    const [home, bookings] = Array.from(header().querySelectorAll('nav.sn-app-header-nav a'));
+    const [home, bookings] = Array.from(header().querySelectorAll('nav.speed-app-header-nav a'));
     expect(home.getAttribute('aria-current')).toBe('page');
     expect(bookings.hasAttribute('aria-current')).toBe(false);
   });
 
   it('never marks a "/" item active on other pages, even with another home link', async () => {
     const { header } = await setup('/bookings', undefined, '/home');
-    const [home, bookings] = Array.from(header().querySelectorAll('nav.sn-app-header-nav a'));
+    const [home, bookings] = Array.from(header().querySelectorAll('nav.speed-app-header-nav a'));
     expect(home.hasAttribute('aria-current')).toBe(false);
-    expect(home.classList).not.toContain('sn-nav-active');
+    expect(home.classList).not.toContain('speed-nav-active');
     expect(bookings.getAttribute('aria-current')).toBe('page');
   });
 
@@ -135,7 +135,7 @@ describe('SnAppHeader', () => {
     // jsdom ignores media queries, so the mobile `display: none` would make the button unfocusable.
     beforeEach(() => {
       const desktop = document.createElement('style');
-      desktop.textContent = '.sn-app-header-user { display: block !important; }';
+      desktop.textContent = '.speed-app-header-user { display: block !important; }';
       document.body.appendChild(desktop);
     });
 
@@ -144,7 +144,7 @@ describe('SnAppHeader', () => {
       const button = userButton()!;
       expect(button.getAttribute('type')).toBe('button');
       expect(button.textContent).toContain('Camille Dupont');
-      const initials = button.querySelector('.sn-app-header-initials')!;
+      const initials = button.querySelector('.speed-app-header-initials')!;
       expect(initials.textContent!.trim()).toBe('CD');
       expect(initials.getAttribute('aria-hidden')).toBe('true');
       expect(button.getAttribute('aria-expanded')).toBe('false');
@@ -208,12 +208,12 @@ describe('SnAppHeader', () => {
       expect(document.activeElement).toBe(button);
     });
 
-    it('is an sn-menu labelled by the button, with logout as a menu item', async () => {
+    it('is a speed-menu labelled by the button, with logout as a menu item', async () => {
       const { userButton, panel } = await setup();
       const button = userButton()!;
       const menu = panel(button)!;
       expect(button.getAttribute('aria-haspopup')).toBe('menu');
-      expect(menu.tagName).toBe('SN-MENU');
+      expect(menu.tagName).toBe('SPEED-MENU');
       expect(menu.getAttribute('role')).toBe('menu');
       expect(menu.getAttribute('aria-labelledby')).toBe(button.id);
       const item = menu.querySelector('[role="menuitem"]')!;
@@ -232,7 +232,7 @@ describe('SnAppHeader', () => {
 
     it('shows the full name as a title, the visible name being truncated if needed', async () => {
       const { userButton } = await setup();
-      const name = userButton()!.querySelector('.sn-app-header-user-name')!;
+      const name = userButton()!.querySelector('.speed-app-header-user-name')!;
       expect(name.getAttribute('title')).toBe('Camille Dupont');
       expect(name.textContent!.trim()).toBe('Camille Dupont');
     });

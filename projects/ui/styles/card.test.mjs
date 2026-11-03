@@ -14,6 +14,6 @@ const importer = {
 const css = sass.compile(file, { importers: [importer] }).css;
 
 test('card content keeps its natural width while actions stay full width', () => {
-  assert.match(css, /\.sn-card\s*\{[^}]*align-items:\s*flex-start/);
-  assert.match(css, /\[snCardActions\]\s*\{[^}]*align-self:\s*stretch/);
+  assert.match(css, /\.speed-card\s*\{[^}]*align-items:\s*flex-start/);
+  assert.match(css, /\[speedCardActions\]\s*\{[^}]*align-self:\s*stretch/);
 });

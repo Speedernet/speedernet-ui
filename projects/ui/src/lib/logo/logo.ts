@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { SN_ASSETS_BASE } from '../assets-base';
+import { SPEED_ASSETS_BASE } from '../assets-base';
 
 /** Official Speedernet logo: the compact mark or the full logo. */
 @Component({
-  selector: 'sn-logo',
+  selector: 'speed-logo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<img class="sn-logo__img" [src]="src()" [alt]="alt()" />`,
+  template: `<img class="speed-logo__img" [src]="src()" [alt]="alt()" />`,
   styles: `
     :host {
       display: inline-block;
       line-height: 0;
     }
-    .sn-logo__img {
+    .speed-logo__img {
       display: block;
       height: 100%;
       width: auto;
@@ -19,8 +19,8 @@ import { SN_ASSETS_BASE } from '../assets-base';
     }
   `,
 })
-export class SnLogo {
-  private readonly base = inject(SN_ASSETS_BASE);
+export class SpeedLogo {
+  private readonly base = inject(SPEED_ASSETS_BASE);
 
   readonly variant = input<'mark' | 'full'>('mark');
   readonly alt = input('');

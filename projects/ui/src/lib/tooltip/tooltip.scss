@@ -1,12 +1,12 @@
 // Tooltip: dark bubble centred above its content, shown on hover and keyboard focus.
-.sn-tooltip {
+.speed-tooltip {
   position: relative;
   display: inline-block;
 }
 
 // The bubble's bottom padding bridges the gap to the content, so the pointer can move onto
 // the text without it disappearing.
-.sn-tooltip-bubble {
+.speed-tooltip-bubble {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -23,13 +23,14 @@
 
 // Keyboard focus only (:focus-visible): a mouse click also focuses the button, and with
 // :focus-within the bubble would stay stuck after the pointer leaves.
-.sn-tooltip:is(:hover, :has(:focus-visible)):not(.sn-tooltip-dismissed) .sn-tooltip-bubble {
+.speed-tooltip:is(:hover, :has(:focus-visible)):not(.speed-tooltip-dismissed)
+  .speed-tooltip-bubble {
   opacity: 1;
   visibility: visible;
   translate: -50% 0;
 }
 
-.sn-tooltip-text {
+.speed-tooltip-text {
   position: relative;
   display: block;
   padding: 0.375rem 0.625rem;
@@ -54,7 +55,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sn-tooltip-bubble {
+  .speed-tooltip-bubble {
     transition: none;
   }
 }

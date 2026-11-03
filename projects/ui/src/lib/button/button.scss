@@ -1,5 +1,5 @@
-// Buttons: one .sn-button-primary per screen, .sn-button-secondary for the other actions.
-.sn-button {
+// Buttons: one .speed-button-primary per screen, .speed-button-secondary for the other actions.
+.speed-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +37,7 @@
   }
 }
 
-.sn-button-primary {
+.speed-button-primary {
   background: var(--color-text);
   color: var(--color-on-dark);
   box-shadow: var(--shadow-button);
@@ -48,17 +48,17 @@
   }
 }
 
-.sn-button-danger {
+.speed-button-danger {
   background: var(--color-danger);
   color: var(--color-on-dark);
 }
 
-.sn-button-icon {
+.speed-button-icon {
   width: 48px;
   padding: 0;
 }
 
-.sn-button-primary {
+.speed-button-primary {
   &::before {
     content: '';
     position: absolute;
@@ -77,7 +77,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sn-button {
+  .speed-button {
     transition: none;
 
     &:hover:not(:disabled) {
@@ -85,7 +85,7 @@
     }
   }
 
-  .sn-button-primary::before {
+  .speed-button-primary::before {
     display: none;
   }
 }

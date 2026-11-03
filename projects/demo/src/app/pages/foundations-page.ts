@@ -5,7 +5,7 @@ import {
   computed,
   signal,
 } from '@angular/core';
-import { SnLogo, SnTooltip } from '@speedernet/ui';
+import { SpeedLogo, SpeedTooltip } from '@speedernet/ui';
 import { SwatchInfo, swatchInfo } from './color';
 
 interface ContrastPair {
@@ -16,20 +16,20 @@ interface ContrastPair {
 
 @Component({
   selector: 'demo-foundations-page',
-  imports: [SnLogo, SnTooltip],
+  imports: [SpeedLogo, SpeedTooltip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
-    <h1>Les <span class="sn-highlight">fondations</span></h1>
-    <p class="sn-text-muted">Couleurs, typographie, espacements et logos de l'écosystème.</p>
+    <h1>Les <span class="speed-highlight">fondations</span></h1>
+    <p class="speed-text-muted">Couleurs, typographie, espacements et logos de l'écosystème.</p>
 
     <h2>Couleurs de la marque</h2>
-    <p class="sn-text-muted">Cliquez sur une couleur pour copier sa valeur hexa.</p>
+    <p class="speed-text-muted">Cliquez sur une couleur pour copier sa valeur hexa.</p>
     <p class="visually-hidden" aria-live="polite">{{ copiedMessage() }}</p>
     <div class="swatches">
       @for (c of brand; track c.token) {
         <div class="swatch">
-          <sn-tooltip class="copy-color-tooltip" [text]="tooltipText(c.token.slice(2))">
+          <speed-tooltip class="copy-color-tooltip" [text]="tooltipText(c.token.slice(2))">
             <button
               type="button"
               class="swatch__color copy-color"
@@ -37,7 +37,7 @@ interface ContrastPair {
               [attr.aria-label]="c.token"
               (click)="copy(c.token.slice(2))"
             ></button>
-          </sn-tooltip>
+          </speed-tooltip>
           <span>{{ c.label }}</span>
           <code>{{ c.token }}</code>
         </div>
@@ -52,7 +52,7 @@ interface ContrastPair {
           @let token = scale + '-' + step;
           @let info = infos()[token];
           <div class="scale__step">
-            <sn-tooltip class="copy-color-tooltip" [text]="tooltipText(token)">
+            <speed-tooltip class="copy-color-tooltip" [text]="tooltipText(token)">
               <button
                 type="button"
                 class="scale__color copy-color"
@@ -65,13 +65,13 @@ interface ContrastPair {
                 <span class="scale__name">{{ step }}</span>
                 <span class="scale__sample" aria-hidden="true">Aa</span>
               </button>
-            </sn-tooltip>
+            </speed-tooltip>
             <code>--{{ token }}</code>
             @if (info) {
               <span class="scale__ratio">{{ ratioLabel(info.ratio) }} · {{ info.level }}</span>
             }
             <!-- @if (isAnchor(scale, step)) {
-              <span class="sn-text-muted">couleur de marque</span>
+              <span class="speed-text-muted">couleur de marque</span>
             } -->
           </div>
         }
@@ -79,8 +79,8 @@ interface ContrastPair {
     }
 
     <h2>Associations de couleurs autorisées</h2>
-    <div class="sn-table-wrapper">
-      <table class="sn-table">
+    <div class="speed-table-wrapper">
+      <table class="speed-table">
         <caption class="visually-hidden">
           Associations de couleurs autorisées
         </caption>
@@ -132,8 +132,8 @@ interface ContrastPair {
 
     <h2>Logos</h2>
     <div class="logos">
-      <sn-logo variant="mark" alt="Logo Speedernet, version courte" />
-      <sn-logo variant="full" alt="Logo Speedernet, version complète" />
+      <speed-logo variant="mark" alt="Logo Speedernet, version courte" />
+      <speed-logo variant="full" alt="Logo Speedernet, version complète" />
     </div>
   `,
 })

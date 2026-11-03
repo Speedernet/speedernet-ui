@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 /**
- * Card with three projection slots, in this order: `[snCardHeader]`, the default content,
- * then `[snCardActions]`.
+ * Card with three projection slots, in this order: `[speedCardHeader]`, the default content,
+ * then `[speedCardActions]`.
  */
 @Component({
-  selector: 'sn-card',
+  selector: 'speed-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-content select="[snCardHeader]" />
+    <ng-content select="[speedCardHeader]" />
     <ng-content />
-    <ng-content select="[snCardActions]" />
+    <ng-content select="[speedCardActions]" />
   `,
   styleUrl: './card.scss',
-  host: { class: 'sn-card', role: 'article' },
+  host: { class: 'speed-card', role: 'article' },
 })
-export class SnCard {}
+export class SpeedCard {}

@@ -31,7 +31,7 @@
   }
 }
 
-sn-card :is(h2, h3) {
+speed-card :is(h2, h3) {
   margin: 0;
 }
 
@@ -182,7 +182,7 @@ button.scale__color {
   gap: var(--space-5);
   align-items: center;
 
-  sn-logo {
+  speed-logo {
     display: block;
     height: 3rem;
   }

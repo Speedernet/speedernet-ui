@@ -1,17 +1,17 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SnMenuItem } from '../menu/menu';
-import { SnActionMenu } from './action-menu';
+import { SpeedMenuItem } from '../menu/menu';
+import { SpeedActionMenu } from './action-menu';
 
 @Component({
-  imports: [SnActionMenu, SnMenuItem],
+  imports: [SpeedActionMenu, SpeedMenuItem],
   template: `
-    <sn-action-menu label="Actions for the booking on 12/03">
-      <button snMenuItem (click)="chosen.set('edit')">Edit</button>
-      <button snMenuItem (click)="chosen.set('duplicate')">Duplicate</button>
-      <button snMenuItem disabled>Move</button>
-      <button snMenuItem tone="danger" (click)="chosen.set('cancel')">Cancel</button>
-    </sn-action-menu>
+    <speed-action-menu label="Actions for the booking on 12/03">
+      <button speedMenuItem (click)="chosen.set('edit')">Edit</button>
+      <button speedMenuItem (click)="chosen.set('duplicate')">Duplicate</button>
+      <button speedMenuItem disabled>Move</button>
+      <button speedMenuItem tone="danger" (click)="chosen.set('cancel')">Cancel</button>
+    </speed-action-menu>
     <button id="after" type="button">After</button>
   `,
 })
@@ -25,7 +25,7 @@ function key(target: Element, key: string): KeyboardEvent {
   return event;
 }
 
-describe('SnActionMenu', () => {
+describe('SpeedActionMenu', () => {
   let fixture: ComponentFixture<Host>;
   let root: HTMLElement;
   let trigger: HTMLButtonElement;
@@ -41,7 +41,7 @@ describe('SnActionMenu', () => {
     fixture.detectChanges();
     root = fixture.nativeElement;
     document.body.appendChild(root);
-    trigger = root.querySelector('.sn-action-menu-trigger')!;
+    trigger = root.querySelector('.speed-action-menu-trigger')!;
     menu = root.querySelector('[role="menu"]')!;
   });
 
@@ -69,7 +69,7 @@ describe('SnActionMenu', () => {
       other.detectChanges();
       const list: HTMLElement = other.nativeElement.querySelector('[role="menu"]');
       expect(list.getAttribute('popover')).toBe('manual');
-      other.nativeElement.querySelector('.sn-action-menu-trigger').click();
+      other.nativeElement.querySelector('.speed-action-menu-trigger').click();
       other.detectChanges();
       TestBed.tick();
       expect(shown).toEqual([list]);
@@ -105,7 +105,7 @@ describe('SnActionMenu', () => {
       expect(item.getAttribute('tabindex')).toBe('-1');
       expect(item.getAttribute('type')).toBe('button');
     }
-    expect(items()[3].classList).toContain('sn-menu-item-danger');
+    expect(items()[3].classList).toContain('speed-menu-item-danger');
   });
 
   it('opens on click and focuses the first item', () => {
