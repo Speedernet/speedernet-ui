@@ -47,31 +47,35 @@ describe('ScreenPage', () => {
     return { fixture, root, button, dialog, rows, announced, set, submit };
   }
 
-  it('opens the booking dialog from "Book a room"', async () => {
+  it('opens the booking dialog from "Réserver une salle"', async () => {
     const { fixture, button, dialog } = await setup();
-    button('Book a room').click();
+    button('Réserver une salle').click();
     await fixture.whenStable();
     expect(dialog.open).toBe(true);
-    expect(dialog.querySelector('h2')!.textContent).toContain('Book a room');
+    expect(dialog.querySelector('h2')!.textContent).toContain('Réserver une salle');
     expect(dialog.querySelectorAll('sn-select select')).toHaveLength(2);
   });
 
   it('shows an error per empty field and keeps the dialog open', async () => {
     const { fixture, button, dialog, submit } = await setup();
-    button('Book a room').click();
+    button('Réserver une salle').click();
     await fixture.whenStable();
     await submit();
     const errors = [...dialog.querySelectorAll('.sn-field-error')].map((e) =>
       e.textContent!.trim(),
     );
-    expect(errors).toEqual(['Choose a room.', 'Choose a date.', 'Choose a time slot.']);
+    expect(errors).toEqual([
+      'Choisissez une salle.',
+      'Choisissez une date.',
+      'Choisissez un créneau.',
+    ]);
     expect(dialog.querySelectorAll('[aria-invalid="true"]')).toHaveLength(3);
     expect(dialog.open).toBe(true);
   });
 
   it('adds the booking, closes the dialog and confirms with a toast', async () => {
     const { fixture, button, dialog, rows, announced, set, submit } = await setup();
-    button('Book a room').click();
+    button('Réserver une salle').click();
     await fixture.whenStable();
     set('room', 'Confluence');
     set('date', '2026-03-13');
@@ -80,7 +84,7 @@ describe('ScreenPage', () => {
     expect(dialog.open).toBe(false);
     expect(rows()[0]).toContain('Confluence');
     expect(rows()[0]).toContain('13/03/2026');
-    expect(announced()).toContain('Booking saved: Confluence, on 13/03/2026.');
+    expect(announced()).toContain('Réservation enregistrée : Confluence, le 13/03/2026.');
   });
 
   it('gives each booking an action menu named after it', async () => {
@@ -89,8 +93,8 @@ describe('ScreenPage', () => {
       b.getAttribute('aria-label'),
     );
     expect(labels).toEqual([
-      'Actions for Croix-Rousse on 12/03/2026',
-      'Actions for Fourvière on 14/03/2026',
+      'Actions pour Croix-Rousse le 12/03/2026',
+      'Actions pour Fourvière le 14/03/2026',
     ]);
   });
 
@@ -101,10 +105,10 @@ describe('ScreenPage', () => {
     await fixture.whenStable();
     [...menu.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')].at(-1)!.click();
     await fixture.whenStable();
-    expect(rows()[0]).toContain('Cancelled');
-    expect(announced()).toContain('Booking of 12/03/2026 cancelled.');
+    expect(rows()[0]).toContain('Annulée');
+    expect(announced()).toContain('Réservation du 12/03/2026 annulée.');
     document.querySelector<HTMLButtonElement>('.sn-toast-action')!.click();
     await fixture.whenStable();
-    expect(rows()[0]).toContain('Confirmed');
+    expect(rows()[0]).toContain('Confirmée');
   });
 });

@@ -20,11 +20,11 @@ interface ContrastPair {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
-    <h1>The <span class="sn-highlight">foundations</span></h1>
-    <p class="sn-text-muted">Colors, typography, spacing and logos of the ecosystem.</p>
+    <h1>Les <span class="sn-highlight">fondations</span></h1>
+    <p class="sn-text-muted">Couleurs, typographie, espacements et logos de l'écosystème.</p>
 
-    <h2>Brand colors</h2>
-    <p class="sn-text-muted">Click a color to copy its hex value.</p>
+    <h2>Couleurs de la marque</h2>
+    <p class="sn-text-muted">Cliquez sur une couleur pour copier sa valeur hexa.</p>
     <p class="visually-hidden" aria-live="polite">{{ copiedMessage() }}</p>
     <div class="swatches">
       @for (c of brand; track c.token) {
@@ -44,7 +44,7 @@ interface ContrastPair {
       }
     </div>
 
-    <h2>Scales</h2>
+    <h2>Échelles</h2>
     @for (scale of scales; track scale) {
       <h3>{{ scale }}</h3>
       <div class="scale">
@@ -71,23 +71,23 @@ interface ContrastPair {
               <span class="scale__ratio">{{ ratioLabel(info.ratio) }} · {{ info.level }}</span>
             }
             <!-- @if (isAnchor(scale, step)) {
-              <span class="sn-text-muted">brand color</span>
+              <span class="sn-text-muted">couleur de marque</span>
             } -->
           </div>
         }
       </div>
     }
 
-    <h2>Allowed color pairings</h2>
+    <h2>Associations de couleurs autorisées</h2>
     <div class="sn-table-wrapper">
       <table class="sn-table">
         <caption class="visually-hidden">
-          Allowed color pairings
+          Associations de couleurs autorisées
         </caption>
         <thead>
           <tr>
-            <th scope="col">Pairing</th>
-            <th scope="col">Contrast</th>
+            <th scope="col">Association</th>
+            <th scope="col">Contraste</th>
             <th scope="col">Usage</th>
           </tr>
         </thead>
@@ -103,16 +103,16 @@ interface ContrastPair {
       </table>
     </div>
 
-    <h2>Typography</h2>
+    <h2>Typographie</h2>
     <div class="type-scale">
-      <p class="type-h1-desktop">Heading 1 · desktop (2 rem)</p>
-      <p class="type-h1-phone">Heading 1 · phone (1.625 rem)</p>
-      <p class="type-h2">Heading 2 (1.5 rem)</p>
-      <p class="type-h3">Heading 3 (1.25 rem)</p>
-      <p>Body text (1 rem), Mulish font, comfortable line height.</p>
+      <p class="type-h1-desktop">Titre 1 · ordinateur (2 rem)</p>
+      <p class="type-h1-phone">Titre 1 · téléphone (1,625 rem)</p>
+      <p class="type-h2">Titre 2 (1,5 rem)</p>
+      <p class="type-h3">Titre 3 (1,25 rem)</p>
+      <p>Texte courant (1 rem), police Mulish, interligne confortable.</p>
     </div>
 
-    <h2>Spacing and radii</h2>
+    <h2>Espacements et arrondis</h2>
     <div class="spacing">
       @for (s of spaces; track s) {
         <div class="spacing__item">
@@ -132,18 +132,18 @@ interface ContrastPair {
 
     <h2>Logos</h2>
     <div class="logos">
-      <sn-logo variant="mark" alt="Speedernet logo, short version" />
-      <sn-logo variant="full" alt="Speedernet logo, full version" />
+      <sn-logo variant="mark" alt="Logo Speedernet, version courte" />
+      <sn-logo variant="full" alt="Logo Speedernet, version complète" />
     </div>
   `,
 })
 export class FoundationsPage {
   protected readonly brand = [
-    { label: 'Text', token: '--color-text' },
-    { label: 'Night', token: '--color-night' },
-    { label: 'Primary', token: '--color-primary' },
+    { label: 'Texte', token: '--color-text' },
+    { label: 'Nuit', token: '--color-night' },
+    { label: 'Primaire', token: '--color-primary' },
     { label: 'Accent', token: '--color-accent' },
-    { label: 'Brand', token: '--color-brand' },
+    { label: 'Marque', token: '--color-brand' },
     { label: 'Danger', token: '--color-danger' },
   ];
   protected readonly scales = ['cyan', 'yellow', 'red', 'night', 'gray'];
@@ -162,20 +162,20 @@ export class FoundationsPage {
   });
   /** Rounded down so that a ratio just under a WCAG threshold never reads as reaching it. */
   protected ratioLabel(ratio: number): string {
-    return `${(Math.floor(ratio * 10) / 10).toFixed(1)}:1`;
+    return `${(Math.floor(ratio * 10) / 10).toFixed(1).replace('.', ',')}:1`;
   }
 
-  /** Token whose hex value was just copied; its tooltip says "copied" for a moment. */
+  /** Token whose hex value was just copied; its tooltip says "Copié" for a moment. */
   protected readonly copied = signal<string | null>(null);
   protected readonly copiedMessage = computed(() => {
     const token = this.copied();
-    return token ? `${this.infos()[token]?.hex} copied to the clipboard` : '';
+    return token ? `${this.infos()[token]?.hex} copié dans le presse-papiers` : '';
   });
   private copiedTimer?: ReturnType<typeof setTimeout>;
 
   protected tooltipText(token: string): string {
     const hex = this.infos()[token]?.hex ?? '';
-    return this.copied() === token ? `${hex} copied` : `Copy ${hex}`;
+    return this.copied() === token ? `${hex} copié` : `Copier ${hex}`;
   }
 
   protected async copy(token: string): Promise<void> {
@@ -210,23 +210,23 @@ export class FoundationsPage {
   protected readonly spaces = [1, 2, 3, 4, 5, 6];
   protected readonly radii = ['--radius', '--radius-lg', '--radius-pill'];
   protected readonly pairs: ContrastPair[] = [
-    { pair: 'Text --color-text (#313131) on white', ratio: '13.0:1', usage: 'Body text' },
+    { pair: 'Texte --color-text (#313131) sur blanc', ratio: '13,0:1', usage: 'Texte courant' },
     {
-      pair: 'Secondary text --color-text-muted (#5e5e5e) on white',
-      ratio: '6.5:1',
-      usage: 'Hints, notes',
+      pair: 'Texte secondaire --color-text-muted (#5e5e5e) sur blanc',
+      ratio: '6,5:1',
+      usage: 'Aides, mentions',
     },
-    { pair: 'White on --color-danger', ratio: '5.2:1', usage: 'Delete button' },
+    { pair: 'Blanc sur --color-danger', ratio: '5,2:1', usage: 'Bouton de suppression' },
     {
-      pair: 'Text on cyan and yellow tints',
-      ratio: '≥ 9.8:1',
-      usage: 'Messages, badges, banners',
+      pair: 'Texte sur teintes cyan et jaune',
+      ratio: '≥ 9,8:1',
+      usage: 'Messages, badges, bandeaux',
     },
-    { pair: 'Field border (gray-600)', ratio: '3.4:1', usage: 'Field outlines' },
+    { pair: 'Bordure de champ (gray-600)', ratio: '3,4:1', usage: 'Contour des champs' },
     {
-      pair: 'Text --color-text on --color-accent (#ffe44b)',
-      ratio: '10.2:1',
-      usage: 'Heading highlight, yellow badges',
+      pair: 'Texte --color-text sur --color-accent (#ffe44b)',
+      ratio: '10,2:1',
+      usage: 'Surlignage des titres, badges jaunes',
     },
   ];
 }

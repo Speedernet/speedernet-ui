@@ -1,13 +1,13 @@
 <sn-app-header
-  appName="@speedernet/ui demo"
-  homeLink="/foundations"
+  appName="Démonstration @speedernet/ui"
+  homeLink="/fondations"
   [navItems]="navItems"
   [user]="user"
   (logout)="loggedOut.set(true)"
 />
 <main class="sn-container">
   @if (loggedOut()) {
-    <sn-message type="info">Simulated logout.</sn-message>
+    <sn-message type="info">Déconnexion simulée.</sn-message>
   }
   <router-outlet />
 </main>

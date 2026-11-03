@@ -10,9 +10,9 @@ import { SnAppHeader, SnHeaderUser, SnMessage, SnNavItem } from '@speedernet/ui'
 })
 export class App {
   protected readonly navItems: SnNavItem[] = [
-    { label: 'Foundations', link: '/foundations' },
-    { label: 'Components', link: '/components' },
-    { label: 'Sample screen', link: '/sample-screen' },
+    { label: 'Fondations', link: '/fondations' },
+    { label: 'Composants', link: '/composants' },
+    { label: 'Écran type', link: '/ecran-type' },
   ];
   protected readonly user: SnHeaderUser = { displayName: 'Camille Dupont' };
   protected readonly loggedOut = signal(false);
