@@ -1,5 +1,15 @@
 # @speedernet/ui
 
+## 1.0.0
+
+### Major Changes
+
+- 29de0e1: Breaking: the `sn` prefix becomes `speed` everywhere. Classes and services are renamed (`SnButton` → `SpeedButton`, `SnToastService` → `SpeedToastService`, `SN_ASSETS_BASE` → `SPEED_ASSETS_BASE`), as are element selectors (`<sn-field>` → `<speed-field>`), attribute directives (`snButton` → `speedButton`, `snControl` → `speedControl`, `[snMenuTrigger]` → `[speedMenuTrigger]`) and CSS classes (`.sn-container` → `.speed-container`). To migrate, replace `Sn` with `Speed`, `SN_` with `SPEED_`, `sn-` with `speed-` and `sn` followed by a capital letter with `speed` in your templates, code and styles.
+
+### Patch Changes
+
+- 634719f: The package now ships a README (installation, styles and assets setup, usage), and the changelog is in English. Components' default texts stay in French.
+
 ## 0.1.0
 
 ### Minor Changes
