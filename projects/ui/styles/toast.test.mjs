@@ -17,8 +17,8 @@ test('toast uses tokens only, no raw colors', () => {
   assert.doesNotMatch(css, /#[\da-f]{3,8}\b|rgba?\(|oklch\(/i);
 });
 
-test('toast keeps badge and buttons at the top when the message wraps', () => {
-  assert.match(css, /\.sn-toast\s*\{[^}]*align-items: flex-start/);
+test('toast centers badge and buttons vertically and wraps long messages', () => {
+  assert.match(css, /\.sn-toast\s*\{[^}]*align-items: center/);
   assert.match(css, /\.sn-toast\s*\{[^}]*flex-wrap: wrap/);
 });
 
