@@ -38,71 +38,51 @@ CI checks formatting, the Changesets file, the tests and the library build.
 
 ## Publishing
 
-A version is published from `main` once the demo has been validated. Versions follow [semver](https://semver.org/); [Changesets](https://github.com/changesets/changesets) computes the next version from the pending files in `.changeset/` and writes `projects/ui/CHANGELOG.md`.
+Publishing is automated by the [Release workflow](.github/workflows/release.yml) with [Changesets](https://github.com/changesets/changesets). Versions follow [semver](https://semver.org/): the next version is the strongest type among the pending files in `.changeset/` (`major` > `minor` > `patch`).
 
-### Prerequisites
+### How it works
 
-Be logged in to the registry with an account that can publish `@speedernet/*`:
+1. Pull requests that change the library are merged into `main` with their Changesets file.
+2. On every push to `main` with pending changesets, the workflow opens (or updates) a **"chore: release @speedernet/ui"** pull request from the `changeset-release/main` branch. It bumps the version in `projects/ui/package.json`, writes the `projects/ui/CHANGELOG.md` entry and deletes the consumed changesets.
+3. Review that pull request (version number, changelog wording), then merge it once the demo has been validated.
+4. The workflow then runs the tests, builds the library, publishes `dist/ui` to `https://verdaccio.speedernet.io` and pushes the `@speedernet/ui@X.Y.Z` git tag with a GitHub release.
+
+Nothing is published until the release pull request is merged. Merging more pull requests before that simply updates it.
+
+Pull requests opened by the workflow don't trigger the CI workflow (a GitHub limitation of `GITHUB_TOKEN`); the Release workflow runs the tests itself before publishing.
+
+### Requirements
+
+- The `VERDACCIO_TOKEN` repository secret must be a Verdaccio token allowed to **publish** `@speedernet/*` (it is also used to install dependencies).
+- "Allow GitHub Actions to create and approve pull requests" must stay enabled in the repository settings (Settings → Actions → General).
+
+### Check a release
 
 ```bash
-npm login --registry https://verdaccio.speedernet.io
-npm whoami --registry https://verdaccio.speedernet.io
+npm view @speedernet/ui versions dist-tags --registry https://verdaccio.speedernet.io
 ```
 
-The token lives in your user `~/.npmrc`, never in the repository.
+The run log is in the repository's Actions tab, under "Release".
 
-### 1. Prepare the version (pull request)
+### Publishing by hand (fallback)
 
-Check what will be released:
-
-```bash
-npx changeset status
-```
-
-From an up-to-date `main`, create a release branch and bump the version:
+Only if the workflow can't be used, from an up-to-date `main` and logged in to the registry (`npm login --registry https://verdaccio.speedernet.io`; the token stays in your user `~/.npmrc`, never in the repository):
 
 ```bash
-git switch main
-git pull
 git switch -c release/vX.Y.Z
-npx changeset version
-npx changeset add --empty
-```
-
-`changeset version` updates `projects/ui/package.json`, writes the `CHANGELOG.md` entry and deletes the consumed changesets. The empty changeset (`--empty`) lets the CI Changesets check pass on this pull request; the next `changeset version` removes it.
-
-Review the `CHANGELOG.md`, run the checks, then commit, push and open the pull request:
-
-```bash
-npm test
-npm run build:ui
+npm run version-packages
 git add -A .changeset projects/ui
 git commit -m "chore: release @speedernet/ui X.Y.Z"
 git push -u origin release/vX.Y.Z
 ```
 
-### 2. Publish (after the merge)
-
-Once the pull request is merged, publish from `main`:
+Name the branch `changeset-release/main` instead if you want CI to skip the Changesets check, or open the pull request and merge it as usual. Once merged, from `main`:
 
 ```bash
-git switch main
-git pull
-npm run build:ui
-npm publish ./dist/ui --dry-run
-npm publish ./dist/ui
-```
-
-Always publish the built package in `dist/ui` (the `./` matters: without it npm reads `dist/ui` as a GitHub repository). Check the dry run before publishing: package name, version and file list.
-
-### 3. Check and tag
-
-```bash
-npm view @speedernet/ui versions dist-tags --registry https://verdaccio.speedernet.io
-npx changeset tag
+npm run release
 git push --tags
 ```
 
-`changeset tag` creates the `@speedernet/ui@X.Y.Z` git tag on the published commit.
+`npm run release` builds the library, publishes `./dist/ui` (skipped if this version is already on the registry) and creates the git tag.
 
 A published version cannot be republished: to fix a mistake, release a new patch version.
