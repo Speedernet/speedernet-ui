@@ -46,7 +46,7 @@ const BOOKINGS: Booking[] = [
     date: '12/03/2026',
     slot: '14:00 - 15:00',
     status: 'confirmed',
-    statusLabel: 'Confirmed',
+    statusLabel: 'Confirmée',
     period: 'week',
   },
   {
@@ -55,7 +55,7 @@ const BOOKINGS: Booking[] = [
     date: '14/03/2026',
     slot: '09:00 - 10:30',
     status: 'pending',
-    statusLabel: 'Pending',
+    statusLabel: 'En attente',
     period: 'week',
   },
   {
@@ -64,7 +64,7 @@ const BOOKINGS: Booking[] = [
     date: '27/03/2026',
     slot: '16:00 - 17:00',
     status: 'confirmed',
-    statusLabel: 'Confirmed',
+    statusLabel: 'Confirmée',
     period: 'month',
   },
   {
@@ -73,7 +73,7 @@ const BOOKINGS: Booking[] = [
     date: '02/02/2026',
     slot: '11:00 - 12:00',
     status: 'archived',
-    statusLabel: 'Archived',
+    statusLabel: 'Archivée',
     period: 'past',
   },
   {
@@ -82,7 +82,7 @@ const BOOKINGS: Booking[] = [
     date: '20/01/2026',
     slot: '10:00 - 11:00',
     status: 'cancelled',
-    statusLabel: 'Cancelled',
+    statusLabel: 'Annulée',
     period: 'past',
   },
 ];
@@ -122,14 +122,18 @@ function toIsoDate(display: string): string {
   styleUrl: './pages.scss',
   template: `
     <div class="page-head">
-      <h1>My <span class="speed-highlight">bookings</span></h1>
-      <button speedButton variant="primary" type="button" (click)="openNew()">Book a room</button>
+      <h1>Mes <span class="speed-highlight">réservations</span></h1>
+      <button speedButton variant="primary" type="button" (click)="openNew()">
+        Réserver une salle
+      </button>
     </div>
-    <speed-message type="info"> Bookings open up to 30 days in advance. </speed-message>
+    <speed-message type="info">
+      Les réservations sont ouvertes jusqu'à 30 jours à l'avance.
+    </speed-message>
 
-    <speed-filter-tabs label="Booking period" [options]="filters" [(value)]="filter" />
+    <speed-filter-tabs label="Période des réservations" [options]="filters" [(value)]="filter" />
 
-    <h2 class="visually-hidden">Booking list</h2>
+    <h2 class="visually-hidden">Liste des réservations</h2>
 
     <ul class="card-list">
       @for (b of visible(); track b.id) {
@@ -149,14 +153,14 @@ function toIsoDate(display: string): string {
     <div class="table-view speed-table-wrapper">
       <table class="speed-table">
         <caption class="visually-hidden">
-          My bookings
+          Mes réservations
         </caption>
         <thead>
           <tr>
-            <th scope="col">Room</th>
+            <th scope="col">Salle</th>
             <th scope="col">Date</th>
-            <th scope="col">Time slot</th>
-            <th scope="col">Status</th>
+            <th scope="col">Créneau</th>
+            <th scope="col">Statut</th>
             <th scope="col"><span class="visually-hidden">Actions</span></th>
           </tr>
         </thead>
@@ -177,11 +181,11 @@ function toIsoDate(display: string): string {
     </div>
 
     <ng-template #actions let-b>
-      <speed-action-menu [label]="'Actions for ' + b.room + ' on ' + b.date">
+      <speed-action-menu [label]="'Actions pour ' + b.room + ' le ' + b.date">
         <button speedMenuItem [icon]="pencil" [disabled]="!isActive(b)" (click)="openEdit(b)">
-          Edit
+          Modifier
         </button>
-        <button speedMenuItem [icon]="copy" (click)="duplicate(b)">Duplicate</button>
+        <button speedMenuItem [icon]="copy" (click)="duplicate(b)">Dupliquer</button>
         <button
           speedMenuItem
           [icon]="cancelIcon"
@@ -189,20 +193,20 @@ function toIsoDate(display: string): string {
           [disabled]="!isActive(b)"
           (click)="cancel(b)"
         >
-          Cancel the booking
+          Annuler la réservation
         </button>
       </speed-action-menu>
     </ng-template>
 
     <speed-dialog
-      [title]="editing() ? 'Edit the booking' : 'Book a room'"
+      [title]="editing() ? 'Modifier la réservation' : 'Réserver une salle'"
       (closed)="submitted.set(false)"
     >
       <form id="booking-form" class="stack booking-form" [formGroup]="form" (ngSubmit)="save()">
-        <speed-field label="Room" [error]="errorFor('room', 'Choose a room.')">
+        <speed-field label="Salle" [error]="errorFor('room', 'Choisissez une salle.')">
           <speed-select>
             <select speedControl formControlName="room">
-              <option value="" disabled>Choose a room</option>
+              <option value="" disabled>Choisir une salle</option>
               @for (room of rooms; track room) {
                 <option [value]="room">{{ room }}</option>
               }
@@ -211,15 +215,15 @@ function toIsoDate(display: string): string {
         </speed-field>
         <speed-field
           label="Date"
-          hint="Up to 30 days in advance."
-          [error]="errorFor('date', 'Choose a date.')"
+          hint="Jusqu'à 30 jours à l'avance."
+          [error]="errorFor('date', 'Choisissez une date.')"
         >
           <input speedControl type="date" formControlName="date" />
         </speed-field>
-        <speed-field label="Time slot" [error]="errorFor('slot', 'Choose a time slot.')">
+        <speed-field label="Créneau" [error]="errorFor('slot', 'Choisissez un créneau.')">
           <speed-select>
             <select speedControl formControlName="slot">
-              <option value="" disabled>Choose a time slot</option>
+              <option value="" disabled>Choisir un créneau</option>
               @for (slot of slots; track slot) {
                 <option [value]="slot">{{ slot }}</option>
               }
@@ -228,10 +232,10 @@ function toIsoDate(display: string): string {
         </speed-field>
       </form>
       <button speedDialogActions speedButton type="button" (click)="dialog().close()">
-        Cancel
+        Annuler
       </button>
       <button speedDialogActions speedButton variant="primary" type="submit" form="booking-form">
-        {{ editing() ? 'Save' : 'Book' }}
+        {{ editing() ? 'Enregistrer' : 'Réserver' }}
       </button>
     </speed-dialog>
   `,
@@ -244,9 +248,9 @@ export class ScreenPage {
 
   protected readonly filter = signal('week');
   protected readonly filters: SpeedFilterOption[] = [
-    { value: 'week', label: 'This week' },
-    { value: 'month', label: 'This month' },
-    { value: 'past', label: 'Past' },
+    { value: 'week', label: 'Cette semaine' },
+    { value: 'month', label: 'Ce mois-ci' },
+    { value: 'past', label: 'Passées' },
   ];
   protected readonly bookings = signal<Booking[]>(BOOKINGS);
   protected readonly visible = computed(() =>
@@ -306,32 +310,32 @@ export class ScreenPage {
       this.bookings.update((list) => list.map((b) => (b === edited ? { ...b, ...values } : b)));
     } else {
       // Demo data: a new booking is pending and listed this week.
-      this.add({ ...values, status: 'pending', statusLabel: 'Pending', period: 'week' });
+      this.add({ ...values, status: 'pending', statusLabel: 'En attente', period: 'week' });
       this.filter.set('week');
     }
     this.dialog().close();
     this.toast.show(
       edited
-        ? `Booking updated: ${room}, on ${values.date}.`
-        : `Booking saved: ${room}, on ${values.date}.`,
+        ? `Réservation modifiée : ${room}, le ${values.date}.`
+        : `Réservation enregistrée : ${room}, le ${values.date}.`,
     );
   }
 
   protected duplicate(b: Booking): void {
-    this.add({ ...b, status: 'pending', statusLabel: 'Pending', period: 'week' });
+    this.add({ ...b, status: 'pending', statusLabel: 'En attente', period: 'week' });
     this.filter.set('week');
-    this.toast.show(`Booking duplicated: ${b.room}, on ${b.date}.`);
+    this.toast.show(`Réservation dupliquée : ${b.room}, le ${b.date}.`);
   }
 
   protected cancel(b: Booking): void {
-    const cancelled: Booking = { ...b, status: 'cancelled', statusLabel: 'Cancelled' };
+    const cancelled: Booking = { ...b, status: 'cancelled', statusLabel: 'Annulée' };
     this.replace(b, cancelled);
     this.toast
-      .show(`Booking of ${b.date} cancelled.`, { action: 'Restore' })
+      .show(`Réservation du ${b.date} annulée.`, { action: 'Rétablir' })
       .result.then((result) => {
         if (result === 'action') {
           this.replace(cancelled, b);
-          this.toast.show(`Booking of ${b.date} restored.`);
+          this.toast.show(`Réservation du ${b.date} rétablie.`);
         }
       });
   }

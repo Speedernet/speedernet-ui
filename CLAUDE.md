@@ -2,6 +2,7 @@
 
 - Everything written in the repository (code, comments, docs, tests, changesets, commits, pull requests) is in English.
 - The components' default UI texts (for example `Se déconnecter`, `Annuler`, `Erreur`) stay in French: the applications using the library are French.
+- The demo application (`projects/demo`) is entirely in French: page text, sample data, routes and the tests checking them.
 - Every change visible to an application comes with a Changesets file (`npx changeset`) with one sentence for users and the right version type (patch, minor, major).
 - Work on a branch and through a pull request; CI checks that the Changesets file is present.
 - Never put a token in the repository or in the conversation.

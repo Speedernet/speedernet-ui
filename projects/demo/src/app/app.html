@@ -1,13 +1,13 @@
 <speed-app-header
-  appName="@speedernet/ui demo"
-  homeLink="/foundations"
+  appName="Démonstration @speedernet/ui"
+  homeLink="/fondations"
   [navItems]="navItems"
   [user]="user"
   (logout)="loggedOut.set(true)"
 />
 <main class="speed-container">
   @if (loggedOut()) {
-    <speed-message type="info">Simulated logout.</speed-message>
+    <speed-message type="info">Déconnexion simulée.</speed-message>
   }
   <router-outlet />
 </main>

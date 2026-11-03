@@ -69,57 +69,63 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
-    <h1>The <span class="speed-highlight">components</span></h1>
-    <p class="speed-text-muted">Every component in all its variants and states.</p>
+    <h1>Les <span class="speed-highlight">composants</span></h1>
+    <p class="speed-text-muted">Chaque composant dans toutes ses variantes et ses états.</p>
 
-    <h2>Buttons</h2>
+    <h2>Boutons</h2>
     <div id="buttons" class="row">
-      <button speedButton variant="primary" type="button">Book a room</button>
-      <button speedButton variant="secondary" type="button">Cancel</button>
+      <button speedButton variant="primary" type="button">Réserver une salle</button>
+      <button speedButton variant="secondary" type="button">Annuler</button>
       <button speedButton variant="danger" type="button" (click)="dialog().open()">
-        Delete the booking
+        Supprimer la réservation
       </button>
-      <button speedButton variant="primary" type="button" disabled>Disabled</button>
-      <a speedButton variant="secondary" href="/components#buttons">Link as a button</a>
+      <button speedButton variant="primary" type="button" disabled>Désactivé</button>
+      <a speedButton variant="secondary" href="/composants#buttons">Lien en bouton</a>
     </div>
-    <h3>Icon buttons</h3>
+    <h3>Boutons-icônes</h3>
     <div class="row">
-      <button speedIconButton label="Edit" [icon]="pencil" variant="light" type="button"></button>
-      <button speedIconButton label="Back" [icon]="back" variant="dark" type="button"></button>
+      <button
+        speedIconButton
+        label="Modifier"
+        [icon]="pencil"
+        variant="light"
+        type="button"
+      ></button>
+      <button speedIconButton label="Retour" [icon]="back" variant="dark" type="button"></button>
     </div>
     @if (deleted()) {
-      <speed-message type="success">Booking of 12/03 deleted.</speed-message>
+      <speed-message type="success">Réservation du 12/03 supprimée.</speed-message>
     }
     <speed-confirm-dialog
-      title="Delete the booking of 12/03?"
-      confirmLabel="Delete"
+      title="Supprimer la réservation du 12/03 ?"
+      confirmLabel="Supprimer"
       (confirmed)="deleted.set(true)"
     >
-      Croix-Rousse room, from 14:00 to 15:00. This cannot be undone.
+      Salle Croix-Rousse, de 14:00 à 15:00. Cette action est définitive.
     </speed-confirm-dialog>
 
-    <h2>Dialog</h2>
+    <h2>Fenêtre modale</h2>
     <div class="row">
       <button speedButton variant="secondary" type="button" (click)="formDialog.open()">
-        With a form
+        Avec formulaire
       </button>
       <button speedButton variant="secondary" type="button" (click)="longDialog.open()">
-        Long content
+        Contenu long
       </button>
       <button speedButton variant="secondary" type="button" (click)="infoDialog.open()">
-        No actions
+        Sans actions
       </button>
       <button speedButton variant="danger" type="button" (click)="dialog().open()">
         Confirmation
       </button>
     </div>
-    <p class="speed-text-muted">Last closed with: {{ lastClose() }}</p>
-    <speed-dialog #formDialog title="Edit the booking" (dismissed)="lastClose.set('Escape')">
+    <p class="speed-text-muted">Dernière fermeture : {{ lastClose() }}</p>
+    <speed-dialog #formDialog title="Modifier la réservation" (dismissed)="lastClose.set('Échap')">
       <div class="stack">
-        <speed-field label="Date" hint="Expected format: dd/mm/yyyy.">
+        <speed-field label="Date" hint="Format attendu : jj/mm/aaaa.">
           <input speedControl type="text" value="12/03/2026" />
         </speed-field>
-        <speed-field label="Comment">
+        <speed-field label="Commentaire">
           <textarea speedControl rows="3"></textarea>
         </speed-field>
       </div>
@@ -127,25 +133,25 @@ import {
         speedDialogActions
         speedButton
         type="button"
-        (click)="closeWith(formDialog, 'Cancel')"
+        (click)="closeWith(formDialog, 'Annuler')"
       >
-        Cancel
+        Annuler
       </button>
       <button
         speedDialogActions
         speedButton
         variant="primary"
         type="button"
-        (click)="closeWith(formDialog, 'Save')"
+        (click)="closeWith(formDialog, 'Enregistrer')"
       >
-        Save
+        Enregistrer
       </button>
     </speed-dialog>
-    <speed-dialog #longDialog title="Room rules" (dismissed)="lastClose.set('Escape')">
+    <speed-dialog #longDialog title="Règlement des salles" (dismissed)="lastClose.set('Échap')">
       @for (n of rules; track n) {
         <p>
-          Article {{ n }}. Rooms can be booked up to 30 days in advance, for a slot of four hours at
-          most. Leave the room on time and leave it tidy.
+          Article {{ n }}. Les salles se réservent au plus 30 jours à l'avance, pour un créneau de
+          quatre heures au maximum. Libérez la salle à l'heure et laissez-la rangée.
         </p>
       }
       <button
@@ -153,46 +159,44 @@ import {
         speedButton
         variant="primary"
         type="button"
-        (click)="closeWith(longDialog, 'Got it')"
+        (click)="closeWith(longDialog, 'J’ai compris')"
       >
-        Got it
+        J’ai compris
       </button>
     </speed-dialog>
-    <speed-dialog #infoDialog title="Confluence room" (dismissed)="lastClose.set('Escape')">
-      <p>Projector, whiteboard, 12 seats. Close with Escape.</p>
+    <speed-dialog #infoDialog title="Salle Confluence" (dismissed)="lastClose.set('Échap')">
+      <p>Projecteur, tableau blanc, 12 places. Fermez avec Échap.</p>
     </speed-dialog>
-    <h2>Action menu</h2>
+    <h2>Menu d'actions</h2>
     <div class="row">
-      <speed-action-menu label="Actions for the booking of 12/03">
-        <button speedMenuItem [icon]="pencil" (click)="menuChoice.set('Edit')">Edit</button>
-        <button speedMenuItem [icon]="copy" (click)="menuChoice.set('Duplicate')">Duplicate</button>
-        <button speedMenuItem [icon]="cancel" tone="danger" (click)="menuChoice.set('Cancel')">
-          Cancel the booking
+      <speed-action-menu label="Actions pour la réservation du 12/03">
+        <button speedMenuItem [icon]="pencil" (click)="menuChoice.set('Modifier')">Modifier</button>
+        <button speedMenuItem [icon]="copy" (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
+        <button speedMenuItem [icon]="cancel" tone="danger" (click)="menuChoice.set('Annuler')">
+          Annuler la réservation
         </button>
       </speed-action-menu>
-      <speed-action-menu label="Actions for the booking of 02/02 (past)">
-        <button speedMenuItem (click)="menuChoice.set('Duplicate')">Duplicate</button>
-        <button speedMenuItem disabled>Edit</button>
-        <button speedMenuItem tone="danger" disabled>Cancel the booking</button>
+      <speed-action-menu label="Actions pour la réservation du 02/02 (passée)">
+        <button speedMenuItem (click)="menuChoice.set('Dupliquer')">Dupliquer</button>
+        <button speedMenuItem disabled>Modifier</button>
+        <button speedMenuItem tone="danger" disabled>Annuler la réservation</button>
       </speed-action-menu>
     </div>
-    <h3>Menu on another button</h3>
+    <h3>Menu sur un autre bouton</h3>
     <p class="speed-text-muted">
-      <code>speedMenuTrigger</code> opens an <code>speed-menu</code> from any button, like the user
-      menu in the header.
+      <code>speedMenuTrigger</code> ouvre un <code>speed-menu</code> depuis n'importe quel bouton,
+      comme le menu utilisateur de l'en-tête.
     </p>
     <div class="row">
-      <button speedButton type="button" [speedMenuTrigger]="exportMenu">Export</button>
+      <button speedButton type="button" [speedMenuTrigger]="exportMenu">Exporter</button>
       <speed-menu #exportMenu>
-        <button speedMenuItem (click)="menuChoice.set('Export as PDF')">As PDF</button>
-        <button speedMenuItem (click)="menuChoice.set('Export as spreadsheet')">
-          As spreadsheet
-        </button>
+        <button speedMenuItem (click)="menuChoice.set('Exporter en PDF')">En PDF</button>
+        <button speedMenuItem (click)="menuChoice.set('Exporter en tableur')">En tableur</button>
       </speed-menu>
     </div>
     <p class="speed-text-muted">
-      With icons and a dangerous action, without icons with disabled actions, then on a regular
-      button. Last choice: {{ menuChoice() }}
+      Avec icônes et action dangereuse, sans icônes avec actions désactivées, puis sur un bouton
+      classique. Dernier choix : {{ menuChoice() }}
     </p>
 
     <h2>Badges</h2>
@@ -200,59 +204,68 @@ import {
       @for (tone of tones; track tone) {
         <speed-badge [tone]="tone">{{ tone }}</speed-badge>
       }
-      <speed-badge tone="primary" [icon]="calendar">With icon</speed-badge>
+      <speed-badge tone="primary" [icon]="calendar">Avec icône</speed-badge>
     </div>
-    <h3>Statuses</h3>
+    <h3>Statuts</h3>
     <div class="row">
-      <speed-status-badge status="confirmed" label="Confirmed" />
-      <speed-status-badge status="pending" label="Pending" />
-      <speed-status-badge status="cancelled" label="Cancelled" />
-      <speed-status-badge status="archived" label="Archived" />
+      <speed-status-badge status="confirmed" label="Confirmée" />
+      <speed-status-badge status="pending" label="En attente" />
+      <speed-status-badge status="cancelled" label="Annulée" />
+      <speed-status-badge status="archived" label="Archivée" />
     </div>
 
-    <h2>Tooltip</h2>
+    <h2>Infobulle</h2>
     <div class="row">
-      <speed-tooltip text="Edit the booking">
-        <button speedIconButton label="Edit" [icon]="pencil" variant="light" type="button"></button>
+      <speed-tooltip text="Modifier la réservation">
+        <button
+          speedIconButton
+          label="Modifier"
+          [icon]="pencil"
+          variant="light"
+          type="button"
+        ></button>
       </speed-tooltip>
-      <speed-tooltip text="Back to the list">
-        <button speedButton variant="secondary" type="button">Back</button>
+      <speed-tooltip text="Revenir à la liste">
+        <button speedButton variant="secondary" type="button">Retour</button>
       </speed-tooltip>
     </div>
 
-    <h2>Filters</h2>
-    <speed-filter-tabs label="Booking period" [options]="filters" [(value)]="filter" />
-    <p class="speed-text-muted">Selected filter: {{ filter() }}</p>
+    <h2>Filtres</h2>
+    <speed-filter-tabs label="Période des réservations" [options]="filters" [(value)]="filter" />
+    <p class="speed-text-muted">Filtre sélectionné : {{ filter() }}</p>
 
-    <h2>Fields</h2>
+    <h2>Champs</h2>
     <div class="stack">
-      <speed-field label="Date" hint="Expected format: dd/mm/yyyy.">
+      <speed-field label="Date" hint="Format attendu : jj/mm/aaaa.">
         <input speedControl type="text" value="12/03/2026" />
       </speed-field>
-      <speed-field label="End date" error="This date does not exist. Expected format: dd/mm/yyyy.">
+      <speed-field
+        label="Date de fin"
+        error="Cette date n'existe pas. Format attendu : jj/mm/aaaa."
+      >
         <input speedControl type="text" value="31/02/2026" />
       </speed-field>
-      <speed-field label="Comment">
+      <speed-field label="Commentaire">
         <textarea speedControl rows="3"></textarea>
       </speed-field>
-      <speed-field label="Disabled field">
-        <input speedControl type="text" value="Read-only" disabled />
+      <speed-field label="Champ désactivé">
+        <input speedControl type="text" value="Non modifiable" disabled />
       </speed-field>
     </div>
 
-    <h3>Select</h3>
+    <h3>Liste déroulante</h3>
     <div class="stack">
-      <speed-field label="Room">
+      <speed-field label="Salle">
         <speed-select>
           <select speedControl>
-            <option value="" disabled selected>Choose a room</option>
+            <option value="" disabled selected>Choisir une salle</option>
             @for (room of rooms; track room) {
               <option>{{ room }}</option>
             }
           </select>
         </speed-select>
       </speed-field>
-      <speed-field label="Time slot" hint="Slots last one hour.">
+      <speed-field label="Créneau" hint="Les créneaux durent une heure.">
         <speed-select>
           <select speedControl>
             <option>09:00 - 10:00</option>
@@ -261,88 +274,95 @@ import {
           </select>
         </speed-select>
       </speed-field>
-      <speed-field label="Fallback room" error="Choose a fallback room.">
+      <speed-field label="Salle de repli" error="Choisissez une salle de repli.">
         <speed-select>
           <select speedControl>
-            <option value="" disabled selected>Choose a room</option>
+            <option value="" disabled selected>Choisir une salle</option>
             @for (room of rooms; track room) {
               <option>{{ room }}</option>
             }
           </select>
         </speed-select>
       </speed-field>
-      <speed-field label="Floor" hint="Set by the chosen room.">
+      <speed-field label="Étage" hint="Fixé par la salle choisie.">
         <speed-select>
           <select speedControl disabled>
-            <option>3rd floor</option>
+            <option>3e étage</option>
           </select>
         </speed-select>
       </speed-field>
     </div>
 
-    <h3>Checkboxes</h3>
+    <h3>Cases à cocher</h3>
     <div class="stack">
-      <speed-checkbox label="Add a video projector">
+      <speed-checkbox label="Ajouter un vidéoprojecteur">
         <input type="checkbox" speedControl />
       </speed-checkbox>
-      <speed-checkbox label="Recurring booking" hint="Every week, on the same day.">
+      <speed-checkbox label="Réservation récurrente" hint="Chaque semaine, le même jour.">
         <input type="checkbox" speedControl checked />
       </speed-checkbox>
-      <speed-checkbox label="I accept the room rules" error="Accept the rules to book.">
+      <speed-checkbox
+        label="J'accepte le règlement des salles"
+        error="Acceptez le règlement pour réserver."
+      >
         <input type="checkbox" speedControl />
       </speed-checkbox>
-      <speed-checkbox label="Wheelchair access (all rooms)">
+      <speed-checkbox label="Accès handicapé (toutes les salles)">
         <input type="checkbox" speedControl checked disabled />
       </speed-checkbox>
-      <speed-checkbox label="Catering (unavailable)">
+      <speed-checkbox label="Traiteur (indisponible)">
         <input type="checkbox" speedControl disabled />
       </speed-checkbox>
     </div>
 
-    <h3>Radio buttons</h3>
+    <h3>Boutons radio</h3>
     <div class="stack">
-      <speed-radio-group legend="Duration" hint="A booking lasts two hours at most.">
+      <speed-radio-group legend="Durée" hint="Une réservation dure au plus deux heures.">
         <speed-radio label="30 minutes">
           <input type="radio" name="duration" value="30" speedControl />
         </speed-radio>
-        <speed-radio label="1 hour" hint="The most common for a meeting.">
+        <speed-radio label="1 heure" hint="Le plus fréquent pour une réunion.">
           <input type="radio" name="duration" value="60" speedControl checked />
         </speed-radio>
-        <speed-radio label="2 hours">
+        <speed-radio label="2 heures">
           <input type="radio" name="duration" value="120" speedControl />
         </speed-radio>
-        <speed-radio label="Full day (on request)">
+        <speed-radio label="Journée entière (sur demande)">
           <input type="radio" name="duration" value="day" speedControl disabled />
         </speed-radio>
       </speed-radio-group>
-      <speed-radio-group legend="Room layout" orientation="horizontal" error="Choose a layout.">
-        <speed-radio label="Meeting">
+      <speed-radio-group
+        legend="Disposition de la salle"
+        orientation="horizontal"
+        error="Choisissez une disposition."
+      >
+        <speed-radio label="Réunion">
           <input type="radio" name="layout" value="meeting" speedControl />
         </speed-radio>
-        <speed-radio label="Conference">
+        <speed-radio label="Conférence">
           <input type="radio" name="layout" value="conference" speedControl />
         </speed-radio>
-        <speed-radio label="Workshop">
+        <speed-radio label="Atelier">
           <input type="radio" name="layout" value="workshop" speedControl />
         </speed-radio>
       </speed-radio-group>
     </div>
 
-    <h3>Switches</h3>
+    <h3>Interrupteurs</h3>
     <div class="stack">
-      <speed-switch label="Get a confirmation by email">
+      <speed-switch label="Recevoir une confirmation par courriel">
         <input type="checkbox" role="switch" speedControl checked />
       </speed-switch>
-      <speed-switch label="Reminder the day before" hint="Sent at 18:00.">
+      <speed-switch label="Rappel la veille" hint="Envoyé à 18:00.">
         <input type="checkbox" role="switch" speedControl />
       </speed-switch>
-      <speed-switch label="Share with my team" error="You do not have a team yet.">
+      <speed-switch label="Partager avec mon équipe" error="Vous n'avez pas encore d'équipe.">
         <input type="checkbox" role="switch" speedControl />
       </speed-switch>
-      <speed-switch label="Sync the calendar (managed by the administrator)">
+      <speed-switch label="Synchroniser l'agenda (géré par l'administrateur)">
         <input type="checkbox" role="switch" speedControl checked disabled />
       </speed-switch>
-      <speed-switch label="Offline mode (coming soon)">
+      <speed-switch label="Mode hors ligne (bientôt)">
         <input type="checkbox" role="switch" speedControl disabled />
       </speed-switch>
     </div>
@@ -350,58 +370,60 @@ import {
     <h2>Messages</h2>
     <div class="stack">
       <speed-message type="success">
-        Booking saved: Croix-Rousse room, on 12/03/2026.
+        Réservation enregistrée : salle Croix-Rousse, le 12/03/2026.
       </speed-message>
-      <speed-message type="info"> Bookings open up to 30 days in advance. </speed-message>
+      <speed-message type="info">
+        Les réservations sont ouvertes jusqu'à 30 jours à l'avance.
+      </speed-message>
       <speed-message type="warning">
-        Room already booked at 15:00: your slot will end at 15:00.
+        Salle déjà réservée à 15:00 : votre créneau s'arrêtera à 15:00.
       </speed-message>
       <speed-message type="error">
-        The service is unavailable. Try again in a few minutes.
+        Le service est indisponible. Réessayez dans quelques minutes.
       </speed-message>
-      <speed-info-banner>New: the Confluence rooms can now be booked.</speed-info-banner>
-      <speed-info-banner href="#">Read the room rules.</speed-info-banner>
+      <speed-info-banner>Nouveau : les salles Confluence sont réservables.</speed-info-banner>
+      <speed-info-banner href="#">Consulter le règlement des salles.</speed-info-banner>
     </div>
 
-    <h2>Toast</h2>
+    <h2>Notification temporaire</h2>
     <div class="row">
       <button speedButton type="button" (click)="toastSimple()">Simple</button>
-      <button speedButton type="button" (click)="toastWithAction()">With a “Cancel” action</button>
-      <button speedButton type="button" (click)="toastLong()">Long text</button>
-      <button speedButton type="button" (click)="toastError()">Error</button>
+      <button speedButton type="button" (click)="toastWithAction()">Avec action « Annuler »</button>
+      <button speedButton type="button" (click)="toastLong()">Texte long</button>
+      <button speedButton type="button" (click)="toastError()">Erreur</button>
     </div>
-    <p class="speed-text-muted">Last toast result: {{ toastResult() }}</p>
+    <p class="speed-text-muted">Résultat du dernier toast : {{ toastResult() }}</p>
 
-    <h2>Screen states</h2>
-    <speed-loading label="Loading bookings" />
-    <speed-empty-state title="No bookings" text="You have not booked a room yet.">
-      <button speedButton variant="primary" type="button">Book a room</button>
+    <h2>États d'écran</h2>
+    <speed-loading label="Chargement des réservations" />
+    <speed-empty-state title="Aucune réservation" text="Vous n'avez pas encore réservé de salle.">
+      <button speedButton variant="primary" type="button">Réserver une salle</button>
     </speed-empty-state>
     <speed-error-state
-      title="Could not load"
-      text="The service is unavailable. Try again in a few minutes."
+      title="Chargement impossible"
+      text="Le service est indisponible. Réessayez dans quelques minutes."
       (retry)="retries.set(retries() + 1)"
     />
-    <p class="speed-text-muted">Retries: {{ retries() }}</p>
+    <p class="speed-text-muted">Nouvelles tentatives : {{ retries() }}</p>
 
-    <h2>Card</h2>
+    <h2>Carte</h2>
     <speed-card>
       <h3 speedCardHeader>Croix-Rousse</h3>
-      <p class="card-line">12/03/2026, from 14:00 to 15:00</p>
-      <speed-status-badge status="confirmed" label="Confirmed" />
+      <p class="card-line">12/03/2026, de 14:00 à 15:00</p>
+      <speed-status-badge status="confirmed" label="Confirmée" />
       <div speedCardActions>
-        <button speedButton variant="secondary" type="button">Edit</button>
+        <button speedButton variant="secondary" type="button">Modifier</button>
       </div>
     </speed-card>
 
-    <h2>Table</h2>
+    <h2>Tableau</h2>
     <div class="speed-table-wrapper">
       <table class="speed-table">
         <thead>
           <tr>
-            <th scope="col">Room</th>
+            <th scope="col">Salle</th>
             <th scope="col">Date</th>
-            <th scope="col">Status</th>
+            <th scope="col">Statut</th>
             <th scope="col"><span class="visually-hidden">Actions</span></th>
           </tr>
         </thead>
@@ -409,24 +431,24 @@ import {
           <tr>
             <td>Croix-Rousse</td>
             <td>12/03/2026</td>
-            <td><speed-status-badge status="confirmed" label="Confirmed" /></td>
+            <td><speed-status-badge status="confirmed" label="Confirmée" /></td>
             <td>
-              <speed-action-menu label="Actions for Croix-Rousse on 12/03/2026">
-                <button speedMenuItem [icon]="pencil">Edit</button>
-                <button speedMenuItem [icon]="copy">Duplicate</button>
-                <button speedMenuItem [icon]="cancel" tone="danger">Cancel the booking</button>
+              <speed-action-menu label="Actions pour Croix-Rousse le 12/03/2026">
+                <button speedMenuItem [icon]="pencil">Modifier</button>
+                <button speedMenuItem [icon]="copy">Dupliquer</button>
+                <button speedMenuItem [icon]="cancel" tone="danger">Annuler la réservation</button>
               </speed-action-menu>
             </td>
           </tr>
           <tr>
             <td>Fourvière</td>
             <td>14/03/2026</td>
-            <td><speed-status-badge status="pending" label="Pending" /></td>
+            <td><speed-status-badge status="pending" label="En attente" /></td>
             <td>
-              <speed-action-menu label="Actions for Fourvière on 14/03/2026">
-                <button speedMenuItem [icon]="pencil">Edit</button>
-                <button speedMenuItem [icon]="copy">Duplicate</button>
-                <button speedMenuItem [icon]="cancel" tone="danger">Cancel the booking</button>
+              <speed-action-menu label="Actions pour Fourvière le 14/03/2026">
+                <button speedMenuItem [icon]="pencil">Modifier</button>
+                <button speedMenuItem [icon]="copy">Dupliquer</button>
+                <button speedMenuItem [icon]="cancel" tone="danger">Annuler la réservation</button>
               </speed-action-menu>
             </td>
           </tr>
@@ -434,31 +456,31 @@ import {
       </table>
     </div>
 
-    <h2>Header</h2>
+    <h2>En-tête</h2>
     <p>
-      The header of this demo is the <code>speed-app-header</code> component: with the sample user
-      “Camille Dupont”, open their menu at the top right, or the mobile menu below 960 px, then try
-      “Se déconnecter” (the library's default label, in French).
+      L'en-tête de cette démonstration est celui du composant <code>speed-app-header</code> : avec
+      l'utilisateur fictif « Camille Dupont », ouvrez son menu en haut à droite, ou le menu mobile
+      en dessous de 960 px, puis essayez « Se déconnecter ».
     </p>
   `,
 })
 export class ComponentsPage {
   protected readonly dialog = viewChild.required(SpeedConfirmDialog);
-  protected readonly lastClose = signal('none');
+  protected readonly lastClose = signal('aucune');
   protected readonly rules = [1, 2, 3, 4, 5, 6, 7, 8];
   protected readonly deleted = signal(false);
   protected readonly retries = signal(0);
-  protected readonly toastResult = signal('none');
+  protected readonly toastResult = signal('aucun');
   private readonly toast = inject(SpeedToastService);
-  protected readonly menuChoice = signal('none');
+  protected readonly menuChoice = signal('aucun');
   protected readonly rooms = ['Croix-Rousse', 'Fourvière', 'Confluence'];
   protected readonly filter = signal('week');
 
   protected readonly tones = ['neutral', 'primary', 'accent', 'brand', 'solid', 'outline'] as const;
   protected readonly filters: SpeedFilterOption[] = [
-    { value: 'week', label: 'This week' },
-    { value: 'month', label: 'This month' },
-    { value: 'past', label: 'Past' },
+    { value: 'week', label: 'Cette semaine' },
+    { value: 'month', label: 'Ce mois-ci' },
+    { value: 'past', label: 'Passées' },
   ];
   protected readonly pencil = LucidePencil.icon;
   protected readonly copy = LucideCopy.icon;
@@ -467,34 +489,34 @@ export class ComponentsPage {
   protected readonly calendar = LucideCalendarPlus.icon;
 
   protected toastSimple(): void {
-    this.track(this.toast.show('Booking saved.'));
+    this.track(this.toast.show('Réservation enregistrée.'));
   }
 
   protected toastWithAction(): void {
-    this.track(this.toast.show('Booking of 12/03 deleted.', { action: 'Cancel' }));
+    this.track(this.toast.show('Réservation du 12/03 supprimée.', { action: 'Annuler' }));
   }
 
   protected toastLong(): void {
     this.track(
       this.toast.show(
-        'Booking saved: Croix-Rousse room, on 12/03/2026 from 14:00 to 15:00. A confirmation email has been sent to you.',
+        'Réservation enregistrée : salle Croix-Rousse, le 12/03/2026 de 14:00 à 15:00. Un courriel de confirmation vous a été envoyé.',
       ),
     );
   }
 
   protected toastError(): void {
     this.track(
-      this.toast.show('The booking could not be deleted.', {
+      this.toast.show("La réservation n'a pas pu être supprimée.", {
         type: 'error',
-        action: 'Try again',
+        action: 'Réessayer',
       }),
     );
   }
 
   private track(ref: SpeedToastRef): void {
-    this.toastResult.set('shown');
+    this.toastResult.set('affiché');
     ref.result.then((result) =>
-      this.toastResult.set(result === 'action' ? '“Cancel” action' : 'closed'),
+      this.toastResult.set(result === 'action' ? 'action « Annuler »' : 'fermé'),
     );
   }
 

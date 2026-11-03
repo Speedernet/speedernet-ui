@@ -16,7 +16,7 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('speed-app-header')?.textContent).toContain(
-      '@speedernet/ui demo',
+      'Démonstration @speedernet/ui',
     );
     expect(compiled.querySelector('main.speed-container')).not.toBeNull();
   });
@@ -28,6 +28,6 @@ describe('App', () => {
     fixture.detectChanges();
     expect(
       (fixture.nativeElement as HTMLElement).querySelector('speed-message')?.textContent,
-    ).toContain('Simulated logout.');
+    ).toContain('Déconnexion simulée.');
   });
 });
