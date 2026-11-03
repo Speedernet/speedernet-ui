@@ -7,12 +7,12 @@ import { SnIconButton } from './icon-button';
 @Component({
   imports: [SnButton, SnIconButton],
   template: `
-    <button id="primary" snButton variant="primary">Valider</button>
-    <button id="default" snButton>Annuler</button>
-    <button id="danger" snButton variant="danger">Supprimer</button>
-    <a id="link" snButton href="/somewhere">Aller</a>
-    <button id="icon" snIconButton label="Suivant" [icon]="arrowRight"></button>
-    <button id="dark" snIconButton label="Suivant" [icon]="arrowRight" variant="dark"></button>
+    <button id="primary" snButton variant="primary">Confirm</button>
+    <button id="default" snButton>Cancel</button>
+    <button id="danger" snButton variant="danger">Delete</button>
+    <a id="link" snButton href="/somewhere">Go</a>
+    <button id="icon" snIconButton label="Next" [icon]="arrowRight"></button>
+    <button id="dark" snIconButton label="Next" [icon]="arrowRight" variant="dark"></button>
   `,
 })
 class Host {
@@ -50,7 +50,7 @@ describe('SnButton', () => {
 describe('SnIconButton', () => {
   it('labels the button and hides the decorative icon', () => {
     const button = render().querySelector('#icon')!;
-    expect(button.getAttribute('aria-label')).toBe('Suivant');
+    expect(button.getAttribute('aria-label')).toBe('Next');
     expect(button.classList).toContain('sn-button');
     expect(button.classList).toContain('sn-button-icon');
     expect(button.classList).not.toContain('sn-button-primary');

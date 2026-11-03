@@ -6,13 +6,13 @@ import { SnActionMenu } from './action-menu';
 @Component({
   imports: [SnActionMenu, SnMenuItem],
   template: `
-    <sn-action-menu label="Actions pour la réservation du 12/03">
-      <button snMenuItem (click)="chosen.set('modifier')">Modifier</button>
-      <button snMenuItem (click)="chosen.set('dupliquer')">Dupliquer</button>
-      <button snMenuItem disabled>Déplacer</button>
-      <button snMenuItem tone="danger" (click)="chosen.set('annuler')">Annuler</button>
+    <sn-action-menu label="Actions for the booking on 12/03">
+      <button snMenuItem (click)="chosen.set('edit')">Edit</button>
+      <button snMenuItem (click)="chosen.set('duplicate')">Duplicate</button>
+      <button snMenuItem disabled>Move</button>
+      <button snMenuItem tone="danger" (click)="chosen.set('cancel')">Cancel</button>
     </sn-action-menu>
-    <button id="after" type="button">Après</button>
+    <button id="after" type="button">After</button>
   `,
 })
 class Host {
@@ -48,7 +48,7 @@ describe('SnActionMenu', () => {
   afterEach(() => root.remove());
 
   it('names the button and links it to the closed menu', () => {
-    expect(trigger.getAttribute('aria-label')).toBe('Actions pour la réservation du 12/03');
+    expect(trigger.getAttribute('aria-label')).toBe('Actions for the booking on 12/03');
     expect(trigger.getAttribute('aria-haspopup')).toBe('menu');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(trigger.getAttribute('aria-controls')).toBe(menu.id);
@@ -162,7 +162,7 @@ describe('SnActionMenu', () => {
     render();
     items()[3].click();
     render();
-    expect(fixture.componentInstance.chosen()).toBe('annuler');
+    expect(fixture.componentInstance.chosen()).toBe('cancel');
     expect(menu.hidden).toBe(true);
     expect(document.activeElement).toBe(trigger);
   });

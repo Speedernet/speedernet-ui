@@ -12,7 +12,7 @@ describe('SnToastService', () => {
 
   function setup() {
     const opener = document.createElement('button');
-    opener.textContent = 'Supprimer';
+    opener.textContent = 'Delete';
     document.body.appendChild(opener);
     opener.focus();
     const service = TestBed.inject(SnToastService);
@@ -33,21 +33,19 @@ describe('SnToastService', () => {
 
   it('shows the message, announces it and leaves focus where it was', () => {
     const { service, toaster, toasts, opener } = setup();
-    service.show('Réservation supprimée');
+    service.show('Booking deleted');
     expect(toasts()).toHaveLength(1);
-    expect(toasts()[0].querySelector('.sn-toast-message')!.textContent).toBe(
-      'Réservation supprimée',
-    );
+    expect(toasts()[0].querySelector('.sn-toast-message')!.textContent).toBe('Booking deleted');
     expect(toaster.querySelector('[role="status"]')!.textContent!.trim()).toBe(
-      "C'est fait : Réservation supprimée",
+      "C'est fait : Booking deleted",
     );
     expect(document.activeElement).toBe(opener);
   });
 
   it('shows its type with a badge word, success by default', () => {
     const { service, toasts } = setup();
-    service.show('Réservation supprimée');
-    service.show("La réservation n'a pas pu être supprimée.", { type: 'error' });
+    service.show('Booking deleted');
+    service.show('The booking could not be deleted.', { type: 'error' });
     const badges = toasts().map((t) => t.querySelector('sn-badge')!);
     expect(badges[0].textContent!.trim()).toBe("C'est fait");
     expect(badges[0].classList).toContain('sn-badge-solid');
@@ -57,7 +55,7 @@ describe('SnToastService', () => {
 
   it('labels the close button and hides its icon', () => {
     const { service, toasts } = setup();
-    service.show('Réservation supprimée');
+    service.show('Booking deleted');
     const close = toasts()[0].querySelector('.sn-toast-close')!;
     expect(close.getAttribute('aria-label')).toBe('Fermer la notification');
     expect(close.getAttribute('type')).toBe('button');
@@ -66,7 +64,7 @@ describe('SnToastService', () => {
 
   it('disappears after 5 s and resolves "dismissed"', async () => {
     const { service, toasts, render } = setup();
-    const ref = service.show('Réservation supprimée');
+    const ref = service.show('Booking deleted');
     vi.advanceTimersByTime(4999);
     render();
     expect(toasts()).toHaveLength(1);
@@ -78,11 +76,11 @@ describe('SnToastService', () => {
 
   it('keeps a toast with an action for 10 s and resolves "action" when it is used', async () => {
     const { service, toasts, render } = setup();
-    const ref = service.show('Réservation supprimée', { action: 'Annuler' });
+    const ref = service.show('Booking deleted', { action: 'Undo' });
     vi.advanceTimersByTime(9000);
     render();
     const action = toasts()[0].querySelector<HTMLButtonElement>('.sn-toast-action')!;
-    expect(action.textContent!.trim()).toBe('Annuler');
+    expect(action.textContent!.trim()).toBe('Undo');
     action.click();
     render();
     expect(toasts()).toHaveLength(0);
@@ -91,7 +89,7 @@ describe('SnToastService', () => {
 
   it('honors a custom duration', () => {
     const { service, toasts, render } = setup();
-    service.show('Copié', { duration: 1000 });
+    service.show('Copied', { duration: 1000 });
     vi.advanceTimersByTime(1000);
     render();
     expect(toasts()).toHaveLength(0);
@@ -99,7 +97,7 @@ describe('SnToastService', () => {
 
   it('closes with its close button', async () => {
     const { service, toasts, render } = setup();
-    const ref = service.show('Réservation supprimée');
+    const ref = service.show('Booking deleted');
     toasts()[0].querySelector<HTMLButtonElement>('.sn-toast-close')!.click();
     render();
     expect(toasts()).toHaveLength(0);
@@ -108,14 +106,14 @@ describe('SnToastService', () => {
 
   it('can be dismissed by code', () => {
     const { service, toasts, render } = setup();
-    service.show('Réservation supprimée').dismiss();
+    service.show('Booking deleted').dismiss();
     render();
     expect(toasts()).toHaveLength(0);
   });
 
   it('pauses while hovered and resumes with the remaining time', () => {
     const { service, toasts, stack, render } = setup();
-    service.show('Réservation supprimée');
+    service.show('Booking deleted');
     vi.advanceTimersByTime(3000);
     stack.dispatchEvent(new MouseEvent('mouseenter'));
     vi.advanceTimersByTime(60000);
@@ -132,7 +130,7 @@ describe('SnToastService', () => {
 
   it('pauses while focus is inside, then Escape closes it and focus goes back', () => {
     const { service, toasts, opener, render } = setup();
-    service.show('Réservation supprimée', { action: 'Annuler' });
+    service.show('Booking deleted', { action: 'Undo' });
     const action = toasts()[0].querySelector<HTMLButtonElement>('.sn-toast-action')!;
     action.dispatchEvent(new FocusEvent('focusin', { bubbles: true, relatedTarget: opener }));
     action.focus();

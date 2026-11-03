@@ -23,7 +23,7 @@ export type SnToastResult = 'action' | 'dismissed';
 export interface SnToastOptions {
   /** Type shown by the badge word, as in `sn-message`; defaults to "success". */
   type?: SnMessageType;
-  /** Label of an optional action button, for example "Annuler". */
+  /** Label of an optional action button, for example "Undo". */
   action?: string;
   /** Display time in milliseconds; defaults to 5 s, or 10 s with an action. */
   duration?: number;
@@ -210,7 +210,7 @@ export class SnToaster {
 }
 
 /**
- * Shows short-lived notifications ("Réservation supprimée") with an optional action ("Annuler").
+ * Shows short-lived notifications ("Booking deleted") with an optional action ("Undo").
  * Inject it early (in the constructor of the component that will use it): the live region is
  * added to the page then, so that screen readers are ready to announce the first message.
  */

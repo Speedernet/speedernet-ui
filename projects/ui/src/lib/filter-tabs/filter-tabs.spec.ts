@@ -4,13 +4,13 @@ import { SnFilterTabs, type SnFilterOption } from './filter-tabs';
 
 @Component({
   imports: [SnFilterTabs],
-  template: `<sn-filter-tabs [options]="options" label="Période" [(value)]="value" />`,
+  template: `<sn-filter-tabs [options]="options" label="Period" [(value)]="value" />`,
 })
 class Host {
   readonly options: SnFilterOption[] = [
-    { value: 'week', label: 'Cette semaine' },
-    { value: 'month', label: 'Ce mois-ci' },
-    { value: 'past', label: 'Passées' },
+    { value: 'week', label: 'This week' },
+    { value: 'month', label: 'This month' },
+    { value: 'past', label: 'Past' },
   ];
   readonly value = signal('week');
 }
@@ -27,7 +27,7 @@ describe('SnFilterTabs', () => {
   it('renders a labelled tablist', () => {
     const { root } = render();
     const list = root.querySelector('[role="tablist"]')!;
-    expect(list.getAttribute('aria-label')).toBe('Période');
+    expect(list.getAttribute('aria-label')).toBe('Period');
   });
 
   it('marks only the active option as selected and tabbable', () => {

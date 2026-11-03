@@ -7,22 +7,22 @@ import { SnRadio } from './radio';
 import { SnRadioGroup } from './radio-group';
 import { SnSwitch } from './switch';
 
-const ERROR = 'Acceptez le règlement pour réserver.';
+const ERROR = 'Accept the rules to book.';
 
 @Component({
   imports: [SnCheckbox, SnSwitch, SnRadio, SnRadioGroup, SnControl, ReactiveFormsModule],
   template: `
-    <sn-checkbox id="rules" label="J'accepte le règlement" [hint]="hint()" [error]="error()">
+    <sn-checkbox id="rules" label="I accept the rules" [hint]="hint()" [error]="error()">
       <input type="checkbox" snControl [formControl]="rules" />
     </sn-checkbox>
-    <sn-switch id="mail" label="Recevoir une confirmation par courriel">
+    <sn-switch id="mail" label="Receive a confirmation by email">
       <input type="checkbox" role="switch" snControl [formControl]="mail" />
     </sn-switch>
-    <sn-radio-group legend="Durée" hint="Une heure au plus." [error]="groupError()">
+    <sn-radio-group legend="Duration" hint="One hour at most." [error]="groupError()">
       <sn-radio id="half" label="30 minutes">
         <input type="radio" name="duration" value="30" snControl [formControl]="duration" />
       </sn-radio>
-      <sn-radio id="hour" label="1 heure" hint="Pour les réunions d'équipe.">
+      <sn-radio id="hour" label="1 hour" hint="For team meetings.">
         <input type="radio" name="duration" value="60" snControl [formControl]="duration" />
       </sn-radio>
     </sn-radio-group>
@@ -51,7 +51,7 @@ describe('SnCheckbox', () => {
   it('puts the label after the box and links it, so clicking it toggles the box', () => {
     const { fixture, root, input, host } = setup();
     const label = root.querySelector<HTMLLabelElement>('#rules label')!;
-    expect(label.textContent!.trim()).toBe("J'accepte le règlement");
+    expect(label.textContent!.trim()).toBe('I accept the rules');
     expect(label.htmlFor).toBe(input('#rules').id);
     expect(input('#rules').compareDocumentPosition(label)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
     label.click();
@@ -62,7 +62,7 @@ describe('SnCheckbox', () => {
   it('describes the box by its hint, then flags it with the error', () => {
     const { fixture, root, input, ids, host } = setup();
     expect(input('#rules').hasAttribute('aria-describedby')).toBe(false);
-    host.hint.set('Disponible à l’accueil.');
+    host.hint.set('Available at the front desk.');
     host.error.set(ERROR);
     fixture.detectChanges();
     const hint = root.querySelector('#rules .sn-field-hint')!;
@@ -112,7 +112,7 @@ describe('SnRadioGroup and SnRadio', () => {
   it('names the group with a fieldset legend and describes it with its hint', () => {
     const { root } = setup();
     const fieldset = root.querySelector('fieldset')!;
-    expect(fieldset.querySelector('legend')!.textContent!.trim()).toBe('Durée');
+    expect(fieldset.querySelector('legend')!.textContent!.trim()).toBe('Duration');
     const hint = fieldset.querySelector(':scope > .sn-field-hint')!;
     expect(fieldset.getAttribute('aria-describedby')).toBe(hint.id);
   });
@@ -126,7 +126,7 @@ describe('SnRadioGroup and SnRadio', () => {
 
   it('flags every radio button with the group error', () => {
     const { fixture, root, input, ids, host } = setup();
-    host.groupError.set('Choisissez une durée.');
+    host.groupError.set('Choose a duration.');
     fixture.detectChanges();
     const error = root.querySelector('fieldset > .sn-field-error')!;
     for (const id of ['#half', '#hour']) {

@@ -1,11 +1,11 @@
 # Changesets
 
-Chaque modification visible pour une application qui utilise `@speedernet/ui` s'accompagne d'un fichier Changesets :
+Every change visible to an application using `@speedernet/ui` comes with a Changesets file:
 
 ```bash
 npx changeset
 ```
 
-Choisissez le type de version (`patch`, `minor`, `major`) et écrivez une phrase pour les utilisateurs. La CI refuse une pull request qui modifie la bibliothèque (`projects/ui`) sans ce fichier ; la démo, la CI et la configuration du dépôt n'en ont pas besoin.
+Pick the version type (`patch`, `minor`, `major`) and write one sentence, in English, for users. CI rejects a pull request that changes the library (`projects/ui`) without this file; the demo, CI and repository configuration don't need one.
 
-Documentation : https://github.com/changesets/changesets
+Documentation: https://github.com/changesets/changesets

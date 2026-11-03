@@ -5,17 +5,17 @@ import { SnDialog } from './dialog';
 @Component({
   imports: [SnDialog],
   template: `
-    <button id="opener" type="button">Ouvrir</button>
+    <button id="opener" type="button">Open</button>
     <sn-dialog
-      title="Réserver une salle"
+      title="Book a room"
       (closed)="closed = closed + 1"
       (dismissed)="dismissed = dismissed + 1"
     >
-      <label for="room">Salle</label>
+      <label for="room">Room</label>
       <input id="room" />
       <input id="date" />
-      <button snDialogActions id="cancel" type="button">Annuler</button>
-      <button snDialogActions id="submit" type="button">Réserver</button>
+      <button snDialogActions id="cancel" type="button">Cancel</button>
+      <button snDialogActions id="submit" type="button">Book</button>
     </sn-dialog>
   `,
 })
@@ -29,8 +29,8 @@ class Host {
   imports: [SnDialog],
   template: `
     <sn-dialog title="Information">
-      <p>Aucun élément focalisable dans le contenu.</p>
-      <button snDialogActions type="button">J'ai compris</button>
+      <p>No focusable element in the content.</p>
+      <button snDialogActions type="button">Got it</button>
     </sn-dialog>
   `,
 })
@@ -89,7 +89,7 @@ describe('SnDialog', () => {
     expect(host.dialog().isOpen).toBe(true);
     const title = document.getElementById(dialog.getAttribute('aria-labelledby')!)!;
     expect(title.tagName).toBe('H2');
-    expect(title.textContent).toContain('Réserver une salle');
+    expect(title.textContent).toContain('Book a room');
   });
 
   it('projects the content in the body and the actions in the actions area', () => {

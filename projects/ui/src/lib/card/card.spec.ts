@@ -7,8 +7,8 @@ import { SnCard } from './card';
   template: `
     <sn-card>
       <div snCardActions id="actions">Actions</div>
-      <p id="content">Contenu</p>
-      <div snCardHeader id="header">En-tête</div>
+      <p id="content">Content</p>
+      <div snCardHeader id="header">Header</div>
     </sn-card>
   `,
 })

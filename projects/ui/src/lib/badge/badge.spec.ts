@@ -7,10 +7,10 @@ import { SnStatusBadge } from './status-badge';
 @Component({
   imports: [SnBadge, SnStatusBadge],
   template: `
-    <sn-badge id="plain">Neuf</sn-badge>
+    <sn-badge id="plain">New</sn-badge>
     <sn-badge id="solid" tone="solid">Admin</sn-badge>
     <sn-badge id="icon" tone="primary" [icon]="check">Ok</sn-badge>
-    <sn-status-badge id="status" status="pending" label="En attente" />
+    <sn-status-badge id="status" status="pending" label="Pending" />
   `,
 })
 class Host {
@@ -29,7 +29,7 @@ describe('SnBadge', () => {
     expect(badge.classList).toContain('sn-badge');
     expect(badge.classList).toContain('sn-badge-neutral');
     expect(badge.querySelector('svg')).toBeNull();
-    expect(badge.textContent!.trim()).toBe('Neuf');
+    expect(badge.textContent!.trim()).toBe('New');
   });
 
   it('applies the tone class', () => {
@@ -46,7 +46,7 @@ describe('SnBadge', () => {
 describe('SnStatusBadge', () => {
   it('shows the label with the tone and a decorative icon of its status', () => {
     const badge = render().querySelector('#status')!;
-    expect(badge.textContent!.trim()).toBe('En attente');
+    expect(badge.textContent!.trim()).toBe('Pending');
     expect(badge.classList).toContain('sn-badge-accent');
     expect(badge.querySelector('svg')!.getAttribute('aria-hidden')).toBe('true');
   });

@@ -8,10 +8,10 @@ import { SnSelect } from './select';
 @Component({
   imports: [SnField, SnControl, SnSelect, ReactiveFormsModule],
   template: `
-    <sn-field label="Salle" hint="Salles du 3e étage." [error]="error()">
+    <sn-field label="Room" hint="Rooms on the 3rd floor." [error]="error()">
       <sn-select>
         <select snControl [formControl]="room">
-          <option value="" disabled>Choisir une salle</option>
+          <option value="" disabled>Choose a room</option>
           <option value="croix-rousse">Croix-Rousse</option>
           <option value="fourviere">Fourvière</option>
         </select>
@@ -37,7 +37,7 @@ describe('SnSelect', () => {
     const { root, select } = setup();
     const label = root.querySelector<HTMLLabelElement>('label')!;
     expect(label.htmlFor).toBe(select.id);
-    expect(label.textContent!.trim()).toBe('Salle');
+    expect(label.textContent!.trim()).toBe('Room');
     const hint = root.querySelector('.sn-field-hint')!;
     expect(select.getAttribute('aria-describedby')).toBe(hint.id);
   });
@@ -51,7 +51,7 @@ describe('SnSelect', () => {
 
   it('flags the select when the field shows an error', () => {
     const { fixture, root, select } = setup();
-    fixture.componentInstance.error.set('Choisissez une salle.');
+    fixture.componentInstance.error.set('Please choose a room.');
     fixture.detectChanges();
     expect(select.getAttribute('aria-invalid')).toBe('true');
     const error = root.querySelector('.sn-field-error')!;

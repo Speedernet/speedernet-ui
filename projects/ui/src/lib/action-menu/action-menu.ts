@@ -10,7 +10,7 @@ import { SnMenu, SnMenuTrigger } from '../menu/menu';
 
 /**
  * "⋯" button that opens a list of actions, built on `sn-menu` and `snMenuTrigger`:
- * `<sn-action-menu label="…"><button snMenuItem>Modifier</button>…</sn-action-menu>`.
+ * `<sn-action-menu label="…"><button snMenuItem>Edit</button>…</sn-action-menu>`.
  */
 @Component({
   selector: 'sn-action-menu',
@@ -33,7 +33,7 @@ import { SnMenu, SnMenuTrigger } from '../menu/menu';
   host: { class: 'sn-action-menu' },
 })
 export class SnActionMenu {
-  /** Accessible name of the button, for example "Actions pour la réservation du 12/03". */
+  /** Accessible name of the button, for example "Actions for the booking on 12/03". */
   readonly label = input('Actions');
 
   protected readonly ellipsisIcon = LucideEllipsis.icon;
