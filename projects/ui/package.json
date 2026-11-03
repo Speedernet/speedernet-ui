@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "publishConfig": {
-    "registry": "https://verdaccio.speedernet.io"
+    "registry": "https://verdaccio.speedernet.io",
+    "directory": "../../dist/ui"
   },
   "peerDependencies": {
     "@angular/common": "^22.0.0",

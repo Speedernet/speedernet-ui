@@ -38,18 +38,22 @@ CI checks formatting, the Changesets file, the tests and the library build.
 
 ## Publishing
 
-Publishing is automated by the [Release workflow](.github/workflows/release.yml) with [Changesets](https://github.com/changesets/changesets). Versions follow [semver](https://semver.org/): the next version is the strongest type among the pending files in `.changeset/` (`major` > `minor` > `patch`).
+Publishing is automated by the [Release workflow](.github/workflows/release.yml), set up as recommended by the [Changesets automation guide](https://changesets.dev/guide/automating) (token-based publishing, since Verdaccio doesn't support npm Trusted Publishing). Versions follow [semver](https://semver.org/): the next version is the strongest type among the pending files in `.changeset/` (`major` > `minor` > `patch`).
 
 ### How it works
 
-1. Pull requests that change the library are merged into `main` with their Changesets file.
-2. On every push to `main` with pending changesets, the workflow opens (or updates) a **"chore: release @speedernet/ui"** pull request from the `changeset-release/main` branch. It bumps the version in `projects/ui/package.json`, writes the `projects/ui/CHANGELOG.md` entry and deletes the consumed changesets.
-3. Review that pull request (version number, changelog wording), then merge it once the demo has been validated.
-4. The workflow then runs the tests, builds the library, publishes `dist/ui` to `https://verdaccio.speedernet.io` and pushes the `@speedernet/ui@X.Y.Z` git tag with a GitHub release.
+1. A pull request that changes the library is merged into `main` with its Changesets file.
+2. The workflow runs the tests and builds the library on `main`, then selects a mode:
+   - **Pending changesets**: it opens (or updates) a **"chore: release @speedernet/ui"** pull request from a `changeset-release/main` branch. It bumps the version in `projects/ui/package.json`, writes the `projects/ui/CHANGELOG.md` entry and deletes the consumed changesets.
+   - **No pending changesets and an unpublished version** (the release pull request was just merged): `changeset publish` publishes `dist/ui` to `https://verdaccio.speedernet.io`, then the `@speedernet/ui@X.Y.Z` git tag and GitHub release are created.
+   - **Otherwise**: nothing.
+3. Review the release pull request (version number, changelog wording), then merge it once the demo has been validated.
 
-Nothing is published until the release pull request is merged. Merging more pull requests before that simply updates it.
+One feature pull request gives one version if you merge the release pull request after each of them; merging several feature pull requests first releases them together.
 
-Pull requests opened by the workflow don't trigger the CI workflow (a GitHub limitation of `GITHUB_TOKEN`); the Release workflow runs the tests itself before publishing.
+`changeset publish` publishes `dist/ui`, not `projects/ui`, thanks to `publishConfig.directory` in `projects/ui/package.json`; the workflow removes that key from the built `dist/ui/package.json` before publishing.
+
+The CI workflow only runs on pull requests (and skips the Changesets check on the release pull request, which consumes changesets). Pull requests opened by the workflow don't trigger CI (a GitHub limitation of `GITHUB_TOKEN`): the tests and build run in the Release workflow before versioning and publishing.
 
 ### Requirements
 
@@ -69,20 +73,22 @@ The run log is in the repository's Actions tab, under "Release".
 Only if the workflow can't be used, from an up-to-date `main` and logged in to the registry (`npm login --registry https://verdaccio.speedernet.io`; the token stays in your user `~/.npmrc`, never in the repository):
 
 ```bash
-git switch -c release/vX.Y.Z
+git switch -c changeset-release/main
 npm run version-packages
 git add -A .changeset projects/ui
 git commit -m "chore: release @speedernet/ui X.Y.Z"
-git push -u origin release/vX.Y.Z
+git push -u origin changeset-release/main
 ```
 
-Name the branch `changeset-release/main` instead if you want CI to skip the Changesets check, or open the pull request and merge it as usual. Once merged, from `main`:
+Open the pull request and merge it, then from `main`:
 
 ```bash
-npm run release
-git push --tags
+npm run build:ui
+npm pkg delete publishConfig.directory --prefix dist/ui
+npx changeset publish
+git push --follow-tags
 ```
 
-`npm run release` builds the library, publishes `./dist/ui` (skipped if this version is already on the registry) and creates the git tag.
+`changeset publish` skips a version already on the registry and creates the git tag.
 
 A published version cannot be republished: to fix a mistake, release a new patch version.
