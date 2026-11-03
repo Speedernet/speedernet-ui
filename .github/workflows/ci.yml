@@ -37,7 +37,8 @@ jobs:
         run: npx prettier --check .
 
       - name: Check for a Changesets file
-        if: github.event_name == 'pull_request'
+        # The "Version Packages" pull request consumes the changesets instead of adding one
+        if: github.event_name == 'pull_request' && github.head_ref != 'changeset-release/main'
         run: npx changeset status --since=origin/${{ github.base_ref }}
 
       - name: Test
