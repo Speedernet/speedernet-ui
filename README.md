@@ -51,7 +51,7 @@ Publishing is automated by the [Release workflow](.github/workflows/release.yml)
 
 One feature pull request gives one version if you merge the release pull request after each of them; merging several feature pull requests first releases them together.
 
-`changeset publish` publishes `dist/ui`, not `projects/ui`, thanks to `publishConfig.directory` in `projects/ui/package.json`; `npm run build:ui` removes that key from the built `dist/ui/package.json`.
+`changeset publish` publishes `dist/ui`, not `projects/ui`, thanks to `publishConfig.directory` in `projects/ui/package.json`; the workflow removes that key from the built `dist/ui/package.json` before publishing.
 
 The CI workflow only runs on pull requests (and skips the Changesets check on the release pull request, which consumes changesets). Pull requests opened by the workflow don't trigger CI (a GitHub limitation of `GITHUB_TOKEN`): the tests and build run in the Release workflow before versioning and publishing.
 
@@ -84,6 +84,7 @@ Open the pull request and merge it, then from `main`:
 
 ```bash
 npm run build:ui
+npm pkg delete publishConfig.directory --prefix dist/ui
 npx changeset publish
 git push --follow-tags
 ```

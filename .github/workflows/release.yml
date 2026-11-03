@@ -110,6 +110,11 @@ jobs:
       - name: Build the library
         run: npm run build:ui
 
+      # ng-packagr copies publishConfig.directory into the built manifest, where npm doesn't know it
+      - name: Remove publishConfig.directory from the published manifest
+        working-directory: dist/ui
+        run: npm pkg delete publishConfig.directory
+
       - name: Publish packages
         uses: changesets/action/publish@v2.1.2
         with:
