@@ -36,3 +36,4 @@ export * from './lib/toast/toast';
 export * from './lib/menu/menu';
 export * from './lib/action-menu/action-menu';
 export * from './lib/select/select';
+export * from './lib/file-input/file-input';

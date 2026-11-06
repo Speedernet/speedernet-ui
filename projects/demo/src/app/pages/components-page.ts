@@ -18,6 +18,7 @@ import {
   SpeedEmptyState,
   SpeedErrorState,
   SpeedField,
+  SpeedFileInput,
   SpeedFilterOption,
   SpeedFilterTabs,
   SpeedIconButton,
@@ -51,6 +52,7 @@ import {
     SpeedEmptyState,
     SpeedErrorState,
     SpeedField,
+    SpeedFileInput,
     SpeedFilterTabs,
     SpeedIconButton,
     SpeedInfoBanner,
@@ -290,6 +292,33 @@ import {
             <option>3e étage</option>
           </select>
         </speed-select>
+      </speed-field>
+    </div>
+
+    <h3>Fichier</h3>
+    <div class="stack">
+      <speed-field label="Justificatif" hint="PDF ou image, 5 Mo maximum.">
+        <speed-file-input>
+          <input type="file" speedControl accept=".pdf,image/*" />
+        </speed-file-input>
+      </speed-field>
+      <speed-field label="Pièces jointes" hint="PDF ou Word uniquement.">
+        <speed-file-input
+          dropLabel="Glissez-déposez vos fichiers ici"
+          buttonLabel="Choisir des fichiers"
+        >
+          <input type="file" speedControl accept=".pdf,.docx" multiple />
+        </speed-file-input>
+      </speed-field>
+      <speed-field label="Plan de la salle" error="Le fichier dépasse 5 Mo.">
+        <speed-file-input>
+          <input type="file" speedControl />
+        </speed-file-input>
+      </speed-field>
+      <speed-field label="Photo de la salle" hint="Fournie par l'accueil.">
+        <speed-file-input>
+          <input type="file" speedControl disabled />
+        </speed-file-input>
       </speed-field>
     </div>
 

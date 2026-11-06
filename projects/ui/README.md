@@ -68,7 +68,7 @@ import { SpeedButton, SpeedField, SpeedControl } from '@speedernet/ui';
 export class BookingForm {}
 ```
 
-Available: buttons, badges, filter tabs, fields, checkbox, radio, switch, select, messages and toasts, loading, empty and error states, card, tooltip, dialogs, menus, app header and logo.
+Available: buttons, badges, filter tabs, fields, checkbox, radio, switch, select, file input, messages and toasts, loading, empty and error states, card, tooltip, dialogs, menus, app header and logo.
 
 Default UI texts (for example `Annuler`, `Se déconnecter`) are in French; most can be changed through the component inputs.
 
