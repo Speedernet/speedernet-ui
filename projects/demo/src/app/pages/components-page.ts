@@ -308,6 +308,24 @@ import {
       </speed-file-input>
     </div>
 
+    <h4>Zone qui remplit son conteneur</h4>
+    <p class="speed-text-muted">
+      Avec <code>fill</code>, la zone prend toute la largeur et toute la hauteur de son conteneur,
+      ici un bloc de 360 px de haut. Pour couvrir une page, donnez au conteneur la hauteur de la
+      page.
+    </p>
+    <div class="file-input-area">
+      <speed-file-input
+        fill
+        label="Documents de la réunion"
+        hint="Tous les fichiers sont acceptés."
+        dropLabel="Glissez-déposez vos documents ici"
+        buttonLabel="Choisir des documents"
+      >
+        <input type="file" speedControl multiple />
+      </speed-file-input>
+    </div>
+
     <h3>Cases à cocher</h3>
     <div class="stack">
       <speed-checkbox label="Ajouter un vidéoprojecteur">

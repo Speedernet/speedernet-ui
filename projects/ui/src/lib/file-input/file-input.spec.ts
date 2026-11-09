@@ -43,6 +43,16 @@ class Host {
 })
 class CustomTextsHost {}
 
+@Component({
+  imports: [SpeedControl, SpeedFileInput],
+  template: `
+    <speed-file-input label="Documents" fill>
+      <input type="file" speedControl />
+    </speed-file-input>
+  `,
+})
+class FillHost {}
+
 // jsdom has neither DataTransfer nor a way to build a FileList: arrays of files stand in for both.
 class FakeDataTransfer {
   readonly files: File[] = [];
@@ -211,6 +221,17 @@ describe('SpeedFileInput', () => {
       'Déposez une photo',
     );
     expect(root.querySelector('.speed-file-input-button')!.textContent!.trim()).toBe('Parcourir');
+  });
+
+  it('fills its container only when asked', () => {
+    const { root } = setup();
+    expect(root.querySelector('speed-file-input')!.classList).not.toContain(
+      'speed-file-input-fill',
+    );
+    const fixture = TestBed.createComponent(FillHost);
+    fixture.detectChanges();
+    const host = (fixture.nativeElement as HTMLElement).querySelector('speed-file-input')!;
+    expect(host.classList).toContain('speed-file-input-fill');
   });
 });
 

@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   ViewEncapsulation,
+  booleanAttribute,
   computed,
   inject,
   input,
@@ -69,6 +70,11 @@ export function acceptsFile(accept: string, file: Pick<File, 'name' | 'type'>): 
  * Browsers do not apply `accept` to dropped files: the component removes the files that do not
  * match it before the application's own `input` and `change` listeners run, names them in a
  * message and emits them through `rejected`.
+ *
+ * Size: the drop zone grows to the height given to the component, so plain CSS sets its size;
+ * `fill` makes it take the whole width and height of its container, and the CSS variables
+ * `--speed-file-input-min-height` and `--speed-file-input-padding`, set on the component or an
+ * ancestor, change the zone's minimum height and inner spacing.
  */
 @Component({
   selector: 'speed-file-input',
@@ -118,6 +124,7 @@ export function acceptsFile(accept: string, file: Pick<File, 'name' | 'type'>): 
   styleUrls: ['../field/field.scss', './file-input.scss'],
   host: {
     class: 'speed-field speed-file-input',
+    '[class.speed-file-input-fill]': 'fill()',
     '(dragenter)': 'drag(true)',
     '(dragleave)': 'drag(false)',
     '(drop)': 'drag(false)',
@@ -135,6 +142,11 @@ export class SpeedFileInput extends SpeedFieldBase {
   readonly removeLabel = input('Retirer');
   /** Start of the message naming the files whose type is not accepted. */
   readonly rejectedLabel = input('Type de fichier non accepté');
+  /**
+   * Takes the whole width and height of the container, the drop zone using the room left by the
+   * label, messages and file list: to cover a page, put it in a container as high as the page.
+   */
+  readonly fill = input(false, { transform: booleanAttribute });
 
   /** Files removed from a choice or a drop because they do not match `accept`. */
   readonly rejected = output<File[]>();

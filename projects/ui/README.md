@@ -80,6 +80,16 @@ Each native control (`speedControl`) sits in a single component that draws its l
 </speed-select>
 ```
 
+`speed-file-input` takes the size the application gives it: its drop zone grows to the component's height. With `fill`, it takes the whole width and height of its container, for example a page-high container to drop files anywhere on the page. The CSS variables `--speed-file-input-min-height` and `--speed-file-input-padding`, set on the component or an ancestor, tune the zone.
+
+```html
+<main style="height: 100dvh">
+  <speed-file-input fill label="Documents">
+    <input type="file" speedControl multiple />
+  </speed-file-input>
+</main>
+```
+
 Default UI texts (for example `Annuler`, `Se déconnecter`) are in French; most can be changed through the component inputs.
 
 ## Changes

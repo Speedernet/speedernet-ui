@@ -55,3 +55,26 @@ test('file input disables its animations under prefers-reduced-motion', () => {
     /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.speed-file-input-zone,\s*\.speed-file-input-icon,\s*\.speed-file-input-button\s*\{\s*transition: none/,
   );
 });
+
+test('file input zone grows to the height given to the component', () => {
+  assert.match(css, /\.speed-file-input-zone\s*\{[^}]*flex: 1 0 auto[^}]*justify-content: center/);
+});
+
+test('file input zone size can be tuned with CSS variables, with defaults', () => {
+  assert.match(
+    css,
+    /\.speed-file-input-zone\s*\{[^}]*min-height: var\(--speed-file-input-min-height, auto\)/,
+  );
+  assert.match(
+    css,
+    /\.speed-file-input-zone\s*\{[^}]*padding: var\(--speed-file-input-padding, var\(--space-4\) var\(--space-3\)\)/,
+  );
+});
+
+test('filled file input takes its whole container and scrolls its file list', () => {
+  assert.match(
+    css,
+    /\.speed-file-input-fill\s*\{[^}]*align-self: stretch[^}]*width: 100%[^}]*height: 100%/,
+  );
+  assert.match(css, /\.speed-file-input-fill \.speed-file-input-files\s*\{[^}]*overflow-y: auto/);
+});
