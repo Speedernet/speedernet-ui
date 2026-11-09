@@ -1,6 +1,7 @@
 // Drop-down list: the native select without its browser arrow, and a chevron on top that lets
-// clicks through. Border, focus and error styles are the shared field styles.
-.speed-select {
+// clicks through. Label, hint and error are laid out by the field styles; border, focus and error
+// styles of the select are the shared field styles.
+.speed-select-control {
   position: relative;
   display: flex;
 
@@ -36,30 +37,30 @@
 // Browsers that support customisable selects draw the list of options close to `speed-action-menu`:
 // white panel with the field radius, one highlighted row per option. Others keep their system list.
 @supports (appearance: base-select) {
-  .speed-select > select,
-  .speed-select > select::picker(select) {
+  .speed-select-control > select,
+  .speed-select-control > select::picker(select) {
     appearance: base-select;
   }
 
   // The customisable select lays out its text like a button: centre it vertically. Its width
   // follows the chosen option rather than the longest one, so a minimum width limits the jumps
   // when the choice changes in a field that is not stretched.
-  .speed-select > select {
+  .speed-select-control > select {
     display: flex;
     align-items: center;
     min-width: 12rem;
   }
 
   // Our own chevron replaces the built-in icon; it turns over while the list is open.
-  .speed-select > select::picker-icon {
+  .speed-select-control > select::picker-icon {
     display: none;
   }
 
-  .speed-select > select:open + .speed-select-chevron {
+  .speed-select-control > select:open + .speed-select-chevron {
     rotate: 180deg;
   }
 
-  .speed-select > select::picker(select) {
+  .speed-select-control > select::picker(select) {
     margin-block: var(--space-2);
     padding: var(--space-2);
     border: 1px solid var(--color-border);

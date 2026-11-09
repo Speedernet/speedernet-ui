@@ -9,13 +9,10 @@ import {
   output,
   signal,
 } from '@angular/core';
-import {
-  LucideCircleAlert,
-  LucideCloudUpload,
-  LucideDynamicIcon,
-  LucideFile,
-  LucideX,
-} from '@lucide/angular';
+import { LucideCloudUpload, LucideDynamicIcon, LucideFile, LucideX } from '@lucide/angular';
+import { SpeedFieldBase } from '../field/field-base';
+import { SpeedFieldContext } from '../field/field-context';
+import { FIELD_LABEL, FIELD_MESSAGES } from '../field/field-template';
 
 /** A chosen file as the component lists it. */
 interface ChosenFile {
@@ -64,10 +61,10 @@ export function acceptsFile(accept: string, file: Pick<File, 'name' | 'type'>): 
 }
 
 /**
- * File picker with a drop zone: wraps the native `<input type="file" speedControl>`, transparent
- * and stretched over the zone, then lists the chosen files with a button to remove each one. The
- * native control keeps its keyboard behaviour, its system dialog, drops and what screen readers
- * announce; label, hint and error come from the surrounding `speed-field`.
+ * File picker field with a drop zone: a label, the native `<input type="file" speedControl>` it
+ * wraps, transparent and stretched over the zone, then an optional hint and error like
+ * `speed-field`, and the chosen files with a button to remove each one. The native control keeps
+ * its keyboard behaviour, its system dialog, drops and what screen readers announce.
  *
  * Browsers do not apply `accept` to dropped files: the component removes the files that do not
  * match it before the application's own `input` and `change` listeners run, names them in a
@@ -79,6 +76,7 @@ export function acceptsFile(accept: string, file: Pick<File, 'name' | 'type'>): 
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
+    ${FIELD_LABEL}
     <div class="speed-file-input-zone" [class.speed-file-input-dragging]="dragging()">
       <ng-content select="input" />
       <span class="speed-file-input-icon" aria-hidden="true">
@@ -90,6 +88,7 @@ export function acceptsFile(accept: string, file: Pick<File, 'name' | 'type'>): 
       </span>
       <span class="speed-file-input-button" aria-hidden="true">{{ buttonLabel() }}</span>
     </div>
+    ${FIELD_MESSAGES}
     @if (rejectedMessage(); as message) {
       <p class="speed-field-error speed-file-input-rejected" role="alert">
         <svg [lucideIcon]="alertIcon" [size]="18" aria-hidden="true"></svg>
@@ -116,15 +115,16 @@ export function acceptsFile(accept: string, file: Pick<File, 'name' | 'type'>): 
       </ul>
     }
   `,
-  styleUrl: './file-input.scss',
+  styleUrls: ['../field/field.scss', './file-input.scss'],
   host: {
-    class: 'speed-file-input',
+    class: 'speed-field speed-file-input',
     '(dragenter)': 'drag(true)',
     '(dragleave)': 'drag(false)',
     '(drop)': 'drag(false)',
   },
+  providers: [{ provide: SpeedFieldContext, useExisting: SpeedFileInput }],
 })
-export class SpeedFileInput {
+export class SpeedFileInput extends SpeedFieldBase {
   /** Main text of the drop zone. */
   readonly dropLabel = input('Glissez-déposez un fichier ici');
   /** Text of the drawn button. */
@@ -149,18 +149,18 @@ export class SpeedFileInput {
   protected readonly rejectedMessage = computed(() => {
     const names = this.rejectedNames();
     // Non-breaking space before the colon, as French typography wants.
-    return names.length > 0 ? `${this.rejectedLabel()} : ${names.join(', ')}` : null;
+    return names.length > 0 ? `${this.rejectedLabel()}\u00a0: ${names.join(', ')}` : null;
   });
 
   protected readonly uploadIcon = LucideCloudUpload.icon;
   protected readonly fileIcon = LucideFile.icon;
   protected readonly removeIcon = LucideX.icon;
-  protected readonly alertIcon = LucideCircleAlert.icon;
 
   /** Files of the input already checked, so `change` does not undo what `input` reported. */
   private checked: FileList | null = null;
 
   constructor() {
+    super();
     // Capture phase: runs before the listeners the application puts on the input itself.
     for (const type of ['input', 'change']) {
       this.host.addEventListener(type, (event) => this.check(event.target), true);

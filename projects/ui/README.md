@@ -70,6 +70,16 @@ export class BookingForm {}
 
 Available: buttons, badges, filter tabs, fields, checkbox, radio, switch, select, file input, messages and toasts, loading, empty and error states, card, tooltip, dialogs, menus, app header and logo.
 
+Each native control (`speedControl`) sits in a single component that draws its label, hint and error: `speed-field` for inputs and textareas, `speed-select`, `speed-file-input`, `speed-checkbox`, `speed-radio` and `speed-switch`.
+
+```html
+<speed-select label="Room" hint="Rooms on the 3rd floor.">
+  <select speedControl>
+    <option>Croix-Rousse</option>
+  </select>
+</speed-select>
+```
+
 Default UI texts (for example `Annuler`, `Se déconnecter`) are in French; most can be changed through the component inputs.
 
 ## Changes

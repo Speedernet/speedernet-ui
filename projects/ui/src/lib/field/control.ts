@@ -2,8 +2,8 @@ import { Directive, inject } from '@angular/core';
 import { SpeedFieldContext } from './field-context';
 
 /**
- * Native control of an `speed-field`, `speed-checkbox`, `speed-radio` or `speed-switch`: receives its id,
- * `aria-invalid` and `aria-describedby`.
+ * Native control of a `speed-field`, `speed-select`, `speed-file-input`, `speed-checkbox`,
+ * `speed-radio` or `speed-switch`: receives its id, `aria-invalid` and `aria-describedby`.
  */
 @Directive({
   selector: 'input[speedControl], select[speedControl], textarea[speedControl]',
@@ -18,7 +18,7 @@ export class SpeedControl {
     const field = inject(SpeedFieldContext, { optional: true });
     if (!field) {
       throw new Error(
-        '[speedControl] must be placed inside an <speed-field>, <speed-checkbox>, <speed-radio> or <speed-switch>.',
+        '[speedControl] must be placed inside a <speed-field>, <speed-select>, <speed-file-input>, <speed-checkbox>, <speed-radio> or <speed-switch>.',
       );
     }
     return field;

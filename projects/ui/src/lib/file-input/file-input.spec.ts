@@ -1,23 +1,25 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { SpeedControl } from '../field/control';
-import { SpeedField } from '../field/field';
 import { SpeedFileInput, acceptsFile, formatFileSize } from './file-input';
 
 @Component({
-  imports: [SpeedField, SpeedControl, SpeedFileInput],
+  imports: [SpeedControl, SpeedFileInput],
   template: `
-    <speed-field label="Receipts" hint="PDF, 5 MB maximum." [error]="error()">
-      <speed-file-input (rejected)="rejected = $event">
-        <input
-          type="file"
-          speedControl
-          accept=".pdf"
-          multiple
-          (change)="changes = changes + 1; received = names($event)"
-        />
-      </speed-file-input>
-    </speed-field>
+    <speed-file-input
+      label="Receipts"
+      hint="PDF, 5 MB maximum."
+      [error]="error()"
+      (rejected)="rejected = $event"
+    >
+      <input
+        type="file"
+        speedControl
+        accept=".pdf"
+        multiple
+        (change)="changes = changes + 1; received = names($event)"
+      />
+    </speed-file-input>
   `,
 })
 class Host {
@@ -32,13 +34,11 @@ class Host {
 }
 
 @Component({
-  imports: [SpeedField, SpeedControl, SpeedFileInput],
+  imports: [SpeedControl, SpeedFileInput],
   template: `
-    <speed-field label="Photo">
-      <speed-file-input dropLabel="Déposez une photo" buttonLabel="Parcourir">
-        <input type="file" speedControl />
-      </speed-file-input>
-    </speed-field>
+    <speed-file-input label="Photo" dropLabel="Déposez une photo" buttonLabel="Parcourir">
+      <input type="file" speedControl />
+    </speed-file-input>
   `,
 })
 class CustomTextsHost {}
@@ -70,9 +70,12 @@ describe('SpeedFileInput', () => {
   beforeEach(() => vi.stubGlobal('DataTransfer', FakeDataTransfer));
   afterEach(() => vi.unstubAllGlobals());
 
-  it('keeps the native file input in the zone, labelled and described by its field', () => {
+  it('is a field on its own: label, native input in the zone and hint, linked by ids', () => {
     const { root, input, zone } = setup();
-    const label = root.querySelector<HTMLLabelElement>('label')!;
+    const host = root.querySelector('speed-file-input')!;
+    expect(host.classList).toContain('speed-field');
+    const label = host.querySelector<HTMLLabelElement>(':scope > .speed-field-label')!;
+    expect(label.textContent!.trim()).toBe('Receipts');
     expect(input.parentElement).toBe(zone);
     expect(label.htmlFor).toBe(input.id);
     const hint = root.querySelector('.speed-field-hint')!;

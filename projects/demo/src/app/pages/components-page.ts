@@ -257,69 +257,55 @@ import {
 
     <h3>Liste déroulante</h3>
     <div class="stack">
-      <speed-field label="Salle">
-        <speed-select>
-          <select speedControl>
-            <option value="" disabled selected>Choisir une salle</option>
-            @for (room of rooms; track room) {
-              <option>{{ room }}</option>
-            }
-          </select>
-        </speed-select>
-      </speed-field>
-      <speed-field label="Créneau" hint="Les créneaux durent une heure.">
-        <speed-select>
-          <select speedControl>
-            <option>09:00 - 10:00</option>
-            <option selected>14:00 - 15:00</option>
-            <option>16:00 - 17:00</option>
-          </select>
-        </speed-select>
-      </speed-field>
-      <speed-field label="Salle de repli" error="Choisissez une salle de repli.">
-        <speed-select>
-          <select speedControl>
-            <option value="" disabled selected>Choisir une salle</option>
-            @for (room of rooms; track room) {
-              <option>{{ room }}</option>
-            }
-          </select>
-        </speed-select>
-      </speed-field>
-      <speed-field label="Étage" hint="Fixé par la salle choisie.">
-        <speed-select>
-          <select speedControl disabled>
-            <option>3e étage</option>
-          </select>
-        </speed-select>
-      </speed-field>
+      <speed-select label="Salle">
+        <select speedControl>
+          <option value="" disabled selected>Choisir une salle</option>
+          @for (room of rooms; track room) {
+            <option>{{ room }}</option>
+          }
+        </select>
+      </speed-select>
+      <speed-select label="Créneau" hint="Les créneaux durent une heure.">
+        <select speedControl>
+          <option>09:00 - 10:00</option>
+          <option selected>14:00 - 15:00</option>
+          <option>16:00 - 17:00</option>
+        </select>
+      </speed-select>
+      <speed-select label="Salle de repli" error="Choisissez une salle de repli.">
+        <select speedControl>
+          <option value="" disabled selected>Choisir une salle</option>
+          @for (room of rooms; track room) {
+            <option>{{ room }}</option>
+          }
+        </select>
+      </speed-select>
+      <speed-select label="Étage" hint="Fixé par la salle choisie.">
+        <select speedControl disabled>
+          <option>3e étage</option>
+        </select>
+      </speed-select>
     </div>
 
     <h3>Fichier</h3>
     <div class="stack">
-      <speed-field label="Justificatif" hint="PDF ou image, 5 Mo maximum.">
-        <speed-file-input>
-          <input type="file" speedControl accept=".pdf,image/*" />
-        </speed-file-input>
-      </speed-field>
-      <speed-field label="Pièces jointes" hint="PDF ou Word uniquement.">
-        <speed-file-input
-          dropLabel="Glissez-déposez vos fichiers ici"
-          buttonLabel="Choisir des fichiers"
-        >
-          <input type="file" speedControl accept=".pdf,.docx" multiple />
-        </speed-file-input>
-      </speed-field>
-      <speed-field label="Plan de la salle" error="Le fichier dépasse 5 Mo.">
-        <speed-file-input>
-          <input type="file" speedControl />
-        </speed-file-input>
-      </speed-field>
-      <speed-field label="Photo de la salle" hint="Fournie par l'accueil.">
-        <speed-file-input>
-          <input type="file" speedControl disabled />
-        </speed-file-input>
-      </speed-field>
+      <speed-file-input label="Justificatif" hint="PDF ou image, 5 Mo maximum.">
+        <input type="file" speedControl accept=".pdf,image/*" />
+      </speed-file-input>
+      <speed-file-input
+        label="Pièces jointes"
+        hint="PDF ou Word uniquement."
+        dropLabel="Glissez-déposez vos fichiers ici"
+        buttonLabel="Choisir des fichiers"
+      >
+        <input type="file" speedControl accept=".pdf,.docx" multiple />
+      </speed-file-input>
+      <speed-file-input label="Plan de la salle" error="Le fichier dépasse 5 Mo.">
+        <input type="file" speedControl />
+      </speed-file-input>
+      <speed-file-input label="Photo de la salle" hint="Fournie par l'accueil.">
+        <input type="file" speedControl disabled />
+      </speed-file-input>
     </div>
 
     <h3>Cases à cocher</h3>

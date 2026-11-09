@@ -1,10 +1,6 @@
-// File picker: a dashed drop zone, then the list of the chosen files. The native input,
-// transparent, covers the whole zone and receives clicks, focus and drops.
-.speed-file-input {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
+// File picker: a dashed drop zone, then the list of the chosen files; label, hint and error are
+// laid out by the field styles. The native input, transparent, covers the whole zone and
+// receives clicks, focus and drops.
 
 .speed-file-input-zone {
   position: relative;

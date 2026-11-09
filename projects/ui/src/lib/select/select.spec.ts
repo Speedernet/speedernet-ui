@@ -2,21 +2,18 @@ import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SpeedControl } from '../field/control';
-import { SpeedField } from '../field/field';
 import { SpeedSelect } from './select';
 
 @Component({
-  imports: [SpeedField, SpeedControl, SpeedSelect, ReactiveFormsModule],
+  imports: [SpeedControl, SpeedSelect, ReactiveFormsModule],
   template: `
-    <speed-field label="Room" hint="Rooms on the 3rd floor." [error]="error()">
-      <speed-select>
-        <select speedControl [formControl]="room">
-          <option value="" disabled>Choose a room</option>
-          <option value="croix-rousse">Croix-Rousse</option>
-          <option value="fourviere">Fourvière</option>
-        </select>
-      </speed-select>
-    </speed-field>
+    <speed-select label="Room" hint="Rooms on the 3rd floor." [error]="error()">
+      <select speedControl [formControl]="room">
+        <option value="" disabled>Choose a room</option>
+        <option value="croix-rousse">Croix-Rousse</option>
+        <option value="fourviere">Fourvière</option>
+      </select>
+    </speed-select>
   `,
 })
 class Host {
@@ -33,9 +30,11 @@ function setup() {
 }
 
 describe('SpeedSelect', () => {
-  it('keeps the native select, labelled and described by its field', () => {
+  it('is a field on its own: label, native select and hint, linked by ids', () => {
     const { root, select } = setup();
-    const label = root.querySelector<HTMLLabelElement>('label')!;
+    const host = root.querySelector('speed-select')!;
+    expect(host.classList).toContain('speed-field');
+    const label = host.querySelector<HTMLLabelElement>(':scope > .speed-field-label')!;
     expect(label.htmlFor).toBe(select.id);
     expect(label.textContent!.trim()).toBe('Room');
     const hint = root.querySelector('.speed-field-hint')!;
