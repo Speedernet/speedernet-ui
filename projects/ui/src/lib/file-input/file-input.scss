@@ -21,6 +21,10 @@
   }
 }
 
+.speed-file-input:not(.speed-file-input-fill) {
+  width: 400px;
+}
+
 .speed-file-input-zone {
   position: relative;
   display: flex;
@@ -150,8 +154,6 @@
 .speed-file-input-file {
   display: flex;
   align-items: center;
-  min-width: 250px;
-  max-width: 400px;
   gap: var(--space-3);
   min-height: 48px;
   padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
