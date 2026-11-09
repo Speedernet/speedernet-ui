@@ -203,16 +203,14 @@ function toIsoDate(display: string): string {
       (closed)="submitted.set(false)"
     >
       <form id="booking-form" class="stack booking-form" [formGroup]="form" (ngSubmit)="save()">
-        <speed-field label="Salle" [error]="errorFor('room', 'Choisissez une salle.')">
-          <speed-select>
-            <select speedControl formControlName="room">
-              <option value="" disabled>Choisir une salle</option>
-              @for (room of rooms; track room) {
-                <option [value]="room">{{ room }}</option>
-              }
-            </select>
-          </speed-select>
-        </speed-field>
+        <speed-select label="Salle" [error]="errorFor('room', 'Choisissez une salle.')">
+          <select speedControl formControlName="room">
+            <option value="" disabled>Choisir une salle</option>
+            @for (room of rooms; track room) {
+              <option [value]="room">{{ room }}</option>
+            }
+          </select>
+        </speed-select>
         <speed-field
           label="Date"
           hint="Jusqu'à 30 jours à l'avance."
@@ -220,16 +218,14 @@ function toIsoDate(display: string): string {
         >
           <input speedControl type="date" formControlName="date" />
         </speed-field>
-        <speed-field label="Créneau" [error]="errorFor('slot', 'Choisissez un créneau.')">
-          <speed-select>
-            <select speedControl formControlName="slot">
-              <option value="" disabled>Choisir un créneau</option>
-              @for (slot of slots; track slot) {
-                <option [value]="slot">{{ slot }}</option>
-              }
-            </select>
-          </speed-select>
-        </speed-field>
+        <speed-select label="Créneau" [error]="errorFor('slot', 'Choisissez un créneau.')">
+          <select speedControl formControlName="slot">
+            <option value="" disabled>Choisir un créneau</option>
+            @for (slot of slots; track slot) {
+              <option [value]="slot">{{ slot }}</option>
+            }
+          </select>
+        </speed-select>
       </form>
       <button speedDialogActions speedButton type="button" (click)="dialog().close()">
         Annuler

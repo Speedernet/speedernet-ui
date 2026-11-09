@@ -193,6 +193,11 @@ button.scale__color {
   }
 }
 
+// Container of the filled file input example: the component takes its whole size.
+.file-input-area {
+  height: 360px;
+}
+
 .stack {
   display: flex;
   flex-direction: column;
