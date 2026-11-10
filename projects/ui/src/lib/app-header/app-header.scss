@@ -47,23 +47,12 @@ speed-app-header {
   height: 40px;
 }
 
-.speed-app-header-custom-logo {
-  display: block;
-  flex: none;
-  width: auto;
-  max-width: min(100%, var(--speed-app-header-image-width, 100%));
-  object-fit: contain;
-  object-position: left center;
-}
-
 .speed-app-header-name {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 1rem;
   font-weight: 900;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 
   @include bp.from(tablet) {
     font-size: 1.125rem;

@@ -63,12 +63,10 @@ test('shows them from desktop and hides the mobile menu', () => {
   assert.match(rule(desktop, '.speed-app-header-menu'), /display:\s*none/);
 });
 
-test('truncates a long application name instead of overflowing on the navigation', () => {
+test('lets a long application name wrap instead of overflowing', () => {
   const name = rule(css, '.speed-app-header-name');
+  assert.match(name, /overflow-wrap:\s*anywhere/);
   assert.match(name, /min-width:\s*0/);
-  assert.match(name, /overflow:\s*hidden/);
-  assert.match(name, /text-overflow:\s*ellipsis/);
-  assert.match(name, /white-space:\s*nowrap/);
 });
 
 test('truncates a long user name on one line', () => {

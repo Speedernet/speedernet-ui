@@ -29,15 +29,6 @@ export interface SpeedHeaderUser {
   displayName: string;
 }
 
-/**
- * Limits of the header's custom image, in pixels. The image keeps its ratio and fits inside
- * them: `height` defaults to 40 (the Speedernet logo's height), `width` to the space available.
- */
-export interface SpeedHeaderImageSize {
-  width?: number;
-  height?: number;
-}
-
 let nextId = 0;
 
 /**
@@ -65,24 +56,8 @@ let nextId = 0;
     <header class="speed-app-header">
       <div class="speed-container speed-app-header-content">
         <a class="speed-app-header-home" [routerLink]="homeLink()">
-          <!-- The logo is decorative while the name labels the link; without the name, it does. -->
-          @if (customImageUrl()) {
-            <img
-              class="speed-app-header-custom-logo"
-              [alt]="showAppName() ? '' : appName()"
-              [src]="customImageUrl()"
-              [style.height.px]="customImageSize().height ?? 40"
-              [style.--speed-app-header-image-width.px]="customImageSize().width ?? null"
-            />
-          } @else {
-            <speed-logo
-              class="speed-app-header-logo"
-              [alt]="showAppName() ? '' : 'Logo Speedernet'"
-            />
-          }
-          @if (showAppName()) {
-            <span class="speed-app-header-name" [title]="appName()">{{ appName() }}</span>
-          }
+          <speed-logo class="speed-app-header-logo" />
+          <span class="speed-app-header-name">{{ appName() }}</span>
         </a>
 
         @if (navItems().length > 0) {
@@ -181,14 +156,8 @@ let nextId = 0;
 })
 export class SpeedAppHeader {
   readonly appName = input.required<string>();
-  /** Without the name, the logo or custom image labels the home link. */
-  readonly showAppName = input(true);
   readonly homeLink = input('/');
   readonly navItems = input<SpeedNavItem[]>([]);
-  /** Image shown instead of the Speedernet logo. */
-  readonly customImageUrl = input<string | null>(null);
-  /** Limits of the custom image, in pixels; it keeps its ratio inside them. */
-  readonly customImageSize = input<SpeedHeaderImageSize>({});
   readonly user = input<SpeedHeaderUser | null>(null);
   readonly logoutLabel = input('Se déconnecter');
 
