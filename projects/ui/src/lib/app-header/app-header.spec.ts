@@ -360,18 +360,25 @@ describe('SpeedAppHeader', () => {
 @Component({
   imports: [SpeedAppHeader],
   template: `
-    <speed-app-header appName="Room booking" customImageUrl="/logo.svg" [customImageSize]="size" />
+    <speed-app-header
+      appName="Room booking"
+      [customImageUrl]="imageUrl"
+      [customImageSize]="size"
+      [showAppName]="showAppName"
+    />
   `,
 })
 class CustomImageHost {
+  imageUrl: string | null = '/logo.svg';
   size: SpeedHeaderImageSize = {};
+  showAppName = true;
 }
 
 describe('SpeedAppHeader with a custom image', () => {
-  function render(size: SpeedHeaderImageSize) {
+  function render(size: SpeedHeaderImageSize, options: Partial<CustomImageHost> = {}) {
     TestBed.configureTestingModule({ providers: [provideRouter([])] });
     const fixture = TestBed.createComponent(CustomImageHost);
-    fixture.componentInstance.size = size;
+    Object.assign(fixture.componentInstance, { size, ...options });
     fixture.detectChanges();
     const home = fixture.nativeElement.querySelector('a.speed-app-header-home') as HTMLElement;
     return {
@@ -397,5 +404,17 @@ describe('SpeedAppHeader with a custom image', () => {
     const { image } = render({ width: 240, height: 48 });
     expect(image.style.height).toBe('48px');
     expect(image.style.getPropertyValue('--speed-app-header-image-width')).toBe('240px');
+  });
+
+  it('labels the link with the custom image when the name is hidden', () => {
+    const { home, image } = render({}, { showAppName: false });
+    expect(home.querySelector('.speed-app-header-name')).toBeNull();
+    expect(image.getAttribute('alt')).toBe('Room booking');
+  });
+
+  it('labels the link with the Speedernet logo when the name is hidden', () => {
+    const { home } = render({}, { imageUrl: null, showAppName: false });
+    expect(home.querySelector('.speed-app-header-name')).toBeNull();
+    expect(home.querySelector('speed-logo img')!.getAttribute('alt')).toBe('Logo Speedernet');
   });
 });
