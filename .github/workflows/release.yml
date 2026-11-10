@@ -63,6 +63,9 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v7
         with:
+          # Full history: `changeset version` looks up the commit that added each changeset for the
+          # changelog, and on a shallow clone it runs `git fetch --deepen`, which fails without credentials
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Set up Node.js
