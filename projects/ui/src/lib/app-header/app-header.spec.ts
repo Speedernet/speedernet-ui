@@ -5,7 +5,7 @@ import { Router, RouterOutlet, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { LucideMenu, LucideX } from '@lucide/angular';
 import { SpeedIconButton } from '../button/icon-button';
-import { SpeedAppHeader, SpeedHeaderUser, SpeedNavItem } from './app-header';
+import { SpeedAppHeader, SpeedHeaderImageSize, SpeedHeaderUser, SpeedNavItem } from './app-header';
 
 let hostUser: SpeedHeaderUser | null = null;
 let hostHomeLink = '/';
@@ -354,5 +354,48 @@ describe('SpeedAppHeader', () => {
     await detect();
     expect(panel(menuButton())!.textContent).not.toContain('Se déconnecter');
     expect(header().textContent).not.toContain('Se déconnecter');
+  });
+});
+
+@Component({
+  imports: [SpeedAppHeader],
+  template: `
+    <speed-app-header appName="Room booking" customImageUrl="/logo.svg" [customImageSize]="size" />
+  `,
+})
+class CustomImageHost {
+  size: SpeedHeaderImageSize = {};
+}
+
+describe('SpeedAppHeader with a custom image', () => {
+  function render(size: SpeedHeaderImageSize) {
+    TestBed.configureTestingModule({ providers: [provideRouter([])] });
+    const fixture = TestBed.createComponent(CustomImageHost);
+    fixture.componentInstance.size = size;
+    fixture.detectChanges();
+    const home = fixture.nativeElement.querySelector('a.speed-app-header-home') as HTMLElement;
+    return {
+      home,
+      image: home.querySelector('img.speed-app-header-custom-logo') as HTMLImageElement,
+    };
+  }
+
+  it('replaces the Speedernet logo with a decorative image', () => {
+    const { home, image } = render({});
+    expect(home.querySelector('speed-logo')).toBeNull();
+    expect(image.getAttribute('src')).toBe('/logo.svg');
+    expect(image.getAttribute('alt')).toBe('');
+  });
+
+  it('keeps the logo height and the available width by default', () => {
+    const { image } = render({});
+    expect(image.style.height).toBe('40px');
+    expect(image.style.getPropertyValue('--speed-app-header-image-width')).toBe('');
+  });
+
+  it('limits the image to the given height and width', () => {
+    const { image } = render({ width: 240, height: 48 });
+    expect(image.style.height).toBe('48px');
+    expect(image.style.getPropertyValue('--speed-app-header-image-width')).toBe('240px');
   });
 });

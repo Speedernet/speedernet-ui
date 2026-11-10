@@ -51,6 +51,9 @@ jobs:
       - name: Select Changesets mode
         id: select-mode
         uses: changesets/action/select-mode@v2.1.2
+        env:
+          # Without pending changesets, `changeset publish-plan` asks the registry whether the version is published
+          NODE_AUTH_TOKEN: ${{ secrets.VERDACCIO_TOKEN }}
 
   version:
     if: needs.select-mode.outputs.mode == 'version'
