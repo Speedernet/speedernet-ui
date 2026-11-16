@@ -99,7 +99,7 @@ describe('SpeedAppHeader', () => {
     const { header } = await setup();
     const home = header().querySelector('a.speed-app-header-home') as HTMLAnchorElement;
     expect(home.getAttribute('href')).toBe('/');
-    expect(home.querySelector('speed-logo img')!.getAttribute('alt')).toBe('');
+    expect(home.querySelector('speed-logo')!.getAttribute('aria-hidden')).toBe('true');
     expect(home.textContent).toContain('Room booking');
   });
 
@@ -415,6 +415,8 @@ describe('SpeedAppHeader with a custom image', () => {
   it('labels the link with the Speedernet logo when the name is hidden', () => {
     const { home } = render({}, { imageUrl: null, showAppName: false });
     expect(home.querySelector('.speed-app-header-name')).toBeNull();
-    expect(home.querySelector('speed-logo img')!.getAttribute('alt')).toBe('Logo Speedernet');
+    const logo = home.querySelector('speed-logo')!;
+    expect(logo.getAttribute('role')).toBe('img');
+    expect(logo.getAttribute('aria-label')).toBe('Logo Speedernet');
   });
 });

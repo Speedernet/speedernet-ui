@@ -1,31 +1,35 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { SPEED_ASSETS_BASE } from '../assets-base';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { SpeedLogoFull, SpeedLogoMark } from './logo-svgs';
 
-/** Official Speedernet logo: the compact mark or the full logo. */
+/** Official Speedernet logo: the compact mark or the full logo, as an inline SVG. */
 @Component({
   selector: 'speed-logo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<img class="speed-logo__img" [src]="src()" [alt]="alt()" />`,
+  imports: [SpeedLogoFull, SpeedLogoMark],
+  template: `
+    @if (variant() === 'full') {
+      <speed-logo-full />
+    } @else {
+      <speed-logo-mark />
+    }
+  `,
   styles: `
     :host {
       display: inline-block;
       line-height: 0;
     }
-    .speed-logo__img {
-      display: block;
+    :host > * {
       height: 100%;
-      width: auto;
-      max-width: 100%;
     }
   `,
+  host: {
+    '[attr.role]': 'alt() ? "img" : null',
+    '[attr.aria-label]': 'alt() || null',
+    '[attr.aria-hidden]': 'alt() ? null : "true"',
+  },
 })
 export class SpeedLogo {
-  private readonly base = inject(SPEED_ASSETS_BASE);
-
   readonly variant = input<'mark' | 'full'>('mark');
+  /** Accessible label; empty (the default) for a decorative logo, e.g. next to the application name. */
   readonly alt = input('');
-
-  protected readonly src = computed(
-    () => `${this.base}/logos/logo-speedernet-${this.variant() === 'full' ? 'full' : 'min'}.svg`,
-  );
 }
