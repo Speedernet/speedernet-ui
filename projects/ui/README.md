@@ -36,8 +36,7 @@ Breakpoint mixins are available for your own styles:
 }
 ```
 
-**Assets**: nothing to configure. Your application build emits the Mulish font from the styles, and the logos are inline SVGs in the components. This also works when `node_modules` is outside the Angular workspace (monorepos). The `assets` entry for `@speedernet/ui/assets` in `angular.json` and the `SPEED_ASSETS_BASE` provider of previous versions can be removed.
-
+**Assets**: nothing to configure. Your application build emits the Mulish font from the styles, and the logos are inline SVGs in the components. This also works when `node_modules` is outside the Angular workspace (monorepos).
 ## Use
 
 Components are standalone: import the ones you need.
