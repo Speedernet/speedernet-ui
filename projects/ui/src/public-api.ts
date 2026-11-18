@@ -3,7 +3,6 @@
  */
 
 export * from './lib/version';
-export * from './lib/assets-base';
 export * from './lib/logo/logo';
 export * from './lib/button/button';
 export * from './lib/button/icon-button';

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import * as sass from 'sass';
@@ -67,8 +68,11 @@ test('gives a step the same lightness in the night and gray scales', () => {
   }
 });
 
-test('declares the self-hosted font under /speedernet-ui/', () => {
-  assert.ok(css.includes('url("/speedernet-ui/fonts/mulish-latin.woff2")'));
+test('declares the self-hosted font relative to the styles, for the application build to bundle', () => {
+  for (const file of ['mulish-latin.woff2', 'mulish-latin-ext.woff2']) {
+    assert.ok(css.includes(`url("../assets/fonts/${file}")`), file);
+    assert.ok(existsSync(fileURLToPath(new URL(`../assets/fonts/${file}`, import.meta.url))), file);
+  }
 });
 
 test('emits the global classes and native field rules', () => {

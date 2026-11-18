@@ -36,17 +36,7 @@ Breakpoint mixins are available for your own styles:
 }
 ```
 
-**Assets**: serve the library assets under `/speedernet-ui` by adding them to the `assets` of your application in `angular.json`:
-
-```json
-{
-  "glob": "**/*",
-  "input": "node_modules/@speedernet/ui/assets",
-  "output": "speedernet-ui"
-}
-```
-
-If you serve them at another URL, provide `SPEED_ASSETS_BASE` for the logos (the font URLs in the styles stay `/speedernet-ui/fonts`).
+**Assets**: nothing to configure. Your application build emits the Mulish font from the styles, and the logos are inline SVGs in the components. This also works when `node_modules` is outside the Angular workspace (monorepos).
 
 ## Use
 

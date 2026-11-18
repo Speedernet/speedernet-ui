@@ -186,11 +186,6 @@ button.scale__color {
     display: block;
     height: 3rem;
   }
-
-  ::ng-deep img {
-    height: 100%;
-    width: auto;
-  }
 }
 
 // Container of the filled file input example: the component takes its whole size.
