@@ -262,3 +262,17 @@ button.scale__color {
 .card-line {
   margin: 0 0 var(--space-2);
 }
+
+// Style guide as plain text: kept as written, wrapped to the page width.
+.guide-text {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

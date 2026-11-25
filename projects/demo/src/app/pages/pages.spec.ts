@@ -8,13 +8,14 @@ describe('demo pages', () => {
     '/fondations': 'fondations',
     '/composants': 'composants',
     '/ecran-type': 'réservations',
+    '/charte-graphique': 'charte graphique',
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [provideRouter(routes)] });
   });
 
-  for (const path of ['/fondations', '/composants', '/ecran-type']) {
+  for (const path of Object.keys(words)) {
     it(`loads ${path} with a single h1 containing a highlight`, async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl(path);
