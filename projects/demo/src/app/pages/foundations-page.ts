@@ -3,10 +3,23 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
+  inject,
   signal,
+  viewChild,
 } from '@angular/core';
-import { SpeedLogo, SpeedTooltip } from '@speedernet/ui';
+import {
+  SpeedButton,
+  SpeedControl,
+  SpeedDialog,
+  SpeedField,
+  SpeedLogo,
+  SpeedToastService,
+  SpeedTooltip,
+} from '@speedernet/ui';
 import { SwatchInfo, swatchInfo } from './color';
+import { readStyleGuide } from './style-guide/style-guide';
+import { creationPrompt } from './style-guide/style-guide-prompt';
 
 interface ContrastPair {
   pair: string;
@@ -16,11 +29,51 @@ interface ContrastPair {
 
 @Component({
   selector: 'demo-foundations-page',
-  imports: [SpeedLogo, SpeedTooltip],
+  imports: [SpeedButton, SpeedControl, SpeedDialog, SpeedField, SpeedLogo, SpeedTooltip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pages.scss',
   template: `
-    <h1>Les <span class="speed-highlight">fondations</span></h1>
+    <div class="page-head">
+      <h1>Les <span class="speed-highlight">fondations</span></h1>
+      <div class="row">
+        <button
+          speedButton
+          variant="secondary"
+          type="button"
+          [disabled]="generating()"
+          (click)="downloadPdf()"
+        >
+          {{ generating() ? 'Génération du PDF…' : 'Télécharger en PDF' }}
+        </button>
+        <button speedButton variant="primary" type="button" (click)="openCreate()">
+          Je veux créer
+        </button>
+      </div>
+    </div>
+    <speed-dialog title="Je veux créer" (closed)="requestError.set(null)">
+      <speed-field
+        label=""
+        [error]="requestError()"
+      >
+        <textarea
+          speedControl
+          rows="5"
+          placeholder="Par exemple : « Je veux faire un visuel LinkedIn pour promouvoir notre webinaire sur...» ou « Je veux faire des slides pour une présentation sur...»."
+          [value]="request()"
+          (input)="onRequestInput($event)"
+        ></textarea>
+      </speed-field>
+      <p class="speed-text-muted">
+        Le prompt copié reprend votre idée, puis demande à l’agent de suivre la charte graphique
+        publiée sur cette démonstration. Votre agent doit être installé et équipé d'un navigateur (par exemple une session Claude Code sur l'application desktop).
+      </p>
+      <button speedDialogActions speedButton type="button" (click)="dialog().close()">
+        Annuler
+      </button>
+      <button speedDialogActions speedButton variant="primary" type="button" [disabled]="!request().trim()" (click)="copyPrompt()">
+        Copier le prompt
+      </button>
+    </speed-dialog>
     <p class="speed-text-muted">Couleurs, typographie, espacements et logos de l'écosystème.</p>
 
     <h2>Couleurs de la marque</h2>
@@ -138,6 +191,65 @@ interface ContrastPair {
   `,
 })
 export class FoundationsPage {
+  private readonly toast = inject(SpeedToastService);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  protected readonly generating = signal(false);
+
+  /** Builds the style guide PDF from the tokens currently applied to the page and downloads it. */
+  protected async downloadPdf(): Promise<void> {
+    this.generating.set(true);
+    try {
+      // Loaded on demand: the PDF layout is only needed when the button is used.
+      const [{ styleGuidePdf }, { loadPdfFonts }] = await Promise.all([
+        import('./style-guide/style-guide-pdf'),
+        import('./style-guide/pdf-fonts'),
+      ]);
+      const guide = readStyleGuide(document);
+      const bytes = styleGuidePdf(guide, await loadPdfFonts(guide.fontFamily));
+      const url = URL.createObjectURL(new Blob([bytes as BlobPart], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'charte-graphique-speedernet.pdf';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch {
+      this.toast.show("Le PDF n'a pas pu être généré.", { type: 'error' });
+    } finally {
+      this.generating.set(false);
+    }
+  }
+
+  protected readonly dialog = viewChild.required(SpeedDialog);
+  /** What the user wants to create, kept between openings of the dialog. */
+  protected readonly request = signal('');
+  protected readonly requestError = signal<string | null>(null);
+
+  protected openCreate(): void {
+    this.dialog().open();
+  }
+
+  protected onRequestInput(event: Event): void {
+    this.request.set((event.target as HTMLTextAreaElement).value);
+    if (this.request().trim()) this.requestError.set(null);
+  }
+
+  /** Copies the user's request followed by an instruction to read the style guide on this demo. */
+  protected async copyPrompt(): Promise<void> {
+    if (!this.request().trim()) {
+      this.requestError.set('Décrivez ce que vous voulez créer.');
+      this.host.nativeElement.querySelector<HTMLElement>('speed-dialog textarea')?.focus();
+      return;
+    }
+    try {
+      // The agent reads the guide on the demo, which always has the current tokens.
+      await navigator.clipboard.writeText(creationPrompt(this.request(), document.baseURI));
+      this.dialog().close();
+      this.toast.show('Prompt copié : collez-le dans votre agent.');
+    } catch {
+      this.toast.show("Le prompt n'a pas pu être copié.", { type: 'error' });
+    }
+  }
+
   protected readonly brand = [
     { label: 'Texte', token: '--color-text' },
     { label: 'Nuit', token: '--color-night' },

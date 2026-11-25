@@ -40,6 +40,39 @@ export function oklchToRgb(value: string): number[] | null {
   });
 }
 
+/** Parses an OKLCH, hex ("#rgb", "#rrggbb") or "rgb(r g b / a)" color into 8-bit sRGB channels
+ * (alpha ignored), or returns null for anything else. */
+export function parseColor(value: string): number[] | null {
+  const text = value.trim().toLowerCase();
+  const oklch = oklchToRgb(text);
+  if (oklch) return oklch;
+  const hex = text.match(/^#([\da-f]{3}|[\da-f]{6})$/);
+  if (hex) {
+    const digits = hex[1].length === 3 ? [...hex[1]].map((d) => d + d) : hex[1].match(/../g)!;
+    return digits.map((d) => parseInt(d, 16));
+  }
+  const rgb = text.match(
+    /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)\s*(?:[,/]\s*[\d.]+%?\s*)?\)$/,
+  );
+  if (rgb) return [rgb[1], rgb[2], rgb[3]].map((v) => Math.round(Math.min(255, Number(v))));
+  return null;
+}
+
+export function toHex(rgb: number[]): string {
+  return (
+    '#' +
+    rgb
+      .map((v) => v.toString(16).padStart(2, '0'))
+      .join('')
+      .toUpperCase()
+  );
+}
+
+/** WCAG level reached by a contrast ratio, for normal text. */
+export function contrastLevel(ratio: number): string {
+  return ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA gros texte' : 'insuffisant';
+}
+
 function luminance(rgb: number[]): number {
   const [r, g, b] = rgb.map((v) => {
     const x = v / 255;

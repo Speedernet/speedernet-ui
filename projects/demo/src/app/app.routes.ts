@@ -8,6 +8,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/foundations-page').then((m) => m.FoundationsPage),
   },
   {
+    path: 'charte-graphique',
+    title: 'Charte graphique · Démonstration',
+    loadComponent: () => import('./pages/style-guide-page').then((m) => m.StyleGuidePage),
+  },
+  {
     path: 'composants',
     title: 'Composants · Démonstration',
     loadComponent: () => import('./pages/components-page').then((m) => m.ComponentsPage),
