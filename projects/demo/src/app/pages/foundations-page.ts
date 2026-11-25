@@ -51,10 +51,7 @@ interface ContrastPair {
       </div>
     </div>
     <speed-dialog title="Je veux créer" (closed)="requestError.set(null)">
-      <speed-field
-        label=""
-        [error]="requestError()"
-      >
+      <speed-field label="" [error]="requestError()">
         <textarea
           speedControl
           rows="5"
@@ -65,12 +62,20 @@ interface ContrastPair {
       </speed-field>
       <p class="speed-text-muted">
         Le prompt copié reprend votre idée, puis demande à l’agent de suivre la charte graphique
-        publiée sur cette démonstration. Votre agent doit être installé et équipé d'un navigateur (par exemple une session Claude Code sur l'application desktop).
+        publiée sur cette démonstration. Votre agent doit être installé et équipé d'un navigateur
+        (par exemple une session Claude Code sur l'application desktop).
       </p>
       <button speedDialogActions speedButton type="button" (click)="dialog().close()">
         Annuler
       </button>
-      <button speedDialogActions speedButton variant="primary" type="button" [disabled]="!request().trim()" (click)="copyPrompt()">
+      <button
+        speedDialogActions
+        speedButton
+        variant="primary"
+        type="button"
+        [disabled]="!request().trim()"
+        (click)="copyPrompt()"
+      >
         Copier le prompt
       </button>
     </speed-dialog>
